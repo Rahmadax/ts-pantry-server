@@ -1,1 +1,1 @@
-rootProject.name = "drc"
+rootProject.name = "user-default-drc-workflow"

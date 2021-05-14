@@ -1,4 +1,4 @@
-group = "com.depop.cx.drc.workflow"
+group = "com.depop"
 version = "0.0.1"
 
 plugins {

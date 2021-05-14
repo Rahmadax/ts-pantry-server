@@ -1,4 +1,4 @@
-package com.depop.cx.drc
+package com.depop.cx.drc.workflow
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
