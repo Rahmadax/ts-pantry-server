@@ -7,6 +7,4 @@ camunda.bpm:
     id: demo
     password: demo
     firstName: Demo
-  filter:
-    create: All tasks
-  deployment-resource-pattern: classpath*:**/drc-*.bpmn
+  deployment-resource-pattern: classpath*:com/depop/cx/drc/workflow/*.bpmn

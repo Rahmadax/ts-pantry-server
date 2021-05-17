@@ -4,6 +4,7 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
+    id("drc-workflow.common")
     // Apply the kotlin jvm plugin to add support for Java & Kotlin.
     kotlin("jvm")
 }
