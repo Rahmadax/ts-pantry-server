@@ -2,7 +2,6 @@ plugins {
     id("drc-workflow.spring-boot-conventions")
 }
 
-
 // Core dependencies
 dependencies {
     implementation("org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter:7.15.0")
@@ -10,20 +9,12 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
-    implementation(project(":process-definitions"))
+    implementation(project(":process-definition"))
 
 }
-
 
 // Per profile configuration & dependencies
 val buildProfile: String? by project
 apply(plugin = "profile.${buildProfile ?: "default"}")
-
-
-// Process definitions
-sourceSets {
-    val main by getting
-    main.resources.srcDirs("src/main/processes")
-}
 
 
