@@ -2,8 +2,11 @@ package com.depop.cx.drc.workflow
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
+import org.springframework.transaction.annotation.EnableTransactionManagement
 
+@Suppress("ImplicitSubclassInspection")
 @SpringBootApplication
+@EnableTransactionManagement
 class DrcApplication
 
 fun main(args: Array<String>) {

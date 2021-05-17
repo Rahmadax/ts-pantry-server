@@ -1,0 +1,10 @@
+version: '3.5'
+services:
+  cx-drc-workflow-postgres:
+    image: postgres:11.5-alpine
+    container_name: postgres-cx
+    environment:
+      - POSTGRES_USER=depopdba
+      - POSTGRES_PASSWORD=depopdba
+    ports:
+      - "5432:5432"
