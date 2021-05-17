@@ -2,14 +2,6 @@ spring:
   output:
     ansi:
       enabled: ALWAYS
-  jpa:
-    hibernate:
-      ddl-auto: create
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-  datasource:
-    url: "jdbc:postgresql://localhost:5432/depopdba"
-    username: depopdba
-    password: depopdba
 camunda.bpm:
   admin-user:
     id: demo
@@ -17,3 +9,4 @@ camunda.bpm:
     firstName: Demo
   filter:
     create: All tasks
+  deployment-resource-pattern: classpath*:**/drc-*.bpmn
