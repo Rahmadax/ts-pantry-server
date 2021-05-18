@@ -1,3 +1,4 @@
+# common
 spring:
   output:
     ansi:
@@ -6,7 +7,31 @@ spring:
     hibernate:
       ddl-auto: create
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+---
+
+# local profile
+spring:
+  config:
+    activate:
+      on-profile: local
   datasource:
     url: "jdbc:postgresql://localhost:5432/depopdba"
     username: depopdba
     password: depopdba
+
+---
+
+# stage profile
+spring:
+  config:
+    activate:
+      on-profile: stage
+
+---
+
+# production profile
+spring:
+  config:
+    activate:
+      on-profile: production

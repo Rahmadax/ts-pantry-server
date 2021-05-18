@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0lcg6m6" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.6.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0lcg6m6" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.8.1">
   <bpmn:process id="hello_world_process" name="Hello World" isExecutable="true" camunda:versionTag="0.0.1">
     <bpmn:startEvent id="hello_world_start" name="Start" camunda:asyncBefore="true" camunda:exclusive="false">
       <bpmn:outgoing>start_flow</bpmn:outgoing>
@@ -8,7 +8,7 @@
     <bpmn:endEvent id="hello_world_end" name="End" camunda:asyncBefore="true" camunda:exclusive="false">
       <bpmn:incoming>end_flow</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:serviceTask id="hello_world" name="Hello World!" camunda:asyncBefore="true" camunda:exclusive="false" camunda:delegateExpression="${chatMessageTask}">
+    <bpmn:serviceTask id="hello_world" name="Hello World!" camunda:asyncBefore="true" camunda:exclusive="false" camunda:delegateExpression="${helloWorldTask}">
       <bpmn:extensionElements>
         <camunda:inputOutput>
           <camunda:inputParameter name="templateId">hello_world_template</camunda:inputParameter>

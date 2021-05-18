@@ -1,1 +1,1 @@
-rootProject.name = "drc-workflow-build-conventions"
+rootProject.name = "build-conventions"
