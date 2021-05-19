@@ -1,0 +1,44 @@
+# common
+server:
+  tomcat:
+    mbeanregistry:
+      enabled: true
+
+management:
+  metrics:
+    export:
+      datadog:
+        enabled: true
+        step: 30s
+        uri: https://api.datadoghq.eu/
+    tags:
+      application: ${spring.application.name}
+      env: ${spring.profiles}
+
+logging:
+  level:
+    io.micrometer.datadog: DEBUG
+
+---
+
+# local profile
+spring:
+  config:
+    activate:
+      on-profile: local
+
+---
+
+# stage profile
+spring:
+  config:
+    activate:
+      on-profile: stage
+
+---
+
+# production profile
+spring:
+  config:
+    activate:
+      on-profile: production

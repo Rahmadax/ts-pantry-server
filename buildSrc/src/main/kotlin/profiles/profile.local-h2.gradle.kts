@@ -9,5 +9,5 @@ dependencies {
 }
 
 tasks.named<BootRun>("bootRun") {
-    args("--spring.profiles.active=local,h2")
+    args("--spring.profiles.active=local,h2,datadog")
 }

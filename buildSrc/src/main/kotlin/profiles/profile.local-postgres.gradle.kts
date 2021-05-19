@@ -9,5 +9,5 @@ dependencies {
 }
 
 tasks.named<BootRun>("bootRun") {
-    args("--spring.profiles.active=local,postgres")
+    args("--spring.profiles.active=local,postgres,datadog")
 }

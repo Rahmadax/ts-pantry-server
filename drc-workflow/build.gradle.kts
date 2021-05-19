@@ -10,6 +10,9 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
+    //TODO: add this to a datadog gradle profile
+    implementation("io.micrometer:micrometer-registry-datadog")
+
     implementation(project(":process-definition"))
 
 }
