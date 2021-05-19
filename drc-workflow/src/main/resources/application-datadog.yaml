@@ -1,4 +1,10 @@
 # common
+spring:
+  jpa:
+    properties:
+      hibernate:
+        generate_statistics: true
+
 server:
   tomcat:
     mbeanregistry:
@@ -14,10 +20,16 @@ management:
     tags:
       application: ${spring.application.name}
       env: ${spring.profiles}
+    web:
+      server:
+        request:
+          autotime:
+            enabled: true
 
 logging:
   level:
     io.micrometer.datadog: DEBUG
+    org.hibernate.engine.internal.StatisticalLoggingSessionEventListener: OFF
 
 ---
 

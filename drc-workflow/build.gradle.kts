@@ -10,6 +10,8 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
+    implementation("io.micrometer:micrometer-jersey2")
+
     //TODO: add this to a datadog gradle profile
     implementation("io.micrometer:micrometer-registry-datadog")
 

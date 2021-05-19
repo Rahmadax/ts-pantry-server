@@ -58,7 +58,7 @@ public class MicrometerMetricsCollectionTask extends MetricsCollectionTask {
     }
 
     private AtomicLong getGauge(final String meterName) {
-        final String gaugeName = GAUGE_PREFIX + meterName.replace('_', '.');
+        final String gaugeName = GAUGE_PREFIX + meterName.replace('-', '.');
         return gauges.computeIfAbsent(gaugeName, m -> micrometerMetricsRegistry.gauge(m, new AtomicLong(0)));
     }
 
