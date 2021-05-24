@@ -15,7 +15,7 @@ dependencies {
     //TODO: add this to a datadog gradle profile
     implementation("io.micrometer:micrometer-registry-datadog")
 
-    implementation(project(":process-definition"))
+    implementation(project(":dispute-process-definition"))
 
 }
 

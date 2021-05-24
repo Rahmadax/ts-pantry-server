@@ -3,15 +3,11 @@ package com.depop.cx.drc.workflow;
 import org.camunda.bpm.engine.RuntimeService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.annotation.Resource;
 
 @SpringBootApplication
-@EnableTransactionManagement
-@EnableScheduling
 public class DrcWorkflowServer {
 
     @Resource

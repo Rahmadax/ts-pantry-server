@@ -1,2 +1,2 @@
-rootProject.name = "user-default-drc-workflow"
-include("drc-workflow", "process-definition")
+rootProject.name = "user-default-dispute-workflow"
+include("dispute-workflow", "dispute-process-definition")
