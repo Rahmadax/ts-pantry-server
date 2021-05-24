@@ -2,11 +2,6 @@ plugins {
     `kotlin-dsl`
 }
 
-repositories {
-    mavenCentral()
-    gradlePluginPortal()
-}
-
 dependencies {
     implementation(kotlin(module = "gradle-plugin", version = "1.5.0"))
     implementation("org.jetbrains.kotlin:kotlin-allopen:1.5.0")

@@ -11,10 +11,6 @@ plugins {
 
 val javaVersion = JavaVersion.VERSION_16
 
-repositories {
-    mavenCentral()
-}
-
 java {
     sourceCompatibility = javaVersion
     targetCompatibility = javaVersion

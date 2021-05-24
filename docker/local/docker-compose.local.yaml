@@ -1,8 +1,8 @@
 version: '3.5'
 services:
-  cx-drc-workflow-postgres:
-    image: postgres:11.5-alpine
-    container_name: postgres-cx
+  dispute-workflow-postgres-local:
+    image: 594471699039.dkr.ecr.us-east-1.amazonaws.com/mirror/postgres:11.5
+    container_name: dispute-workflow-postgres-local
     environment:
       - POSTGRES_USER=depopdba
       - POSTGRES_PASSWORD=depopdba
