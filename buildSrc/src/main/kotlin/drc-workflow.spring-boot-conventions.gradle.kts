@@ -1,7 +1,6 @@
 plugins {
     id("org.springframework.boot")
     id("drc-workflow.kotlin-conventions")
-    id("io.spring.dependency-management")
     kotlin("plugin.spring")
 }
 
