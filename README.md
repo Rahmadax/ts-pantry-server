@@ -8,9 +8,9 @@ The following build profiles are available:
 
 | Profile        | Boot Profiles            | Description |
 | -----------    | -----------              | ----------- |
-| default        | local, h2, datadog       | Defaults to local-h2
-| local-h2       | local, h2, datadog       | Runs with a local, embedded, in-memory database and exports metrics to datadog
-| local-postgres | local, postgres, datadog | Runs with against an external, postgres database and exports metrics to datadog
+| default        | -                        | Defaults to local-h2
+| local-h2       | metrics, h2, local       | Runs with a local, embedded, in-memory database
+| local-postgres | metrics, postgres, local | Runs with against an external, postgres database
 
 The spring boot profiles are automatically set when building and running using gradle.
 
@@ -75,11 +75,9 @@ https://depopmarket.atlassian.net/wiki/spaces/BD/pages/1298530340/Setup+artifact
 
 ### Datadog Credentials
 
-_**TODO: Control datadog reporting using a build profile.**_
+When running locally, exporting of metrics to datadog is disabled by default.
 
-This project logs metrics to datadog by default.
-
-Please add an api and application key to your local application properties:
+Export can be enabled by adding an api and application key to your local application properties:
 
 `<project>/dispute-workflow/src/main/resources/application-local.yaml`
 
@@ -90,6 +88,7 @@ management:
   metrics:
     export:
       datadog:
+        enabled: true
         api-key: <api-key>
         application-key: <application-key>
 ```

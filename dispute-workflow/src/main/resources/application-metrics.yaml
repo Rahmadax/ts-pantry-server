@@ -14,7 +14,7 @@ management:
   metrics:
     export:
       datadog:
-        enabled: true
+        enabled: false
         step: 30s
         uri: https://api.datadoghq.eu/
     tags:
