@@ -1,7 +1,5 @@
 # Dispute Resolution Centre - Process Engine
 
-## Getting Started - Developing Locally
-
 This is a Java (jdk 16) and Spring Boot (2.4.5) project built using gradle (v7).
 
 The following build profiles are available:
@@ -14,6 +12,8 @@ The following build profiles are available:
 
 The spring boot profiles are automatically set when building and running using gradle.
 
+## Getting Started - Developing Locally
+
 ### Build
 
 ```shell
@@ -25,6 +25,32 @@ The spring boot profiles are automatically set when building and running using g
 ```shell
 > ./gradlew bootRun -PbuildProfile=<profile>
 ```
+
+### JFrog Artifactory Credentials
+
+This project uses the depop JFrog artifactory for dependency resolution.
+
+Please add your credentials to your global gradle properties file `~/.gradle/gradle.properties`
+
+```properties
+depopJFrogUsername=<username>
+depopJFrogPassword=<api-key>
+```
+
+These can also be set via environment variables.
+
+```shell
+export ORG_GRADLE_PROJECT_depopJFrogUsername=<username>
+export ORG_GRADLE_PROJECT_depopJFrogPassword=<api-key>
+```
+
+For more information see here:
+
+https://docs.gradle.org/current/userguide/build_environment.html#sec:project_properties
+
+For more information on getting an API key please see here:
+
+https://depopmarket.atlassian.net/wiki/spaces/BD/pages/1298530340/Setup+artifactory+access+locally
 
 ### Local Postgres Database
 
@@ -53,25 +79,6 @@ AWS_SESSION_TOKEN=<token>
 Please also install the Amazon ECR Docker Credential Helper:
 
 https://github.com/awslabs/amazon-ecr-credential-helper
-
-### JFrog Artifactory Credentials
-
-This project uses the depop JFrog artifactory for dependency resolution.
-
-Please add your credentials to your global gradle properties file `~/.gradle/gradle.properties`
-
-```properties
-depopJFrogUsername=<username>
-depopJFrogPassword=<api-key>
-```
-
-These can also be set via environment variables. For more information see here:
-
-https://docs.gradle.org/current/userguide/build_environment.html#sec:project_properties
-
-For more information on getting an API key please see here:
-
-https://depopmarket.atlassian.net/wiki/spaces/BD/pages/1298530340/Setup+artifactory+access+locally
 
 ### Datadog Credentials
 
