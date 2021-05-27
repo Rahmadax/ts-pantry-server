@@ -40,8 +40,8 @@ depopJFrogPassword=<api-key>
 These can also be set via environment variables.
 
 ```shell
-export ORG_GRADLE_PROJECT_depopJFrogUsername=<username>
-export ORG_GRADLE_PROJECT_depopJFrogPassword=<api-key>
+> export ORG_GRADLE_PROJECT_depopJFrogUsername=<username>
+> export ORG_GRADLE_PROJECT_depopJFrogPassword=<api-key>
 ```
 
 For more information see here:
