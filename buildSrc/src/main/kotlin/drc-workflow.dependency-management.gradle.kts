@@ -21,5 +21,9 @@ dependencyManagement {
         dependency("io.opentracing:opentracing-api:0.33.0")
         dependency("io.opentracing:opentracing-mock:0.33.0")
 
+        // Datadog dependencies
+        dependency("com.datadoghq:dd-trace-api:0.80.0")
+        dependency("com.datadoghq:dd-trace-ot:0.80.0")
+
     }
 }

@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.depop.otel.java.spring.datadog.starter.DatadogAutoConfiguration

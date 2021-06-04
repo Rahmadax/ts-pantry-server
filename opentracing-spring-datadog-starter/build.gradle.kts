@@ -12,6 +12,9 @@ dependencies {
     implementation("io.opentracing.contrib:opentracing-spring-tracer-configuration-starter")
     implementation("io.opentracing:opentracing-api")
 
+    implementation("com.datadoghq:dd-trace-api")
+    implementation("com.datadoghq:dd-trace-ot")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-starter-logging")
     testImplementation("org.springframework.boot:spring-boot-starter-web")
