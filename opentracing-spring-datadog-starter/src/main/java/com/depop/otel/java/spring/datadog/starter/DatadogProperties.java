@@ -18,8 +18,15 @@ import java.util.Properties;
  * @author Tom Greasley
  * @since 1.0.0
  */
-@ConfigurationProperties("opentracing.datadog.dd")
+@ConfigurationProperties("opentracing.datadog")
 public class DatadogProperties {
+
+    /**
+     * Enables/Disabled the autoconfiguration of datadog support for opentracing.
+     * Datadog Property: N/A
+     * Default: true
+     **/
+    private Boolean enabled = Boolean.TRUE;
 
     /**
      * The name of a set of processes that do the same job. Used for grouping stats for your application. Available for versions 0.50.0+.
@@ -101,6 +108,14 @@ public class DatadogProperties {
 
     @NestedConfigurationProperty
     private JmxFetchProperties jmxfetch = new JmxFetchProperties();
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public String getService() {
         return service;
