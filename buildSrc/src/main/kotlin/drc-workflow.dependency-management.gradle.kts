@@ -17,6 +17,7 @@ dependencyManagement {
         dependency("org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter-rest:7.15.0")
 
         // Opentracing dependencies
+        dependency("io.opentracing.contrib:opentracing-spring-cloud-starter:0.5.9")
         dependency("io.opentracing.contrib:opentracing-spring-tracer-configuration-starter:0.4.0")
         dependency("io.opentracing:opentracing-api:0.33.0")
         dependency("io.opentracing:opentracing-mock:0.33.0")

@@ -12,6 +12,9 @@ dependencies {
     implementation("io.opentracing.contrib:opentracing-spring-tracer-configuration-starter")
     implementation("io.opentracing:opentracing-api")
 
+    //TODO: Exclude all the dependencies that we are not using.
+    implementation("io.opentracing.contrib:opentracing-spring-cloud-starter")
+
     implementation("com.datadoghq:dd-trace-api")
     implementation("com.datadoghq:dd-trace-ot")
 
