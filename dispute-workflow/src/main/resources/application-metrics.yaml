@@ -1,0 +1,57 @@
+# common
+spring:
+  jpa:
+    properties:
+      hibernate:
+        generate_statistics: true
+
+server:
+  tomcat:
+    mbeanregistry:
+      enabled: true
+
+management:
+  metrics:
+    export:
+      datadog:
+        enabled: false
+        step: 30s
+        uri: https://api.datadoghq.eu/
+    tags:
+      application: ${spring.application.name}
+      env: ${spring.profiles}
+    web:
+      server:
+        request:
+          autotime:
+            enabled: true
+
+logging:
+  level:
+    io.micrometer.datadog: DEBUG
+    org.hibernate.engine.internal.StatisticalLoggingSessionEventListener: OFF
+    com.depop.cx.drc.workflow.metrics.engine: DEBUG
+
+---
+
+# local profile
+spring:
+  config:
+    activate:
+      on-profile: local
+
+---
+
+# stage profile
+spring:
+  config:
+    activate:
+      on-profile: stage
+
+---
+
+# production profile
+spring:
+  config:
+    activate:
+      on-profile: production
