@@ -12,11 +12,11 @@ opentracing:
 
 ---
 
-# local profile
+# dev profile
 spring:
   config:
     activate:
-      on-profile: local
+      on-profile: dev
 
 ---
 

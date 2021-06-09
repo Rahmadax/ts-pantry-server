@@ -10,11 +10,11 @@ spring:
 
 ---
 
-# local profile
+# dev profile
 spring:
   config:
     activate:
-      on-profile: local
+      on-profile: dev
   datasource:
     url: "jdbc:postgresql://localhost:5432/depopdba"
     username: depopdba

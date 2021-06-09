@@ -36,5 +36,5 @@ out/
 ### VS Code ###
 .vscode/
 
-### Spring local properties ###
-application-local*.yaml
+### Spring local development properties ###
+application-dev*.yaml

@@ -1,8 +1,8 @@
 version: '3.5'
 services:
-  dispute-workflow-postgres-local:
+  dispute-workflow-postgres-dev:
     image: 594471699039.dkr.ecr.us-east-1.amazonaws.com/mirror/postgres:11.5
-    container_name: dispute-workflow-postgres-local
+    container_name: dispute-workflow-postgres-dev
     environment:
       - POSTGRES_USER=depopdba
       - POSTGRES_PASSWORD=depopdba
