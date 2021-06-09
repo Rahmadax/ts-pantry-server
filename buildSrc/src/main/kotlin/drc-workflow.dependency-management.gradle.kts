@@ -9,8 +9,8 @@ dependencyManagement {
     dependencies {
 
         // Kotlin dependencies
-        dependency("org.jetbrains.kotlin:kotlin-reflect:1.5.0")
-        dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.0")
+        dependency("org.jetbrains.kotlin:kotlin-reflect:1.5.10")
+        dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.10")
 
         // Camunda dependencies
         dependency("org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter:7.15.0")
