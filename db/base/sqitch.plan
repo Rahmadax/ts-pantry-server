@@ -1,0 +1,6 @@
+%syntax-version=1.0.0
+%project=disputeworkflow-base
+
+create-default-roles 2018-09-15T18:34:54Z Richard Clark <richard@depop.com> # Add default roles for disputeworkflow
+create-database [create-default-roles] 2018-09-16T15:30:51Z root <root@31c6ac0d835c> # Create disputeworkflow database
+initial-db-config [create-database] 2018-09-16T15:32:35Z root <root@fd622325c513> # Timeouts, extensions etc

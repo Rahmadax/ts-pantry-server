@@ -38,3 +38,9 @@ out/
 
 ### Spring local development properties ###
 application-dev*.yaml
+
+### DPDB files.
+.sqitch/sqitch.conf
+.sqitch/templates
+.pgpass*
+db/data

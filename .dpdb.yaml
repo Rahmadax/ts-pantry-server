@@ -1,0 +1,46 @@
+docker_volumes:
+  pgpass:
+    src: .pgpass
+    dst: /root/.pgpass
+  db:
+    src: db
+    dst: /src
+  sqitch:
+    src: .sqitch
+    dst: /root/.sqitch
+
+compose_file: docker/databases.yaml
+
+ecr_repository: 594471699039.dkr.ecr.us-east-1.amazonaws.com
+ecr_user: AWS
+
+sqitch_config_dir: .sqitch
+sqitch_version: v1.1.0
+sqitch_image: tools/sqitch
+sqitch_timeout: 60
+
+migra_version: 3.0.1612089247
+migra_image: tools/migra
+
+liquibase_version: 4.2.1
+liquibase_image: tools/liquibase
+
+sqlt_version: 1.62
+sqlt_image: tools/sqlt
+
+postgresql_version: 11.5
+postgresql_image: mirror/postgres
+
+application: disputeworkflow
+database_name: disputeworkflow
+repository: dispute-workflow
+
+vault_staging:
+  url: https://vault.stage-svcs.dpop.co.uk
+  path: kv-staging/data/staging/services/user/default/disputeworkflow/internal/_default
+  key: postgres_dba_password
+vault_production:
+  url: https://vault.prod-svcs.dpop.co.uk
+  path: kv-production/data/production/services/user/default/disputeworkflow/internal/_default
+  key: postgres_dba_password
+
