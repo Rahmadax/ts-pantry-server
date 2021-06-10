@@ -1,4 +1,4 @@
-rootProject.name = "user-default-disputeworkflow-internal"
+rootProject.name = "user-default-dispute-workflow"
 include("dispute-workflow", "dispute-process-definition", "opentracing-spring-datadog-starter")
 
 dependencyResolutionManagement {
