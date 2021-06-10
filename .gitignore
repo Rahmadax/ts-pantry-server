@@ -44,3 +44,4 @@ application-dev*.yaml
 .sqitch/templates
 .pgpass*
 db/data
+docker/db/data
