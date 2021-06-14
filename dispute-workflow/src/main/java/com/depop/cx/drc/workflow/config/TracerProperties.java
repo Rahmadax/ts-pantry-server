@@ -1,5 +1,6 @@
-package com.depop.otel.java.spring.datadog.starter;
+package com.depop.cx.drc.workflow.config;
 
+import com.depop.cx.drc.workflow.tracing.DatadogPropertyNames;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.boot.context.properties.PropertyMapper;
@@ -19,7 +20,7 @@ import java.util.Properties;
  * @since 1.0.0
  */
 @ConfigurationProperties("opentracing.datadog")
-public class DatadogProperties {
+public class TracerProperties {
 
     /**
      * Enables/Disabled the autoconfiguration of datadog support for opentracing.

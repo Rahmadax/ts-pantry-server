@@ -11,15 +11,20 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
-    implementation("io.micrometer:micrometer-jersey2")
-
-
     implementation(project(":dispute-process-definition"))
 
-    //TODO: add this to a datadog gradle profile
+    // Metrics support
+    implementation("io.micrometer:micrometer-jersey2")
     implementation("io.micrometer:micrometer-registry-datadog")
-    implementation(project(":opentracing-spring-datadog-starter"))
 
+    // Tracing support
+    implementation("io.opentracing.contrib:opentracing-spring-tracer-configuration-starter")
+    implementation("io.opentracing:opentracing-api")
+    implementation("io.opentracing.contrib:opentracing-spring-cloud-starter") //TODO: Exclude all the dependencies that we are not using.
+    implementation("com.datadoghq:dd-trace-api")
+    implementation("com.datadoghq:dd-trace-ot")
+
+    testImplementation("io.opentracing:opentracing-mock")
 
 }
 

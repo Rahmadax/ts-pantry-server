@@ -1,4 +1,4 @@
-package com.depop.otel.java.spring.datadog.starter;
+package com.depop.cx.drc.workflow.tracing;
 
 public enum DatadogPropertyNames {
 
