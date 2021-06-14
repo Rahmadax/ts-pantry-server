@@ -7,6 +7,10 @@ spring:
     hibernate:
       ddl-auto: create
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/disputeworkflow"
+    username: depopdba
+    password: depopdba
 
 ---
 
@@ -16,9 +20,9 @@ spring:
     activate:
       on-profile: dev
   datasource:
-    url: "jdbc:postgresql://localhost:5432/depopdba"
-    username: depopdba
-    password: depopdba
+    url: "jdbc:postgresql://localhost:5432/disputeworkflow"
+    username: disputeworkflow
+    password: disputeworkflow
 
 ---
 
@@ -27,6 +31,10 @@ spring:
   config:
     activate:
       on-profile: stage
+  datasource:
+    url: ${ENV_DB_URL}
+    username: ${ENV_DB_USER}
+    password: ${ENV_DB_PASSWORD}
 
 ---
 
@@ -35,3 +43,7 @@ spring:
   config:
     activate:
       on-profile: production
+  datasource:
+    url: ${ENV_DB_URL}
+    username: ${ENV_DB_USER}
+    password: ${ENV_DB_PASSWORD}

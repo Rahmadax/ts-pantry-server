@@ -6,15 +6,6 @@ services:
     environment:
       - POSTGRES_USER=depopdba
       - POSTGRES_PASSWORD=depopdba
-    ports:
-      - "5432"
-
-  dev:
-    image: 594471699039.dkr.ecr.us-east-1.amazonaws.com/mirror/postgres:11.5
-    user: 1000:1000
-    environment:
-      - POSTGRES_USER=depopdba
-      - POSTGRES_PASSWORD=depopdba
     volumes:
       - ./db/data/disputeworkflow-dev:/var/lib/postgresql/data
     ports:

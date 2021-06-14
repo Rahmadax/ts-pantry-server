@@ -34,6 +34,19 @@ logging:
 
 ---
 
+#  metrics {
+#    host = "localhost"
+#    host = ${?METRICS_HOST}
+#    port = 8125
+#    port = ${?METRICS_PORT}
+#    prefix = "depop.service.stdv1"
+#    prefix = ${?METRICS_PREFIX}
+#    service-domain = "user"
+#    service-group  = "default"
+#    service-name   = "namechange"
+#    service-role   = "api"
+#}
+
 # dev profile
 spring:
   config:

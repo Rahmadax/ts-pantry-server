@@ -1,0 +1,18 @@
+---
+envname: stage
+accountTag: stage-app
+service_domain: user
+service_group: default
+service_name: dispute
+service_role: workflow
+iamRoleARN: arn:aws:iam::254137095958:role/service-user-default-dispute-workflow
+image:
+  repository: 594471699039.dkr.ecr.us-east-1.amazonaws.com/user-default/dispute-workflow
+loadbalancer:
+  access_log_bucket: us-east-1-stage-app-elb-access-logs
+  certificate: arn:aws:acm:us-east-1:254137095958:certificate/d8bf9287-82bf-4abd-83d2-d8efb0d0d91e
+serviceConfig:
+  JAVA_OPTS: "-Dlogger.file=/etc/service-config/logback.xml"
+chart:
+  name: scala-service
+  version: "~1.10.0"
