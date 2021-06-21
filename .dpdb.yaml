@@ -37,10 +37,10 @@ repository: dispute-workflow
 
 vault_staging:
   url: https://vault.stage-svcs.dpop.co.uk
-  path: kv-staging/data/staging/services/user/default/disputeworkflow/internal/_default
+  path: kv-staging/data/staging/services/user/default/dispute/workflow/_default
   key: postgres_dba_password
 vault_production:
   url: https://vault.prod-svcs.dpop.co.uk
-  path: kv-production/data/production/services/user/default/disputeworkflow/internal/_default
+  path: kv-production/data/production/services/user/default/dispute/workflow/_default
   key: postgres_dba_password
 
