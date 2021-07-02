@@ -3,7 +3,7 @@ git_commit_sha ?= $(shell git rev-parse HEAD |cut -c1-7)
 build_image ?= 594471699039.dkr.ecr.us-east-1.amazonaws.com/mirror/amazoncorretto:11
 entrypoint ?= ''
 interactive ?=
-command ?= ./gradlew -PbuildProfile=ci
+command ?= TERM=dumb ./gradlew build -PbuildProfile=ci --no-daemon
 
 ci:
 	docker run --rm $(interactive) -e JFROG_API_KEY --entrypoint=$(entrypoint) -v $$PWD/:/work -w /work $(build_image) sh -c "$(command)"
