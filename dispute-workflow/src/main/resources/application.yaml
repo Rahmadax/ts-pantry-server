@@ -5,7 +5,7 @@ spring:
       enabled: ALWAYS
   profiles:
     active: local-m2
-    include: metrics, tracing, logging, camunda
+    include: metrics, tracing, logging, camunda, stage, postgres
     group:
       local-m2: m2, local
       local-postgres: postgres, local
