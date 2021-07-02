@@ -19,7 +19,7 @@ resources:
     memory: 800M
     cpu: 200m
 serviceConfig:
-  JAVA_OPTS: "-Dlogger.file=/etc/service-config/logback.xml"
+  JAVA_OPTS: ""
   SPRING_PROFILE: stage_deployment
 chart:
   name: scala-service

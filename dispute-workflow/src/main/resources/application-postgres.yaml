@@ -14,7 +14,7 @@ spring:
 
 ---
 
-# dev profile
+# local profile
 spring:
   config:
     activate:

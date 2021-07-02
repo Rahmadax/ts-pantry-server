@@ -1,0 +1,31 @@
+# common
+camunda.bpm:
+  admin-user:
+    id: demo
+    password: demo
+    firstName: Demo
+  deployment-resource-pattern: classpath*:com/depop/cx/drc/workflow/*.bpmn
+
+---
+
+# local profile
+spring:
+  config:
+    activate:
+      on-profile: local
+
+---
+
+# stage profile
+spring:
+  config:
+    activate:
+      on-profile: stage
+
+---
+
+# production profile
+spring:
+  config:
+    activate:
+      on-profile: production
