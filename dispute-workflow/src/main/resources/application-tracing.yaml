@@ -16,7 +16,7 @@ opentracing:
 spring:
   config:
     activate:
-      on-profile: dev
+      on-profile: local
 opentracing:
   datadog:
     enabled: true

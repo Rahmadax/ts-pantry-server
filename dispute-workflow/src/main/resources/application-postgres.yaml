@@ -18,7 +18,7 @@ spring:
 spring:
   config:
     activate:
-      on-profile: dev
+      on-profile: local
   datasource:
     url: "jdbc:postgresql://localhost:5432/disputeworkflow"
     username: disputeworkflow

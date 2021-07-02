@@ -1,1 +1,1 @@
-apply(plugin = "profile.dev-h2")
+apply(plugin = "profile.local-h2")

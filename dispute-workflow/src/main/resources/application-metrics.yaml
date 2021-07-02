@@ -51,7 +51,7 @@ logging:
 spring:
   config:
     activate:
-      on-profile: dev
+      on-profile: local
 
 ---
 

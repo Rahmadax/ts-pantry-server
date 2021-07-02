@@ -5,9 +5,9 @@ plugins {
 }
 
 dependencies {
-    runtimeOnly("org.postgresql:postgresql")
+    runtimeOnly("com.h2database:h2")
 }
 
 tasks.named<BootRun>("bootRun") {
-    args("--spring.profiles.active=dev-postgres")
+    args("--spring.profiles.active=local-h2")
 }

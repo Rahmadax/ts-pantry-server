@@ -1,0 +1,6 @@
+# Copy the pre-built jar file into a prebuilt base image:
+FROM 594471699039.dkr.ecr.us-east-1.amazonaws.com/mirror/amazoncorretto:11
+ARG SOURCE_JAR
+COPY ${SOURCE_JAR} ./executable.jar
+
+ENTRYPOINT exec env java ${JAVA_OPTS} -Dspring.profiles.active=${SPRING_PROFILES} -jar executable.jar

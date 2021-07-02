@@ -29,3 +29,13 @@ configurations {
         extendsFrom(configurations.annotationProcessor.get())
     }
 }
+
+// Don't include the version in the build archive, so we can reliably find it in Docker/make files etc.
+tasks.withType<org.springframework.boot.gradle.tasks.bundling.BootJar> {
+    archiveVersion.set("")
+}
+
+// Don't output the plain (thin) jar
+tasks.getByName<Jar>("jar") {
+    enabled = false
+}

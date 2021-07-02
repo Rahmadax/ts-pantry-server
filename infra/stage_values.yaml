@@ -20,6 +20,7 @@ resources:
     cpu: 200m
 serviceConfig:
   JAVA_OPTS: "-Dlogger.file=/etc/service-config/logback.xml"
+  SPRING_PROFILE: stage_deployment
 chart:
   name: scala-service
   version: "~1.10.0"

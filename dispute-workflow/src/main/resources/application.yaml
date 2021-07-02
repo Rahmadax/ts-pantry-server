@@ -4,11 +4,11 @@ spring:
     ansi:
       enabled: ALWAYS
   profiles:
-    active: dev-m2
+    active: local-m2
     group:
-      dev-m2: metrics,tracing,m2,dev
-      dev-postgres: metrics,tracing,postgres,dev
-      stage: metrics,tracing,postgres,stage
+      local-m2: metrics,tracing,m2,local
+      local-postgres: metrics,tracing,postgres,local
+      stage_deployment: metrics,tracing,postgres,stage
 
 camunda.bpm:
   admin-user:
@@ -29,7 +29,7 @@ logging:
 spring:
   config:
     activate:
-      on-profile: dev
+      on-profile: local
 
 ---
 
