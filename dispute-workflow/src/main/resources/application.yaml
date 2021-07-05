@@ -4,8 +4,8 @@ spring:
     ansi:
       enabled: ALWAYS
   profiles:
-    active: local-m2
-    include: metrics, tracing, logging, camunda, stage, postgres
+    active: stage_deployment
+    include: metrics, tracing, logging, camunda
     group:
       local-m2: m2, local
       local-postgres: postgres, local
