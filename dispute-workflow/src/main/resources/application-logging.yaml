@@ -24,6 +24,9 @@ spring:
   config:
     activate:
       on-profile: stage
+logging:
+  level:
+    root: INFO
 
 ---
 

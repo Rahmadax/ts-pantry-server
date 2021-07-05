@@ -34,6 +34,11 @@ spring:
   config:
     activate:
       on-profile: stage
+opentracing:
+  datadog:
+    enabled: true
+    trace:
+      enabled: true
 
 ---
 

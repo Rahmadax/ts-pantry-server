@@ -1,15 +1,31 @@
 # common
+server:
+  port: 9000
+
 spring:
   output:
     ansi:
       enabled: ALWAYS
   profiles:
-    active: local-m2
+    active: local-h2
     include: metrics, tracing, logging, camunda
     group:
-      local-m2: m2, local
+      local-h2: h2, local
       local-postgres: postgres, local
       stage_deployment: postgres, stage
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+      base-path: /
+      path-mapping:
+        health: status
+    enabled-by-default: false
+  endpoint:
+    health:
+      enabled: true
 
 ---
 

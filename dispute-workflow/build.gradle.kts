@@ -10,6 +10,8 @@ dependencies {
     implementation("org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter-rest")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+
 
     implementation(project(":dispute-process-definition"))
 
