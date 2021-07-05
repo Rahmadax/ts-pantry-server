@@ -47,6 +47,7 @@ pipeline {
       }
       steps {
         script {
+          def cicdConfig = ["slack_channel":"cx-stream"]
           cicd.deploy('stage')
         }
       }
@@ -71,6 +72,7 @@ pipeline {
       }
       steps {
         script {
+          def cicdConfig = ["slack_channel":"cx-stream"]
           cicd.deploy('prod')
         }
       }
@@ -79,10 +81,12 @@ pipeline {
 
   post {
     success {
+      slackSend channel: 'cx-stream', color: 'good', message: '<' + env.RUN_DISPLAY_URL + '|' + env.JOB_NAME + '> succeeded'
       script { cicd.buildSuccess() }
     }
 
     failure {
+      slackSend channel: 'cx-stream', color: 'bad', message: '<' + env.RUN_DISPLAY_URL + '|' + env.JOB_NAME + '> failed'
       script { cicd.buildFailure() }
     }
   }
