@@ -4,7 +4,7 @@ spring:
     ansi:
       enabled: ALWAYS
   profiles:
-    active: stage_deployment
+    active: local-m2
     include: metrics, tracing, logging, camunda
     group:
       local-m2: m2, local

@@ -23,8 +23,8 @@ secrets:
 serviceConfig:
   JAVA_OPTS: ""
   SPRING_PROFILES: stage_deployment
-  ENV_DB_URL: "jdbc:postgresql://service-user-default-dispute-workflow.cnrpoumyfd1x.us-east-1.rds.amazonaws.com/disputeworkflow"
-  ENV_DB_USER: "disputeworkflow_app"
+  ENV_DB_URL: jdbc:postgresql://service-user-default-dispute-workflow.cnrpoumyfd1x.us-east-1.rds.amazonaws.com/disputeworkflow
+  ENV_DB_USER: disputeworkflow_app
 autoscaling:
   cpu: 65
   memory: 75
@@ -33,4 +33,4 @@ autoscaling:
 cluster: staging
 chart:
   name: scala-service
-  version: "~1.10.0
+  version: "~1.10.0"
