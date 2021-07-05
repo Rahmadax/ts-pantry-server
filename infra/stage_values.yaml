@@ -28,8 +28,8 @@ serviceConfig:
 autoscaling:
   cpu: 65
   memory: 75
-  minReplicas: 1
-  maxReplicas: 1
+  minReplicas: 3
+  maxReplicas: 4
 cluster: staging
 chart:
   name: scala-service

@@ -1,10 +1,13 @@
 # common
-camunda.bpm:
-  admin-user:
-    id: demo
-    password: demo
-    firstName: Demo
-  deployment-resource-pattern: classpath*:com/depop/cx/drc/workflow/*.bpmn
+camunda:
+  bpm:
+    admin-user:
+      id: demo
+      password: demo
+      firstName: Demo
+    database:
+      schema-update: false
+    deployment-resource-pattern: classpath*:com/depop/cx/drc/workflow/*.bpmn
 
 ---
 

@@ -1,9 +1,9 @@
 # common
 opentracing:
   datadog:
-    enabled: false
+    enabled: true
     trace:
-      enabled: false
+      enabled: true
       health-metrics:
         enabled: true
       startup-logs: true
@@ -21,11 +21,6 @@ spring:
   config:
     activate:
       on-profile: local
-opentracing:
-  datadog:
-    enabled: true
-    trace:
-      enabled: true
 
 ---
 
@@ -34,11 +29,6 @@ spring:
   config:
     activate:
       on-profile: stage
-opentracing:
-  datadog:
-    enabled: true
-    trace:
-      enabled: true
 
 ---
 
