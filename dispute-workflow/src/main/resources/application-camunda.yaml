@@ -11,6 +11,18 @@ camunda:
 
 ---
 
+# h2 profile
+spring:
+  config:
+    activate:
+      on-profile: h2
+camunda:
+  bpm:
+    database:
+      schema-update: true
+
+---
+
 # local profile
 spring:
   config:
