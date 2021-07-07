@@ -1,6 +1,6 @@
 # Dispute Resolution Centre - Process Engine
 
-This is a Java (jdk 16) and Spring Boot (2.4.5) project built using gradle (v7).
+This is a Java (jdk 11, kotlin 1.4.31) and Spring Boot (2.5.0) project built using gradle (v7.1).
 
 The following build profiles are available:
 
@@ -9,6 +9,7 @@ The following build profiles are available:
 | default        | -                                   | Defaults to local-h2
 | local-h2       | metrics, tracing, h2, local         | Runs with a local, embedded, in-memory database
 | local-postgres | metrics, tracing, postgres, local   | Runs with against an external, postgres database
+| ci             | metrics, tracing, postgres          | use infra config files to set appropriate environment boot profile (staging/production)
 
 The spring boot profiles are automatically set when building and running using gradle.
 
