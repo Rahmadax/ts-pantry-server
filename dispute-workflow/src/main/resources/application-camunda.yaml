@@ -1,0 +1,46 @@
+# common
+camunda:
+  bpm:
+    admin-user:
+      id: demo
+      password: demo
+      firstName: Demo
+    database:
+      schema-update: false
+    deployment-resource-pattern: classpath*:com/depop/cx/drc/workflow/*.bpmn
+
+---
+
+# h2 profile
+spring:
+  config:
+    activate:
+      on-profile: h2
+camunda:
+  bpm:
+    database:
+      schema-update: true
+
+---
+
+# local profile
+spring:
+  config:
+    activate:
+      on-profile: local
+
+---
+
+# stage profile
+spring:
+  config:
+    activate:
+      on-profile: stage
+
+---
+
+# production profile
+spring:
+  config:
+    activate:
+      on-profile: production

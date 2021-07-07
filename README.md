@@ -4,11 +4,11 @@ This is a Java (jdk 16) and Spring Boot (2.4.5) project built using gradle (v7).
 
 The following build profiles are available:
 
-| Profile        | Boot Profiles            | Description |
-| -----------    | -----------              | ----------- |
-| default        | -                        | Defaults to local-h2
-| local-h2       | metrics, h2, local       | Runs with a local, embedded, in-memory database
-| local-postgres | metrics, postgres, local | Runs with against an external, postgres database
+| Profile        | Boot Profiles                       | Description |
+| -----------    | -----------                         | ----------- |
+| default        | -                                   | Defaults to local-h2
+| local-h2       | metrics, tracing, h2, local         | Runs with a local, embedded, in-memory database
+| local-postgres | metrics, tracing, postgres, local   | Runs with against an external, postgres database
 
 The spring boot profiles are automatically set when building and running using gradle.
 
@@ -30,23 +30,17 @@ The spring boot profiles are automatically set when building and running using g
 
 This project uses the depop JFrog artifactory for dependency resolution.
 
-Please add your credentials to your global gradle properties file `~/.gradle/gradle.properties`
+Please add your api key to your global gradle properties file `~/.gradle/gradle.properties`
 
 ```properties
-depopJFrogUsername=<username>
-depopJFrogPassword=<api-key>
+jfrog_api_key=<api-key>
 ```
 
-These can also be set via environment variables.
+The key can also be set via an environment variable.
 
 ```shell
-> export ORG_GRADLE_PROJECT_depopJFrogUsername=<username>
-> export ORG_GRADLE_PROJECT_depopJFrogPassword=<api-key>
+> export JFROG_API_KEY=<api-key>
 ```
-
-For more information see here:
-
-https://docs.gradle.org/current/userguide/build_environment.html#sec:project_properties
 
 For more information on getting an API key please see here:
 
@@ -54,10 +48,10 @@ https://depopmarket.atlassian.net/wiki/spaces/BD/pages/1298530340/Setup+artifact
 
 ### Local Postgres Database
 
-To create a local postgres instance please run the following:
+To create a local postgres instance please use DPDB or run the following:
 
 ```shell
-> docker-compose -f docker/local/docker-compose.local.yaml up
+> docker-compose -f docker/dev/docker-compose.dev.yaml up
 ```
 
 This requires AWS authentication support in docker.  
@@ -84,9 +78,9 @@ https://github.com/awslabs/amazon-ecr-credential-helper
 
 When running locally, exporting of metrics to datadog is disabled by default.
 
-Export can be enabled by adding an api and application key to your local application properties:
+Export can be enabled by adding an api and application key to your local development application properties:
 
-`<project>/dispute-workflow/src/main/resources/application-local.yaml`
+`<project>/dispute-workflow/src/main/resources/application-dev.yaml`
 
 This file should not be committed to the vcs and is included in the git ignore file.
 

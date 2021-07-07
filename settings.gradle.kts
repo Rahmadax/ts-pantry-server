@@ -1,12 +1,14 @@
-rootProject.name = "user-default-disputeworkflow-internal"
-include("dispute-workflow", "dispute-process-definition", "opentracing-spring-datadog-starter")
+rootProject.name = "user-default-dispute-workflow"
+include("dispute-workflow", "dispute-process-definition")
 
 dependencyResolutionManagement {
     repositories {
         maven {
             url = uri("https://depop.jfrog.io/depop/depop-clean-scala-maven")
-            name = "depopJFrog"
-            credentials(PasswordCredentials::class)
+            credentials {
+                username = ""
+                password = System.getenv("JFROG_API_KEY") ?: settings.extra["jfrog_api_key"] as String?
+            }
         }
     }
 }

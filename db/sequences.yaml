@@ -1,0 +1,6 @@
+# NOTE: Only needed if you commit the cardinal sin of exposing a SERIAL ID via
+# an API (DO NOT DO THIS). This should only be used for legacy systems that did
+# this in the past.
+# See https://github.com/depop/dpdb/blob/master/docs/restore.md for more details
+sequences:
+

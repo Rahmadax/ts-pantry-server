@@ -9,7 +9,7 @@ plugins {
     kotlin("jvm")
 }
 
-val javaVersion = JavaVersion.VERSION_16
+val javaVersion = JavaVersion.VERSION_11
 
 java {
     sourceCompatibility = javaVersion

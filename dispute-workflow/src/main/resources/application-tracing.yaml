@@ -10,9 +10,13 @@ opentracing:
     writer-type: LoggingWriter
     logs-injection: true
 
+logging:
+  level:
+    io:
+      opentelemetry: DEBUG
 ---
 
-# local profile
+# dev profile
 spring:
   config:
     activate:

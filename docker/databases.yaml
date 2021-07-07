@@ -1,0 +1,12 @@
+version: "3.5"
+
+services:
+  local:
+    image: 594471699039.dkr.ecr.us-east-1.amazonaws.com/mirror/postgres:11.5
+    environment:
+      - POSTGRES_USER=depopdba
+      - POSTGRES_PASSWORD=depopdba
+    volumes:
+      - ./db/data/disputeworkflow-dev:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"

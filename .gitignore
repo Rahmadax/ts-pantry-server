@@ -36,5 +36,13 @@ out/
 ### VS Code ###
 .vscode/
 
-### Spring local properties ###
+### Spring local development properties ###
+application-dev*.yaml
 application-local*.yaml
+
+### DPDB files.
+.sqitch/sqitch.conf
+.sqitch/templates
+.pgpass*
+db/data
+docker/db/data

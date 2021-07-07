@@ -1,28 +1,31 @@
 # common
+server:
+  port: 9000
+
 spring:
   output:
     ansi:
       enabled: ALWAYS
   profiles:
-    active: local-m2
+    active: local-h2
+    include: metrics, tracing, logging, camunda
     group:
-      local-m2: metrics,tracing,m2,local
-      local-postgres: metrics,tracing,postgres,local
+      local-h2: h2, local
+      local-postgres: postgres, local
+      stage_deployment: postgres, stage
 
-camunda.bpm:
-  admin-user:
-    id: demo
-    password: demo
-    firstName: Demo
-  deployment-resource-pattern: classpath*:com/depop/cx/drc/workflow/*.bpmn
-
-
-#TODO: add opentelemetry trace fields
-logging:
-  register-shutdown-hook: true
-  pattern:
-    console: '%clr(%d{${LOG_DATEFORMAT_PATTERN:yyyy-MM-dd HH:mm:ss.SSS}}){faint} %clr(${LOG_LEVEL_PATTERN:%5p}) %clr(${PID: }){magenta} %clr(---){faint} %clr([%t]){faint} %clr([%X]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m %n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}'
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+      base-path: /
+      path-mapping:
+        health: status
+    enabled-by-default: false
+  endpoint:
+    health:
+      enabled: true
 
 ---
 
@@ -31,14 +34,6 @@ spring:
   config:
     activate:
       on-profile: local
-management:
-  metrics:
-    export:
-      datadog:
-        enabled: false
-opentracing:
-  datadog:
-    enabled: false
 
 ---
 
