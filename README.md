@@ -49,39 +49,15 @@ https://depopmarket.atlassian.net/wiki/spaces/BD/pages/1298530340/Setup+artifact
 
 ### Local Postgres Database
 
-To create a local postgres instance please use DPDB or run the following:
+The local development profile will use an in memory h2 instance by default. To create a local postgres instance please use DPDB.
 
-```shell
-> docker-compose -f docker/dev/docker-compose.dev.yaml up
-```
-
-This requires AWS authentication support in docker.  
-Please install and configure the depop and AWS CLI and ensure that you are able to assume the developer IAM role:
-
-https://infra.docs.depop.com/internal/aws/federated-auth/
-
-The following environment variables should be set for access to the depop ECR:
-
-```properties
-AWS_DEFAULT_PROFILE=developer@auth-default
-AWS_DEFAULT_REGION=us-east-1
-AWS_SDK_LOAD_CONFIG=1
-AWS_ACCESS_KEY_ID=<key-id>
-AWS_SECRET_ACCESS_KEY=<key>
-AWS_SESSION_TOKEN=<token>
-```
-
-Please also install the Amazon ECR Docker Credential Helper:
-
-https://github.com/awslabs/amazon-ecr-credential-helper
-
-### Datadog Credentials
+### Local Datadog Credentials
 
 When running locally, exporting of metrics to datadog is disabled by default.
 
 Export can be enabled by adding an api and application key to your local development application properties:
 
-`<project>/dispute-workflow/src/main/resources/application-dev.yaml`
+`<project>/dispute-workflow/src/main/resources/application-local.yaml`
 
 This file should not be committed to the vcs and is included in the git ignore file.
 
