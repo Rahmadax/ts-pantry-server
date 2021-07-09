@@ -1,4 +1,8 @@
 # common
+spring:
+  jersey:
+    application-path: /camunda/rest
+
 camunda:
   bpm:
     admin-user:
