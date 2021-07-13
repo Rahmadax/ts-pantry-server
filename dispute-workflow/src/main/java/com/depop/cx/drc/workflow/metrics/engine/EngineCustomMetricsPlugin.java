@@ -24,6 +24,7 @@ public class EngineCustomMetricsPlugin {
 
     private final MeterRegistry micrometerRegistry;
     private final ProcessEngine processEngine;
+    private static final String GAUGE_PREFIX = "depop.service.dispute_workflow.camunda.engine.";
 
     public EngineCustomMetricsPlugin(final MeterRegistry micrometerRegistry, final ProcessEngine processEngine) {
         this.micrometerRegistry = micrometerRegistry;
@@ -32,61 +33,61 @@ public class EngineCustomMetricsPlugin {
 
     List<Tag> commonTags;
 
-    String activeIncidentsMetricName = "camunda.active.incidents";
+    String activeIncidentsMetricName = GAUGE_PREFIX + "active.incidents";
     AtomicLong activeIncidents;
 
-    String activeUserTasksMetricName = "camunda.active.user.tasks";
+    String activeUserTasksMetricName = GAUGE_PREFIX + "active.user.tasks";
     AtomicLong activeUserTasks;
 
-    String activeMessageEventSubscriptionsMetricName = "camunda.active.message.event.subscriptions";
+    String activeMessageEventSubscriptionsMetricName = GAUGE_PREFIX + "active.message.event.subscriptions";
     AtomicLong activeMessageEventSubscriptions;
 
-    String activeSignalEventSubscriptionsMetricName = "camunda.active.signal.event.subscriptions";
+    String activeSignalEventSubscriptionsMetricName = GAUGE_PREFIX + "active.signal.event.subscriptions";
     AtomicLong activeSignalEventSubscriptions;
 
-    String activeCompensateEventSubscriptionsMetricName = "camunda.active.compensate.event.subscriptions";
+    String activeCompensateEventSubscriptionsMetricName = GAUGE_PREFIX + "active.compensate.event.subscriptions";
     AtomicLong activeCompensateEventSubscriptions;
 
-    String activeConditionalEventSubscriptionsMetricName = "camunda.active.conditional.event.subscriptions";
+    String activeConditionalEventSubscriptionsMetricName = GAUGE_PREFIX + "active.conditional.event.subscriptions";
     AtomicLong activeConditionalEventSubscriptions;
 
-    String executableJobsMetricName = "camunda.executable.jobs";
+    String executableJobsMetricName = GAUGE_PREFIX + "executable.jobs";
     AtomicLong executableJobs;
 
-    String executableTimerJobsMetricName = "camunda.executable.timer.jobs";
+    String executableTimerJobsMetricName = GAUGE_PREFIX + "executable.timer.jobs";
     AtomicLong executableTimerJobs;
 
-    String timerJobsMetricName = "camunda.timer.jobs";
+    String timerJobsMetricName = GAUGE_PREFIX + "timer.jobs";
     AtomicLong timerJobs;
 
-    String messageJobsMetricName = "camunda.message.jobs";
+    String messageJobsMetricName = GAUGE_PREFIX + "message.jobs";
     AtomicLong messageJobs;
 
-    String userCountMetricName = "camunda.user.count";
+    String userCountMetricName = GAUGE_PREFIX + "user.count";
     AtomicLong userCount;
 
-    String tenantCountMetricName = "camunda.tenant.count";
+    String tenantCountMetricName = GAUGE_PREFIX + "tenant.count";
     AtomicLong tenantCount;
 
-    String activeProcessInstancesMetricName = "camunda.active.process.instances";
+    String activeProcessInstancesMetricName = GAUGE_PREFIX + "active.process.instances";
     AtomicLong activeProcessInstances;
 
-    String completedProcessInstancesMetricName = "camunda.completed.process.instances";
+    String completedProcessInstancesMetricName = GAUGE_PREFIX + "completed.process.instances";
     AtomicLong completedProcessInstances;
 
-    String activeProcessDefinitionsMetricName = "camunda.active.process.definitions";
+    String activeProcessDefinitionsMetricName = GAUGE_PREFIX + "active.process.definitions";
     AtomicLong activeProcessDefinitions;
 
-    String deploymentsMetricName = "camunda.deployments";
+    String deploymentsMetricName = GAUGE_PREFIX + "deployments";
     AtomicLong deployments;
 
-    String activeExternalTasksMetricName = "camunda.active.external.tasks";
+    String activeExternalTasksMetricName = GAUGE_PREFIX + "active.external.tasks";
     AtomicLong activeExternalTasks;
 
-    String activeLockedExternalTasksMetricName = "camunda.active.locked.external.tasks";
+    String activeLockedExternalTasksMetricName = GAUGE_PREFIX + "active.locked.external.tasks";
     AtomicLong activeLockedExternalTasks;
 
-    String activeNotLockedExternalTasksMetricName = "camunda.active.not.locked.external.tasks";
+    String activeNotLockedExternalTasksMetricName = GAUGE_PREFIX + "active.not.locked.external.tasks";
     AtomicLong activeNotLockedExternalTasks;
 
 

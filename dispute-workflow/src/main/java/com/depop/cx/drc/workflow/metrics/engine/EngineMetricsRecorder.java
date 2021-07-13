@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class EngineMetricsRecorder {
 
     private static final Logger log = LoggerFactory.getLogger(EngineMetricsRecorder.class);
-    private static final String GAUGE_PREFIX = "caumunda.engine.";
+    private static final String GAUGE_PREFIX = "depop.service.dispute_workflow.camunda.engine.";
 
     private final MeterRegistry registry;
     private final Map<String, AtomicLong> gauges = new ConcurrentHashMap<>();
