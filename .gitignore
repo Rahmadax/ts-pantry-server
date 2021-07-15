@@ -46,4 +46,3 @@ application-local*.yaml
 .pgpass*
 db/data
 docker/db/data
-dispute-workflow/src/main/resources/.DS_Store
