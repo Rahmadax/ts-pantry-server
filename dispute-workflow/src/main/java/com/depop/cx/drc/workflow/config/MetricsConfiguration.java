@@ -39,7 +39,7 @@ public class MetricsConfiguration {
         meterRegistry.config().commonTags("service_group", "default");
         meterRegistry.config().commonTags("service_name", "dispute");
         meterRegistry.config().commonTags("service_role", "workflow");
-        meterRegistry.config().commonTags("app.layer", "service")
+        meterRegistry.config().commonTags("app.layer", "service");
 
         return new EngineCustomMetricsPlugin(meterRegistry, processEngine);
     }
