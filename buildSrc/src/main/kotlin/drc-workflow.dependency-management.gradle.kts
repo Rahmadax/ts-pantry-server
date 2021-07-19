@@ -6,11 +6,13 @@ plugins {
 // NOTE: Spring boot dependency versions are managed by the spring boot BOM
 // please see drc-workflow.spring-boot-conventions.gradle.kts
 dependencyManagement {
-    dependencies {
 
-        // Camunda dependencies
-        dependency("org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter:7.15.0")
-        dependency("org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter-rest:7.15.0")
+    // Camunda dependencies
+    imports {
+        mavenBom("org.camunda.bpm:camunda-bom:7.15.0")
+    }
+
+    dependencies {
 
         // Opentracing dependencies
         dependency("io.opentracing.contrib:opentracing-spring-cloud-starter:0.5.9")

@@ -13,6 +13,8 @@ spring:
       local-h2: h2, local
       local-postgres: postgres, local
       stage_deployment: postgres, stage
+  main:
+    allow-bean-definition-overriding: true
 
 management:
   endpoints:
