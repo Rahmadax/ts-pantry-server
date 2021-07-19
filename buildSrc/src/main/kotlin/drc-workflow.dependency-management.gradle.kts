@@ -1,3 +1,5 @@
+import gradle.kotlin.dsl.accessors._2efc8696823c54ba8ca3179d877752c5.dependencyManagement
+
 plugins {
     id("io.spring.dependency-management")
 }
@@ -7,8 +9,8 @@ plugins {
 // please see drc-workflow.spring-boot-conventions.gradle.kts
 dependencyManagement {
 
-    // Camunda dependencies
     imports {
+        // Camunda dependencies
         mavenBom("org.camunda.bpm:camunda-bom:7.15.0")
     }
 

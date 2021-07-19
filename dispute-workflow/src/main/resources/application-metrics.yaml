@@ -25,6 +25,8 @@ management:
         request:
           autotime:
             enabled: true
+    enable:
+      all: true
 
 logging:
   level:
