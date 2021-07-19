@@ -23,7 +23,7 @@ public class EngineMetricsRecorder {
     public void recordMetric(final String name, final long value) {
         final String gaugeName = GAUGE_PREFIX + name.replace('-', '.');
         log.debug("Recorded metric [{}] with value [{}]", gaugeName, value);
-        getGauge(name).set(value);
+        getGauge(gaugeName).set(value);
     }
 
     protected AtomicLong getGauge(final String gaugeName) {
