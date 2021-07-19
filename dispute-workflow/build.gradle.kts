@@ -8,6 +8,10 @@ dependencies {
 
     implementation("org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter")
     implementation("org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter-rest")
+    implementation("org.camunda.bpm:camunda-engine-plugin-spin")
+    implementation("org.camunda.spin:camunda-spin-core")
+    implementation("org.camunda.spin:camunda-spin-dataformat-json-jackson")
+
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
