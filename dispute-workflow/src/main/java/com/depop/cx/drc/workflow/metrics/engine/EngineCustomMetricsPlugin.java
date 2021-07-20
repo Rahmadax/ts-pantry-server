@@ -25,7 +25,7 @@ public class EngineCustomMetricsPlugin {
 
     private final MeterRegistry micrometerRegistry;
     private final ProcessEngine processEngine;
-    private static final String GAUGE_PREFIX = "depop.service.dispute_workflow.camunda.engine.";
+    private static final String PREFIX = "depop.service.dispute_workflow.camunda.engine.";
 
     public EngineCustomMetricsPlugin(final MeterRegistry micrometerRegistry, final ProcessEngine processEngine) {
         this.micrometerRegistry = micrometerRegistry;
@@ -34,61 +34,61 @@ public class EngineCustomMetricsPlugin {
 
     List<Tag> commonTags;
 
-    String activeIncidentsMetricName = GAUGE_PREFIX + "active.incidents";
+    String activeIncidentsMetricName = PREFIX + "active.incidents";
     Counter activeIncidents;
 
-    String activeUserTasksMetricName = GAUGE_PREFIX + "active.user.tasks";
+    String activeUserTasksMetricName = PREFIX + "active.user.tasks";
     Counter activeUserTasks;
 
-    String activeMessageEventSubscriptionsMetricName = GAUGE_PREFIX + "active.message.event.subscriptions";
+    String activeMessageEventSubscriptionsMetricName = PREFIX + "active.message.event.subscriptions";
     Counter activeMessageEventSubscriptions;
 
-    String activeSignalEventSubscriptionsMetricName = GAUGE_PREFIX + "active.signal.event.subscriptions";
+    String activeSignalEventSubscriptionsMetricName = PREFIX + "active.signal.event.subscriptions";
     Counter activeSignalEventSubscriptions;
 
-    String activeCompensateEventSubscriptionsMetricName = GAUGE_PREFIX + "active.compensate.event.subscriptions";
+    String activeCompensateEventSubscriptionsMetricName = PREFIX + "active.compensate.event.subscriptions";
     Counter activeCompensateEventSubscriptions;
 
-    String activeConditionalEventSubscriptionsMetricName = GAUGE_PREFIX + "active.conditional.event.subscriptions";
+    String activeConditionalEventSubscriptionsMetricName = PREFIX + "active.conditional.event.subscriptions";
     Counter activeConditionalEventSubscriptions;
 
-    String executableJobsMetricName = GAUGE_PREFIX + "executable.jobs";
+    String executableJobsMetricName = PREFIX + "executable.jobs";
     Counter executableJobs;
 
-    String executableTimerJobsMetricName = GAUGE_PREFIX + "executable.timer.jobs";
+    String executableTimerJobsMetricName = PREFIX + "executable.timer.jobs";
     Counter executableTimerJobs;
 
-    String timerJobsMetricName = GAUGE_PREFIX + "timer.jobs";
+    String timerJobsMetricName = PREFIX + "timer.jobs";
     Counter timerJobs;
 
-    String messageJobsMetricName = GAUGE_PREFIX + "message.jobs";
+    String messageJobsMetricName = PREFIX + "message.jobs";
     Counter messageJobs;
 
-    String userCountMetricName = GAUGE_PREFIX + "user.count";
+    String userCountMetricName = PREFIX + "user.count";
     Counter userCount;
 
-    String tenantCountMetricName = GAUGE_PREFIX + "tenant.count";
+    String tenantCountMetricName = PREFIX + "tenant.count";
     Counter tenantCount;
 
-    String activeProcessInstancesMetricName = GAUGE_PREFIX + "active.process.instances";
+    String activeProcessInstancesMetricName = PREFIX + "active.process.instances";
     Counter activeProcessInstances;
 
-    String completedProcessInstancesMetricName = GAUGE_PREFIX + "completed.process.instances";
+    String completedProcessInstancesMetricName = PREFIX + "completed.process.instances";
     Counter completedProcessInstances;
 
-    String activeProcessDefinitionsMetricName = GAUGE_PREFIX + "active.process.definitions";
+    String activeProcessDefinitionsMetricName = PREFIX + "active.process.definitions";
     Counter activeProcessDefinitions;
 
-    String deploymentsMetricName = GAUGE_PREFIX + "deployments";
+    String deploymentsMetricName = PREFIX + "deployments";
     Counter deployments;
 
-    String activeExternalTasksMetricName = GAUGE_PREFIX + "active.external.tasks";
+    String activeExternalTasksMetricName = PREFIX + "active.external.tasks";
     Counter activeExternalTasks;
 
-    String activeLockedExternalTasksMetricName = GAUGE_PREFIX + "active.locked.external.tasks";
+    String activeLockedExternalTasksMetricName = PREFIX + "active.locked.external.tasks";
     Counter activeLockedExternalTasks;
 
-    String activeNotLockedExternalTasksMetricName = GAUGE_PREFIX + "active.not.locked.external.tasks";
+    String activeNotLockedExternalTasksMetricName = PREFIX + "active.not.locked.external.tasks";
     Counter activeNotLockedExternalTasks;
 
 
