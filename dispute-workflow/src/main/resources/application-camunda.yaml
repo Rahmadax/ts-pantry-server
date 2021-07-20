@@ -1,4 +1,8 @@
 # common
+spring:
+  jersey:
+    application-path: /camunda/rest
+
 camunda:
   bpm:
     admin-user:
@@ -8,6 +12,7 @@ camunda:
     database:
       schema-update: false
     deployment-resource-pattern: classpath*:com/depop/cx/drc/workflow/*.bpmn
+    default-serialization-format: application/json
 
 ---
 
