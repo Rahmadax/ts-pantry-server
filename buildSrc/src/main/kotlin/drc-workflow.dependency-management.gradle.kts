@@ -1,7 +1,12 @@
-import gradle.kotlin.dsl.accessors._2efc8696823c54ba8ca3179d877752c5.dependencyManagement
-
 plugins {
     id("io.spring.dependency-management")
+    id("io.snyk.gradle.plugin.snykplugin")
+}
+
+configure<io.snyk.gradle.plugin.SnykExtension> {
+    val snykApiKey = System.getenv("SNYK_TOKEN") ?: project.properties["snyk_token"] as String?
+    setApi(snykApiKey)
+    setArguments("--all-sub-projects")
 }
 
 // Version management
@@ -25,6 +30,12 @@ dependencyManagement {
         // Datadog dependencies
         dependency("com.datadoghq:dd-trace-api:0.80.0")
         dependency("com.datadoghq:dd-trace-ot:0.80.0")
+
+        // Upgrading version of apache commons compress due to snyk DOS vulnerability report.
+        dependency("org.apache.commons:commons-compress:1.21")
+
+        // Upgrade version of jersey common due to a snyk info disclosure vulnerability report.
+        dependency("org.glassfish.jersey.core:jersey-common:2.34")
 
     }
 }

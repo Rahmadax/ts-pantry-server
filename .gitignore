@@ -46,3 +46,7 @@ application-local*.yaml
 .pgpass*
 db/data
 docker/db/data
+
+### Synk executables
+./synk
+./snyk.exe
