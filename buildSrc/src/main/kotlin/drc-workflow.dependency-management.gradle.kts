@@ -4,7 +4,7 @@ plugins {
 }
 
 configure<io.snyk.gradle.plugin.SnykExtension> {
-    val snykApiKey = System.getenv("SNYK_TOKEN") ?: project.properties["snyk_token"] as String?
+    val snykApiKey = System.getenv("SNYK_TOKEN") ?: project.properties.getOrDefault("snyk_token", null) as String? ?: ""
     setApi(snykApiKey)
     setArguments("--all-sub-projects")
 }
