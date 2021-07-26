@@ -4,15 +4,21 @@ meta:
   team: "platform"
   pipeline: ((grab meta.name))
 resource_types:
+  - name: ecr-image
+    type: registry-image
+    source:
+      repository: depop/concourse-registry-image
   - name: pull-request
-    type: docker-image
+    type: ecr-image
     source:
-      repository: teliaoss/github-pr-resource
+      repository: mirror/teliaoss/github-pr-resource
       tag: v0.21.0
+      aws_region: us-east-1
   - name: slack-notification
+    type: ecr-image
     source:
-      repository: cfcommunity/slack-notification-resource
-    type: docker-image
+      repository: mirror/cfcommunity/slack-notification-resource
+      aws_region: us-east-1
 resources:
   - name: code-repo
     type: pull-request
