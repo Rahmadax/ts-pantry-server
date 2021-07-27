@@ -34,8 +34,26 @@ dependencyManagement {
         // Upgrading version of apache commons compress due to snyk DOS vulnerability report.
         dependency("org.apache.commons:commons-compress:1.21")
 
-        // Upgrade version of jersey common due to a snyk info disclosure vulnerability report.
-        dependency("org.glassfish.jersey.core:jersey-common:2.34")
+        // Upgrade jersey due to a snyk info disclosure vulnerability report.
+        dependencySet("org.glassfish.jersey.containers:2.34") {
+            entry("jersey-container-servlet")
+            entry("jersey-container-servlet-core")
+        }
+
+        dependencySet("org.glassfish.jersey.core:2.34") {
+            entry("jersey-common")
+            entry("jersey-client")
+            entry("jersey-server")
+        }
+
+        dependencySet("org.glassfish.jersey.ext:2.34") {
+            entry("jersey-bean-validation")
+            entry("jersey-entity-filtering")
+            entry("jersey-spring5")
+        }
+        dependency("org.glassfish.jersey.inject:jersey-hk2:2.34")
+        dependency("org.glassfish.jersey.media:jersey-media-json-jackson:2.34")
 
     }
+
 }
