@@ -42,6 +42,7 @@ public class SecurityConfiguration {
 
     private static final String API_URL_PATTERN = "/internal/v1/**";
     private static final String APP_URL_PATTERN = "/camunda/**";
+    private static final String STATUS_URL_PATTERN = "/status";
     private static final String ENGINE_NAME = "default";
 
     /**
@@ -153,13 +154,26 @@ public class SecurityConfiguration {
 
     }
 
-
     /**
-     * The default security is configured to:
-     * - Authenticate deny all requests.
+     * The /status security is configured to:
+     * - Authenticate and allow all requests.
      */
     @Configuration
     @Order(3)
+    public static class StatusWebSecurityConfig extends WebSecurityConfigurerAdapter {
+        @Override
+        protected void configure(final HttpSecurity http) throws Exception {
+            http.mvcMatcher(STATUS_URL_PATTERN)
+                    .authorizeRequests().anyRequest().permitAll();
+        }
+    }
+
+    /**
+     * The default security is configured to:
+     * - Authenticate and deny all requests.
+     */
+    @Configuration
+    @Order(4)
     public static class DefaultWebSecurityConfig extends WebSecurityConfigurerAdapter {
         @Override
         protected void configure(final HttpSecurity http) throws Exception {
