@@ -23,7 +23,8 @@ pipeline {
         measure {
           script {
             cicd.withSecret('kv-jenkins/global/credentials','jfrog_api_key','JFROG_API_KEY') {
-              sh "make ci"
+                sh "make ci"
+                cicd.snykDependencyScan()
             }
             sh "make docker_build docker_push"
           }
