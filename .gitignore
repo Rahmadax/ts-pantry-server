@@ -48,5 +48,6 @@ db/data
 docker/db/data
 
 ### Synk executables
-./synk
-./snyk.exe
+/synk
+/snyk.exe
+/snyk
