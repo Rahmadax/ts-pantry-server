@@ -23,9 +23,13 @@ pipeline {
         measure {
           script {
             cicd.withSecret('kv-jenkins/global/credentials','jfrog_api_key','JFROG_API_KEY') {
-              sh "make ci"
+                sh "make ci"
+                //cicd.snykDependencyScan()
             }
-            sh "make docker_build docker_push"
+            sh "make docker_build"
+            String dockerRepo = sh(label: 'Get docker repo', returnStdout: true, script: '''#!/bin/sh -e\ngrep ^docker_repository Makefile | awk \'{print $NF}\'''').trim()
+            //cicd.snykContainerScan('.', true, dockerRepo, '', '', 'Dockerfile.prebuilt')
+            sh "make docker_push"
           }
         }
       }
@@ -47,7 +51,13 @@ pipeline {
       }
       steps {
         script {
-          cicd.deploy('stage')
+          def envName = 'stage'
+          def contractTests = false
+          def deploymentDirectory = ''
+          def portyardConfig = ''
+          def releaseName = ''
+          def cicdConfig = ["slack_channel":"cx-alerts"]
+          cicd.deploy(envName, deploymentDirectory, portyardConfig, releaseName, contractTests, cicdConfig)
         }
       }
     }
@@ -71,7 +81,13 @@ pipeline {
       }
       steps {
         script {
-          cicd.deploy('prod')
+          def envName = 'prod'
+          def contractTests = false
+          def deploymentDirectory = ''
+          def portyardConfig = ''
+          def releaseName = ''
+          def cicdConfig = ["slack_channel":"cx-alerts"]
+          cicd.deploy(envName, deploymentDirectory, portyardConfig, releaseName, contractTests, cicdConfig)
         }
       }
     }
@@ -83,6 +99,7 @@ pipeline {
     }
 
     failure {
+      slackSend channel: 'cx-alerts', color: 'bad', message: '<' + env.RUN_DISPLAY_URL + '|' + env.JOB_NAME + '> failed'
       script { cicd.buildFailure() }
     }
   }

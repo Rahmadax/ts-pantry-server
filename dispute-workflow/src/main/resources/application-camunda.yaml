@@ -1,7 +1,7 @@
 # common
 spring:
   jersey:
-    application-path: /camunda/rest
+    application-path: /internal/v1
 
 camunda:
   bpm:
