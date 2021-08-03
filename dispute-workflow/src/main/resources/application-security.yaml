@@ -1,0 +1,13 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: https://security-default-clientauth-api.stage-app.dpop.co.uk/.well-known/jwks.json
+          issuer-uri: depop-oauth-introspection
+
+camunda:
+  bpm:
+    authorization:
+      enabled: false
+      tenant-check-enabled: false

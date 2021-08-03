@@ -8,7 +8,7 @@ spring:
       enabled: ALWAYS
   profiles:
     active: local-h2
-    include: metrics, tracing, logging, camunda
+    include: metrics, tracing, logging, camunda, security
     group:
       local-h2: h2, local
       local-postgres: postgres, local

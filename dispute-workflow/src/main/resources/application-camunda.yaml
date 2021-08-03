@@ -5,10 +5,6 @@ spring:
 
 camunda:
   bpm:
-    admin-user:
-      id: demo
-      password: demo
-      firstName: Demo
     database:
       schema-update: false
     deployment-resource-pattern: classpath*:com/depop/cx/drc/workflow/*.bpmn
@@ -23,6 +19,9 @@ spring:
       on-profile: h2
 camunda:
   bpm:
+    admin-user:
+      id: demo
+      password: demo
     database:
       schema-update: true
 
