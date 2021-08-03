@@ -5,7 +5,7 @@ import org.camunda.bpm.engine.ProcessEngine;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -45,17 +45,22 @@ public class CamundaApiAuthenicationFilter extends CamundaAuthenticationFilter {
                                    final FilterChain chain,
                                    final ProcessEngine engine) throws ServletException, IOException {
 
-        final var principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        final var username = principal instanceof UserDetails
-                ? ((UserDetails) principal).getUsername()
-                : principal.toString();
-        try {
-            final var authentication = SecurityContextHolder.getContext().getAuthentication();
+        final var authentication = SecurityContextHolder.getContext().getAuthentication();
+        final var principal = authentication.getPrincipal();
+
+        if (principal instanceof Jwt) {
+            final var username = ((Jwt) principal).getSubject();
             engine.getIdentityService().setAuthentication(username, getUserGroups(authentication));
+        } else {
+            engine.getIdentityService().clearAuthentication();
+        }
+
+        try {
             chain.doFilter(request, response);
         } finally {
             engine.getIdentityService().clearAuthentication();
         }
+
     }
 
 }
