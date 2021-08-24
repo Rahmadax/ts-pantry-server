@@ -12,7 +12,7 @@ interactive:
 	$(MAKE) ci command='sh' interactive='-it'
 
 docker_build:
-	docker build --no-cache --build-arg SOURCE_JAR="./dispute-workflow/build/libs/dispute-workflow.jar" -t $(docker_repository):$(git_commit_sha) -f ./docker/Dockerfile.prebuilt .
+	docker build --no-cache --build-arg SOURCE_JAR="./dispute-workflow/build/libs/dispute-workflow.jar" -t $(docker_repository):$(git_commit_sha) -f ./Dockerfile.prebuilt .
 
 docker_push:
 	docker push $(docker_repository):$(git_commit_sha)

@@ -24,11 +24,11 @@ pipeline {
           script {
             cicd.withSecret('kv-jenkins/global/credentials','jfrog_api_key','JFROG_API_KEY') {
                 sh "make ci"
-                //cicd.snykDependencyScan()
+                cicd.snykDependencyScan()
             }
             sh "make docker_build"
             String dockerRepo = sh(label: 'Get docker repo', returnStdout: true, script: '''#!/bin/sh -e\ngrep ^docker_repository Makefile | awk \'{print $NF}\'''').trim()
-            //cicd.snykContainerScan('.', true, dockerRepo, '', '', 'Dockerfile.prebuilt')
+            cicd.snykContainerScan('.', true, dockerRepo, '', '', 'Dockerfile.prebuilt')
             sh "make docker_push"
           }
         }
