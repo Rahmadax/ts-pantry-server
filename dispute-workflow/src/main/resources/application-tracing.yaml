@@ -13,7 +13,12 @@ opentracing:
 logging:
   level:
     io:
-      opentelemetry: DEBUG
+      opentelemetry: INFO
+    datadog:
+      trace:
+        common:
+          writer:
+            LoggingWriter: WARN
 ---
 
 # dev profile

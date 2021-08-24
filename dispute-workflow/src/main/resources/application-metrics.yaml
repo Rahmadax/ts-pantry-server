@@ -30,9 +30,9 @@ management:
 
 logging:
   level:
-    io.micrometer.datadog: DEBUG
+    io.micrometer.datadog: INFO
     org.hibernate.engine.internal.StatisticalLoggingSessionEventListener: OFF
-    com.depop.cx.drc.workflow.metrics.engine: DEBUG
+    com.depop.cx.drc.workflow.metrics.engine: INFO
 
 ---
 

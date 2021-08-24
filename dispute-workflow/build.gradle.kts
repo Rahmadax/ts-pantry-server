@@ -12,16 +12,22 @@ dependencies {
 
     // Spring
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-jersey")
     implementation("org.springframework.boot:spring-boot-starter-web")
+
+    // Session
+    implementation("org.springframework.session:spring-session-jdbc")
 
     // Security
     implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
 
-    // Camnunda
+    // Camunda
     implementation("org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter")
     implementation("org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter-rest")
     implementation("org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter-webapp")
+    implementation("org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter-test")
     implementation("org.camunda.bpm:camunda-engine-plugin-spin")
     implementation("org.camunda.spin:camunda-spin-core")
     implementation("org.camunda.spin:camunda-spin-dataformat-json-jackson")
@@ -40,8 +46,9 @@ dependencies {
     implementation("com.datadoghq:dd-trace-api")
     implementation("com.datadoghq:dd-trace-ot")
 
+    // Testing
     testImplementation("io.opentracing:opentracing-mock")
-
+    testImplementation("org.springframework.security:spring-security-test")
 }
 
 // Per profile configuration & dependencies (see buildSrc/main/kotlin/profiles)

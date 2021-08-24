@@ -9,4 +9,5 @@ create_camunda_case_engine 2021-06-19T16:44:22Z Tom Greasley <tom.greasley@depop
 create_camunda_case_history 2021-06-19T16:45:37Z Tom Greasley <tom.greasley@depop.com> # 'Creating create_camunda_case_history changes'
 create_camunda_decision_engine 2021-06-19T16:46:21Z Tom Greasley <tom.greasley@depop.com> # 'Creating create_camunda_decision_engine changes'
 create_camunda_decision_history 2021-06-19T16:47:05Z Tom Greasley <tom.greasley@depop.com> # 'Creating create_camunda_decision_history changes'
-
+create_spring_session 2021-08-19T18:35:03Z Tom Greasley <tom.greasley@depop.com> # 'Creating create_spring_session changes'
+add_initial_identity_data [create_camunda_identity] 2021-08-20T12:36:19Z sorin-vava-depop <sorin.vava@depop.com> # 'Creating add_initial_identity_data changes'

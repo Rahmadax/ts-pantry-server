@@ -1,0 +1,42 @@
+#common
+spring:
+  session:
+    jdbc:
+      initialize-schema: never
+      cleanup-cron: "0 0/30 * * * ?"
+    store-type: jdbc
+
+---
+
+# h2 profile
+spring:
+  config:
+    activate:
+      on-profile: h2
+  session:
+    jdbc:
+      initialize-schema: always
+
+---
+
+# local profile
+spring:
+  config:
+    activate:
+      on-profile: local
+
+---
+
+# stage profile
+spring:
+  config:
+    activate:
+      on-profile: stage
+
+---
+
+# production profile
+spring:
+  config:
+    activate:
+      on-profile: production

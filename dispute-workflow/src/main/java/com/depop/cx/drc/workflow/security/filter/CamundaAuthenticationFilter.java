@@ -2,6 +2,7 @@ package com.depop.cx.drc.workflow.security.filter;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.rest.util.EngineUtil;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -9,6 +10,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 /**
@@ -42,6 +46,15 @@ public abstract class CamundaAuthenticationFilter extends OncePerRequestFilter {
         }
         doFilterWithEngine(request, response, chain, engine);
 
+    }
+
+    protected static List<String> getUserGroups(final org.springframework.security.core.Authentication authentication) {
+        return authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .filter(Objects::nonNull)
+                .filter(res -> res.startsWith("ROLE_"))
+                .map(res -> res.replaceFirst("^ROLE_", ""))
+                .collect(Collectors.toList());
     }
 
     protected abstract void doFilterWithEngine(final HttpServletRequest req,

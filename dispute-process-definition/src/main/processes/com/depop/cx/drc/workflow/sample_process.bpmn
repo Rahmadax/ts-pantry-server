@@ -3,7 +3,7 @@
   <bpmn:collaboration id="sample_process_collaboration">
     <bpmn:participant id="customer" name="Sample Process" processRef="sample_process" />
   </bpmn:collaboration>
-  <bpmn:process id="sample_process" name="sample_process" isExecutable="true" camunda:versionTag="5">
+  <bpmn:process id="sample_process" name="sample_process" isExecutable="true" camunda:versionTag="6">
     <bpmn:laneSet id="LaneSet_1g1w1d9">
       <bpmn:lane id="buyer_lane" name="Buyer">
         <bpmn:flowNodeRef>start</bpmn:flowNodeRef>
@@ -18,16 +18,6 @@
       </bpmn:lane>
     </bpmn:laneSet>
     <bpmn:startEvent id="start" name="Start" camunda:initiator="initiator">
-      <bpmn:extensionElements>
-        <camunda:formData>
-          <camunda:formField id="contextJson" label="Context Json" type="string" />
-        </camunda:formData>
-        <camunda:executionListener event="start">
-          <camunda:script scriptFormat="javascript">var ctxJson = execution.getVariable("contextJson")
-var ctx = S(ctxJson);
-execution.setVariable("context", ctx);</camunda:script>
-        </camunda:executionListener>
-      </bpmn:extensionElements>
       <bpmn:outgoing>start_select_order_flow</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:sequenceFlow id="start_select_order_flow" sourceRef="start" targetRef="get_order_details_task" />

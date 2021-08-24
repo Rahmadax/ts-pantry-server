@@ -6,7 +6,6 @@ import org.camunda.bpm.engine.rest.security.auth.AuthenticationResult;
 import org.camunda.bpm.webapp.impl.security.auth.Authentication;
 import org.camunda.bpm.webapp.impl.security.auth.AuthenticationService;
 import org.camunda.bpm.webapp.impl.security.auth.Authentications;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -17,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Response.Status;
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A basic, stateless, {@link OncePerRequestFilter} that bridges Spring security to Camunda security for the
@@ -36,13 +34,6 @@ public class CamundaAppAuthenticationFilter extends CamundaAuthenticationFilter 
 
     public CamundaAppAuthenticationFilter(final String engineName) {
         super(engineName);
-    }
-
-    protected static List<String> getUserGroups(final org.springframework.security.core.Authentication authentication) {
-        return authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .map(res -> res.replaceFirst("^ROLE_", ""))
-                .collect(Collectors.toList());
     }
 
     public void doFilterWithEngine(final HttpServletRequest request,
@@ -101,5 +92,4 @@ public class CamundaAppAuthenticationFilter extends CamundaAuthenticationFilter 
                                                   final List<String> tenants) {
         return userAuthentications.createAuthenticate(processEngine, username, groups, tenants);
     }
-
 }

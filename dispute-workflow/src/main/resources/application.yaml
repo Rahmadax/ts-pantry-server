@@ -10,11 +10,14 @@ spring:
     active: local-h2
     include: metrics, tracing, logging, camunda, security
     group:
+      test: h2, local
       local-h2: h2, local
       local-postgres: postgres, local
       stage_deployment: postgres, stage
   main:
     allow-bean-definition-overriding: true
+  jpa:
+    open-in-view: true
 
 management:
   endpoints:
@@ -44,7 +47,13 @@ spring:
   config:
     activate:
       on-profile: stage
-
+  security:
+    oauth2:
+      client:
+        registration:
+          okta:
+            client-id: ${ENV_OKTA_CLIENT_ID}
+            client-secret: ${ENV_OKTA_CLIENT_SECRET}
 ---
 
 # production profile
@@ -52,6 +61,12 @@ spring:
   config:
     activate:
       on-profile: production
-
+  security:
+    oauth2:
+      client:
+        registration:
+          okta:
+            client-id: ${ENV_OKTA_CLIENT_ID}
+            client-secret: ${ENV_OKTA_CLIENT_SECRET}
 
 

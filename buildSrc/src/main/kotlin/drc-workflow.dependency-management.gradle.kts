@@ -15,11 +15,15 @@ configure<io.snyk.gradle.plugin.SnykExtension> {
 dependencyManagement {
 
     imports {
-        // Camunda dependencies
+        // Camunda Dependencies
         mavenBom("org.camunda.bpm:camunda-bom:7.15.0")
     }
 
     dependencies {
+
+        // Security dependencies
+        dependency("com.depop:depop-jwt_2.13:0.0.23")
+        dependency("com.okta.spring:okta-spring-security-oauth2:1.1.0")
 
         // Opentracing dependencies
         dependency("io.opentracing.contrib:opentracing-spring-cloud-starter:0.5.9")

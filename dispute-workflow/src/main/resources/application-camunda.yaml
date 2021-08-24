@@ -5,6 +5,9 @@ spring:
 
 camunda:
   bpm:
+    authorization:
+      enabled: false
+      tenant-check-enabled: false
     database:
       schema-update: false
     deployment-resource-pattern: classpath*:com/depop/cx/drc/workflow/*.bpmn

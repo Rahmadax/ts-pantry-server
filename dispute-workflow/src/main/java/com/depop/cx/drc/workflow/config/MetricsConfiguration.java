@@ -55,5 +55,4 @@ public class MetricsConfiguration {
 
         return new EngineJavaMetricsPlugin(meterRegistry, processEngine);
     }
-
 }

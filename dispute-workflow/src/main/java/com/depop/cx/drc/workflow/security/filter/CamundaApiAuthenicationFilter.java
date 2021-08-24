@@ -2,8 +2,6 @@ package com.depop.cx.drc.workflow.security.filter;
 
 
 import org.camunda.bpm.engine.ProcessEngine;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -13,8 +11,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A basic, stateless, {@link OncePerRequestFilter} that bridges Spring security to Camunda security for the
@@ -27,16 +23,11 @@ import java.util.stream.Collectors;
  *
  * @author Tom Greasley
  */
+
 public class CamundaApiAuthenicationFilter extends CamundaAuthenticationFilter {
 
     public CamundaApiAuthenicationFilter(final String engineName) {
         super(engineName);
-    }
-
-    protected static List<String> getUserGroups(final Authentication authentication) {
-        return authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
     }
 
     @Override
@@ -60,7 +51,6 @@ public class CamundaApiAuthenicationFilter extends CamundaAuthenticationFilter {
         } finally {
             engine.getIdentityService().clearAuthentication();
         }
-
     }
 
 }

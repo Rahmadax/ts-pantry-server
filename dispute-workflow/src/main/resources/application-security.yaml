@@ -1,13 +1,77 @@
+#common
 spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          okta:
+            scope: openid, email, groups
+        provider:
+          okta:
+            user-name-attribute: email
+
+---
+
+# local profile
+spring:
+  config:
+    activate:
+      on-profile: local
   security:
     oauth2:
       resourceserver:
         jwt:
           jwk-set-uri: https://security-default-clientauth-api.stage-app.dpop.co.uk/.well-known/jwks.json
           issuer-uri: depop-oauth-introspection
+      client:
+        provider:
+          okta:
+            issuer-uri: https://depop.oktapreview.com
+        registration:
+          okta:
+            redirect-uri: '{baseUrl}/camunda/login/oauth2/code/{registrationId}'
 
-camunda:
-  bpm:
-    authorization:
-      enabled: false
-      tenant-check-enabled: false
+---
+
+# stage profile
+spring:
+  config:
+    activate:
+      on-profile: stage
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${ENV_OAUTH2_RESOURCE_SERVER_JWK_SET_URI}
+          issuer-uri: ${ENV_OAUTH2_RESOURCE_SERVER_ISSUER_URI}
+      client:
+        registration:
+          okta:
+            client-id: ${ENV_OKTA_CLIENT_ID}
+            client-secret: ${ENV_OKTA_CLIENT_SECRET}
+            redirect-uri: "${ENV_OKTA_CLIENT_REDIRECT_URI}/camunda/login/oauth2/code/{registrationId}"
+        provider:
+          okta:
+            issuer-uri: ${ENV_OKTA_CLIENT_ISSUER_URI}
+---
+
+# production profile
+spring:
+  config:
+    activate:
+      on-profile: production
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${ENV_OAUTH2_RESOURCE_SERVER_JWK_SET_URI}
+          issuer-uri: ${ENV_OAUTH2_RESOURCE_SERVER_ISSUER_URI}
+      client:
+        registration:
+          okta:
+            client-id: ${ENV_OKTA_CLIENT_ID}
+            client-secret: ${ENV_OKTA_CLIENT_SECRET}
+            redirect-uri: "${ENV_OKTA_CLIENT_REDIRECT_URI}/camunda/login/oauth2/code/{registrationId}"
+        provider:
+          okta:
+            issuer-uri: ${ENV_OKTA_CLIENT_ISSUER_URI}
