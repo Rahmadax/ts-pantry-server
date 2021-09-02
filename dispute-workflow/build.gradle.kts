@@ -37,7 +37,7 @@ dependencies {
 
     // Metrics support
     implementation("io.micrometer:micrometer-jersey2")
-    implementation("io.micrometer:micrometer-registry-datadog")
+    implementation("io.micrometer:micrometer-registry-statsd")
 
     // Tracing support
     implementation("io.opentracing.contrib:opentracing-spring-tracer-configuration-starter")

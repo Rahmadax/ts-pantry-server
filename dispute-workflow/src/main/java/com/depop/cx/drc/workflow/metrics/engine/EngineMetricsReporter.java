@@ -19,10 +19,11 @@ public class EngineMetricsReporter extends DbMetricsReporter {
 
     public EngineMetricsReporter(final MetricsRegistry camundaMetricsRegistry,
                                  final MeterRegistry micrometerMetricsRegistry,
-                                 final CommandExecutor commandExecutor) {
+                                 final CommandExecutor commandExecutor,
+                                 final String prefix) {
         super(camundaMetricsRegistry, commandExecutor);
         this.camundaMetricsRegistry = camundaMetricsRegistry;
-        this.micrometerRecorder = new EngineMetricsRecorder(micrometerMetricsRegistry);
+        this.micrometerRecorder = new EngineMetricsRecorder(micrometerMetricsRegistry, prefix);
         initMetricsCollectionTask();
     }
 

@@ -1,7 +1,6 @@
 package com.depop.cx.drc.workflow.config;
 
 import com.depop.cx.drc.workflow.metrics.engine.EngineCustomMetricsPlugin;
-import com.depop.cx.drc.workflow.metrics.engine.EngineJavaMetricsPlugin;
 import com.depop.cx.drc.workflow.metrics.engine.EngineMetricsPlugin;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.binder.jvm.ClassLoaderMetrics;
@@ -11,6 +10,8 @@ import io.micrometer.core.instrument.binder.jvm.JvmThreadMetrics;
 import io.micrometer.core.instrument.binder.system.ProcessorMetrics;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaMetricsConfiguration;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,39 +21,31 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 public class MetricsConfiguration {
 
+    @Value("${METRICS_PREFIX:depop.service.stdv1.custom.counter.workflow.}")
+    private String prefix;
+
+    @Bean
+    MeterRegistryCustomizer<MeterRegistry> jvmMetrics() {
+        return registry -> {
+            new ClassLoaderMetrics().bindTo(registry);
+            new JvmMemoryMetrics().bindTo(registry);
+            new JvmGcMetrics().bindTo(registry);
+            new ProcessorMetrics().bindTo(registry);
+            new JvmThreadMetrics().bindTo(registry);
+        };
+    }
+
     @Bean
     @ConditionalOnMissingBean(CamundaMetricsConfiguration.class)
     public CamundaMetricsConfiguration camundaMetricsConfiguration(final MeterRegistry meterRegistry) {
-        meterRegistry.config().commonTags("service_domain", "user");
-        meterRegistry.config().commonTags("service_group", "default");
-        meterRegistry.config().commonTags("service_name", "dispute");
-        meterRegistry.config().commonTags("service_role", "workflow");
-        meterRegistry.config().commonTags("app.layer", "service");
-
-        return new EngineMetricsPlugin(meterRegistry);
+        return new EngineMetricsPlugin(meterRegistry, prefix);
     }
 
     @Bean
     @ConditionalOnMissingBean(EngineCustomMetricsPlugin.class)
-    public EngineCustomMetricsPlugin camundaCustomMetricsConfiguration(final MeterRegistry meterRegistry, final ProcessEngine processEngine) {
-        meterRegistry.config().commonTags("service_domain", "user");
-        meterRegistry.config().commonTags("service_group", "default");
-        meterRegistry.config().commonTags("service_name", "dispute");
-        meterRegistry.config().commonTags("service_role", "workflow");
-        meterRegistry.config().commonTags("app.layer", "service");
-
-        return new EngineCustomMetricsPlugin(meterRegistry, processEngine);
+    public EngineCustomMetricsPlugin camundaCustomMetricsConfiguration(final MeterRegistry meterRegistry,
+                                                                       final ProcessEngine processEngine) {
+        return new EngineCustomMetricsPlugin(meterRegistry, processEngine, prefix);
     }
 
-    @Bean
-    @ConditionalOnMissingBean(EngineJavaMetricsPlugin.class)
-    public EngineJavaMetricsPlugin javaMetricsConfiguration(final MeterRegistry meterRegistry, final ProcessEngine processEngine) {
-        meterRegistry.config().commonTags("service_domain", "user");
-        meterRegistry.config().commonTags("service_group", "default");
-        meterRegistry.config().commonTags("service_name", "dispute");
-        meterRegistry.config().commonTags("service_role", "workflow");
-        meterRegistry.config().commonTags("app.layer", "service");
-
-        return new EngineJavaMetricsPlugin(meterRegistry, processEngine);
-    }
 }

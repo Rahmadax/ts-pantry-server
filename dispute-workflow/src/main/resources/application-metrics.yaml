@@ -1,4 +1,10 @@
 # common
+camunda:
+  bpm:
+    metrics:
+      db-reporter-activate: true
+      enabled: true
+
 spring:
   jpa:
     properties:
@@ -12,16 +18,12 @@ server:
 
 management:
   metrics:
-    export:
-      datadog:
-        enabled: false
-        step: 30s
-        uri: https://api.datadoghq.eu/
-    tags:
-      application: ${spring.application.name}
-      env: ${spring.profiles}
     web:
       server:
+        request:
+          autotime:
+            enabled: true
+      client:
         request:
           autotime:
             enabled: true
@@ -36,32 +38,63 @@ logging:
 
 ---
 
-#  metrics {
-#    host = "localhost"
-#    host = ${?METRICS_HOST}
-#    port = 8125
-#    port = ${?METRICS_PORT}
-#    prefix = "depop.service.stdv1"
-#    prefix = ${?METRICS_PREFIX}
-#    service-domain = "user"
-#    service-group  = "default"
-#    service-name   = "namechange"
-#    service-role   = "api"
-#}
-
 # dev profile
 spring:
   config:
     activate:
       on-profile: local
+management:
+  metrics:
+    tags:
+      service: "user-default-dispute-workflow"
+      version: "deadbee"
+      env: "local-local"
+      env_type: "local"
+      env_name: "local"
+      service-domain: "user"
+      service-group: "default"
+      service-name: "dispute"
+      service-role: "workflow"
+      pod_name: "local"
+      kube_namespace: "local"
 
 ---
+
+#      datadog:
+#        enabled: true
+#        api-key: ${ENV_DATADOG_API_KEY}
+#        application-key: ${ENV_DATADOG_APP_KEY}
+#        step: 20s
+#        connect-timeout: 1s
+#        descriptions: true
+#        read-timeout: 10s
+#        uri: "https://pvtlink.process.datadoghq.com"
 
 # stage profile
 spring:
   config:
     activate:
       on-profile: stage
+management:
+  metrics:
+    export:
+      statsd:
+        enabled: true
+        host: ${METRICS_HOST}
+        port: ${METRICS_PORT}
+        flavor: datadog
+    tags:
+      service: ${SERVICE_DOMAIN}-${SERVICE_GROUP}-${SERVICE_NAME}-${SERVICE_ROLE}
+      version: ${APP_VERSION}
+      env: ${ENV_TYPE}-${ENV_NAME}
+      env_type: ${ENV_TYPE}
+      env_name: ${ENV_NAME}
+      service-domain: ${SERVICE_DOMAIN}
+      service-group: ${SERVICE_GROUP}
+      service-name: ${SERVICE_NAME}
+      service-role: ${SERVICE_ROLE}
+      pod_name: ${POD_NAME}
+      kube_namespace: ${POD_NAMESPACE}
 
 ---
 
@@ -70,3 +103,23 @@ spring:
   config:
     activate:
       on-profile: production
+management:
+  metrics:
+    export:
+      statsd:
+        enabled: true
+        host: ${METRICS_HOST}
+        port: ${METRICS_PORT}
+        flavor: datadog
+    tags:
+      service: ${SERVICE_DOMAIN}-${SERVICE_GROUP}-${SERVICE_NAME}-${SERVICE_ROLE}
+      version: ${APP_VERSION}
+      env: ${ENV_TYPE}-${ENV_NAME}
+      env_type: ${ENV_TYPE}
+      env_name: ${ENV_NAME}
+      service-domain: ${SERVICE_DOMAIN}
+      service-group: ${SERVICE_GROUP}
+      service-name: ${SERVICE_NAME}
+      service-role: ${SERVICE_ROLE}
+      pod_name: ${POD_NAME}
+      kube_namespace: ${POD_NAMESPACE}

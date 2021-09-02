@@ -47,13 +47,7 @@ spring:
   config:
     activate:
       on-profile: stage
-  security:
-    oauth2:
-      client:
-        registration:
-          okta:
-            client-id: ${ENV_OKTA_CLIENT_ID}
-            client-secret: ${ENV_OKTA_CLIENT_SECRET}
+
 ---
 
 # production profile
@@ -61,12 +55,3 @@ spring:
   config:
     activate:
       on-profile: production
-  security:
-    oauth2:
-      client:
-        registration:
-          okta:
-            client-id: ${ENV_OKTA_CLIENT_ID}
-            client-secret: ${ENV_OKTA_CLIENT_SECRET}
-
-

@@ -5,209 +5,188 @@ import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.impl.event.EventType;
-import org.camunda.bpm.engine.impl.metrics.reporter.DbMetricsReporter;
-import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
-import org.camunda.bpm.spring.boot.starter.configuration.CamundaMetricsConfiguration;
-import org.camunda.bpm.spring.boot.starter.configuration.impl.AbstractCamundaConfiguration;
-import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultMetricsConfiguration;
-import org.camunda.bpm.spring.boot.starter.property.MetricsProperty;
-import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Camunda custom metrics plugin
  */
 public class EngineCustomMetricsPlugin {
 
+    private static final String ACTIVE_INCIDENTS_METRIC_NAME = "active.incidents";
+    private static final String ACTIVE_USER_TASKS_METRIC_NAME = "active.user.tasks";
+    private static final String ACTIVE_MESSAGE_EVENT_SUBSCRIPTIONS_METRIC_NAME = "active.message.event.subscriptions";
+    private static final String ACTIVE_SIGNAL_EVENT_SUBSCRIPTIONS_METRIC_NAME = "active.signal.event.subscriptions";
+    private static final String ACTIVE_COMPENSATE_EVENT_SUBSCRIPTIONS_METRIC_NAME = "active.compensate.event.subscriptions";
+    private static final String ACTIVE_CONDITIONAL_EVENT_SUBSCRIPTIONS_METRIC_NAME = "active.conditional.event.subscriptions";
+    private static final String EXECUTABLE_JOBS_METRIC_NAME = "executable.jobs";
+    private static final String EXECUTABLE_TIMER_JOBS_METRIC_NAME = "executable.timer.jobs";
+    private static final String TIMER_JOBS_METRIC_NAME = "timer.jobs";
+    private static final String MESSAGE_JOBS_METRIC_NAME = "message.jobs";
+    private static final String USER_COUNT_METRIC_NAME = "user.count";
+    private static final String TENANT_COUNT_METRIC_NAME = "tenant.count";
+    private static final String ACTIVE_PROCESS_INSTANCES_METRIC_NAME = "active.process.instances";
+    private static final String COMPLETED_PROCESS_INSTANCES_METRIC_NAME = "completed.process.instances";
+    private static final String ACTIVE_PROCESS_DEFINITIONS_METRIC_NAME = "active.process.definitions";
+    private static final String DEPLOYMENTS_METRIC_NAME = "deployments";
+    private static final String ACTIVE_EXTERNAL_TASKS_METRIC_NAME = "active.external.tasks";
+    private static final String ACTIVE_LOCKED_EXTERNAL_TASKS_METRIC_NAME = "active.locked.external.tasks";
+    private static final String ACTIVE_NOT_LOCKED_EXTERNAL_TASKS_METRIC_NAME = "active.not.locked.external.tasks";
+
     private final MeterRegistry micrometerRegistry;
     private final ProcessEngine processEngine;
-    private static final String PREFIX = "depop.service.dispute_workflow.camunda.engine.";
+    private final String prefix;
+    private final Counter activeIncidents;
+    private final Counter activeUserTasks;
+    private final Counter activeMessageEventSubscriptions;
+    private final Counter activeSignalEventSubscriptions;
+    private final Counter activeCompensateEventSubscriptions;
+    private final Counter activeConditionalEventSubscriptions;
+    private final Counter executableJobs;
+    private final Counter executableTimerJobs;
+    private final Counter timerJobs;
+    private final Counter messageJobs;
+    private final Counter userCount;
+    private final Counter tenantCount;
+    private final Counter activeProcessInstances;
+    private final Counter completedProcessInstances;
+    private final Counter activeProcessDefinitions;
+    private final Counter deployments;
+    private final Counter activeExternalTasks;
+    private final Counter activeLockedExternalTasks;
+    private final Counter activeNotLockedExternalTasks;
 
-    public EngineCustomMetricsPlugin(final MeterRegistry micrometerRegistry, final ProcessEngine processEngine) {
+    public EngineCustomMetricsPlugin(final MeterRegistry micrometerRegistry,
+                                     final ProcessEngine processEngine,
+                                     final String prefix) {
         this.micrometerRegistry = micrometerRegistry;
         this.processEngine = processEngine;
+        this.prefix = prefix;
+
+        final List<Tag> commonTags = List.of(Tag.of("engine_name", processEngine.getName()));
+        activeIncidents = registerCounter(ACTIVE_INCIDENTS_METRIC_NAME, commonTags);
+        activeUserTasks = registerCounter(ACTIVE_USER_TASKS_METRIC_NAME, commonTags);
+        activeMessageEventSubscriptions = registerCounter(ACTIVE_MESSAGE_EVENT_SUBSCRIPTIONS_METRIC_NAME, commonTags);
+        activeSignalEventSubscriptions = registerCounter(ACTIVE_SIGNAL_EVENT_SUBSCRIPTIONS_METRIC_NAME, commonTags);
+        activeCompensateEventSubscriptions = registerCounter(ACTIVE_COMPENSATE_EVENT_SUBSCRIPTIONS_METRIC_NAME, commonTags);
+        activeConditionalEventSubscriptions = registerCounter(ACTIVE_CONDITIONAL_EVENT_SUBSCRIPTIONS_METRIC_NAME, commonTags);
+        executableJobs = registerCounter(EXECUTABLE_JOBS_METRIC_NAME, commonTags);
+        executableTimerJobs = registerCounter(EXECUTABLE_TIMER_JOBS_METRIC_NAME, commonTags);
+        timerJobs = registerCounter(TIMER_JOBS_METRIC_NAME, commonTags);
+        messageJobs = registerCounter(MESSAGE_JOBS_METRIC_NAME, commonTags);
+        userCount = registerCounter(USER_COUNT_METRIC_NAME, commonTags);
+        tenantCount = registerCounter(TENANT_COUNT_METRIC_NAME, commonTags);
+        activeProcessInstances = registerCounter(ACTIVE_PROCESS_INSTANCES_METRIC_NAME, commonTags);
+        completedProcessInstances = registerCounter(COMPLETED_PROCESS_INSTANCES_METRIC_NAME, commonTags);
+        activeProcessDefinitions = registerCounter(ACTIVE_PROCESS_DEFINITIONS_METRIC_NAME, commonTags);
+        deployments = registerCounter(DEPLOYMENTS_METRIC_NAME, commonTags);
+        activeExternalTasks = registerCounter(ACTIVE_EXTERNAL_TASKS_METRIC_NAME, commonTags);
+        activeLockedExternalTasks = registerCounter(ACTIVE_LOCKED_EXTERNAL_TASKS_METRIC_NAME, commonTags);
+        activeNotLockedExternalTasks = registerCounter(ACTIVE_NOT_LOCKED_EXTERNAL_TASKS_METRIC_NAME, commonTags);
+
     }
 
-    List<Tag> commonTags;
-
-    String activeIncidentsMetricName = PREFIX + "active.incidents";
-    Counter activeIncidents;
-
-    String activeUserTasksMetricName = PREFIX + "active.user.tasks";
-    Counter activeUserTasks;
-
-    String activeMessageEventSubscriptionsMetricName = PREFIX + "active.message.event.subscriptions";
-    Counter activeMessageEventSubscriptions;
-
-    String activeSignalEventSubscriptionsMetricName = PREFIX + "active.signal.event.subscriptions";
-    Counter activeSignalEventSubscriptions;
-
-    String activeCompensateEventSubscriptionsMetricName = PREFIX + "active.compensate.event.subscriptions";
-    Counter activeCompensateEventSubscriptions;
-
-    String activeConditionalEventSubscriptionsMetricName = PREFIX + "active.conditional.event.subscriptions";
-    Counter activeConditionalEventSubscriptions;
-
-    String executableJobsMetricName = PREFIX + "executable.jobs";
-    Counter executableJobs;
-
-    String executableTimerJobsMetricName = PREFIX + "executable.timer.jobs";
-    Counter executableTimerJobs;
-
-    String timerJobsMetricName = PREFIX + "timer.jobs";
-    Counter timerJobs;
-
-    String messageJobsMetricName = PREFIX + "message.jobs";
-    Counter messageJobs;
-
-    String userCountMetricName = PREFIX + "user.count";
-    Counter userCount;
-
-    String tenantCountMetricName = PREFIX + "tenant.count";
-    Counter tenantCount;
-
-    String activeProcessInstancesMetricName = PREFIX + "active.process.instances";
-    Counter activeProcessInstances;
-
-    String completedProcessInstancesMetricName = PREFIX + "completed.process.instances";
-    Counter completedProcessInstances;
-
-    String activeProcessDefinitionsMetricName = PREFIX + "active.process.definitions";
-    Counter activeProcessDefinitions;
-
-    String deploymentsMetricName = PREFIX + "deployments";
-    Counter deployments;
-
-    String activeExternalTasksMetricName = PREFIX + "active.external.tasks";
-    Counter activeExternalTasks;
-
-    String activeLockedExternalTasksMetricName = PREFIX + "active.locked.external.tasks";
-    Counter activeLockedExternalTasks;
-
-    String activeNotLockedExternalTasksMetricName = PREFIX + "active.not.locked.external.tasks";
-    Counter activeNotLockedExternalTasks;
-
-
-    @PostConstruct
-    void setup(){
-        commonTags = List.of(Tag.of("engine_name", processEngine.getName()));
-        activeIncidents = micrometerRegistry.counter(activeIncidentsMetricName, commonTags);
-        activeUserTasks = micrometerRegistry.counter(activeUserTasksMetricName, commonTags);
-        activeMessageEventSubscriptions = micrometerRegistry.counter(activeMessageEventSubscriptionsMetricName, commonTags);
-        activeSignalEventSubscriptions = micrometerRegistry.counter(activeSignalEventSubscriptionsMetricName, commonTags);
-        activeCompensateEventSubscriptions = micrometerRegistry.counter(activeCompensateEventSubscriptionsMetricName, commonTags);
-        activeConditionalEventSubscriptions = micrometerRegistry.counter(activeConditionalEventSubscriptionsMetricName, commonTags);
-        executableJobs = micrometerRegistry.counter(executableJobsMetricName, commonTags);
-        executableTimerJobs = micrometerRegistry.counter(executableTimerJobsMetricName, commonTags);
-        timerJobs = micrometerRegistry.counter(timerJobsMetricName, commonTags);
-        messageJobs = micrometerRegistry.counter(messageJobsMetricName, commonTags);
-        userCount = micrometerRegistry.counter(userCountMetricName, commonTags);
-        tenantCount = micrometerRegistry.counter(tenantCountMetricName, commonTags);
-        activeProcessInstances = micrometerRegistry.counter(activeProcessInstancesMetricName, commonTags);
-        completedProcessInstances = micrometerRegistry.counter(completedProcessInstancesMetricName, commonTags);
-        activeProcessDefinitions = micrometerRegistry.counter(activeProcessDefinitionsMetricName, commonTags);
-        deployments = micrometerRegistry.counter(deploymentsMetricName, commonTags);
-        activeExternalTasks = micrometerRegistry.counter(activeExternalTasksMetricName, commonTags);
-        activeLockedExternalTasks = micrometerRegistry.counter(activeLockedExternalTasksMetricName, commonTags);
-        activeNotLockedExternalTasks = micrometerRegistry.counter(activeNotLockedExternalTasksMetricName, commonTags);
+    private Counter registerCounter(final String name, final List<Tag> commonTags) {
+        return micrometerRegistry.counter(prefix + name, commonTags);
     }
+
 
     @Scheduled(fixedRate = 60000L)
-    void getActiveIncidents(){
+    void getActiveIncidents() {
         activeIncidents.increment(processEngine.getRuntimeService().createIncidentQuery().count());
     }
 
     @Scheduled(fixedRate = 60000L)
-    void getActiveUserTasks(){
+    void getActiveUserTasks() {
         activeUserTasks.increment(processEngine.getTaskService().createTaskQuery().active().count());
     }
 
     @Scheduled(fixedRate = 60000L)
-    void getActiveMessageEventSubscriptions(){
+    void getActiveMessageEventSubscriptions() {
         activeMessageEventSubscriptions.increment(processEngine.getRuntimeService().createEventSubscriptionQuery().eventType(EventType.MESSAGE.name()).count());
     }
 
     @Scheduled(fixedRate = 60000L)
-    void getActiveSignalEventSubscriptions(){
+    void getActiveSignalEventSubscriptions() {
         activeSignalEventSubscriptions.increment(processEngine.getRuntimeService().createEventSubscriptionQuery().eventType(EventType.SIGNAL.name()).count());
     }
 
     @Scheduled(fixedRate = 60000L)
-    void getActiveCompensateEventSubscriptions(){
+    void getActiveCompensateEventSubscriptions() {
         activeCompensateEventSubscriptions.increment(processEngine.getRuntimeService().createEventSubscriptionQuery().eventType(EventType.COMPENSATE.name()).count());
     }
 
     @Scheduled(fixedRate = 60000L)
-    void getActiveConditionalEventSubscriptions(){
+    void getActiveConditionalEventSubscriptions() {
         activeConditionalEventSubscriptions.increment(processEngine.getRuntimeService().createEventSubscriptionQuery().eventType(EventType.CONDITONAL.name()).count());
     }
 
     @Scheduled(fixedRate = 60000L)
-    void getExecutableJobs(){
+    void getExecutableJobs() {
         executableJobs.increment(processEngine.getManagementService().createJobQuery().executable().count());
     }
 
     @Scheduled(fixedRate = 60000L)
-    void getExecutableTimerJobs(){
+    void getExecutableTimerJobs() {
         executableTimerJobs.increment(processEngine.getManagementService().createJobQuery().executable().timers().count());
     }
 
     @Scheduled(fixedRate = 60000L)
-    void getTimerJobs(){
+    void getTimerJobs() {
         timerJobs.increment(processEngine.getManagementService().createJobQuery().timers().count());
     }
 
     @Scheduled(fixedRate = 60000L)
-    void getMessageJobs(){
+    void getMessageJobs() {
         messageJobs.increment(processEngine.getManagementService().createJobQuery().messages().count());
     }
 
-    @Scheduled(fixedRate = 36000000L) // Once an hour
-    void getUserCount(){
+    @Scheduled(fixedRate = 36000000L)
+        // Once an hour
+    void getUserCount() {
         userCount.increment(processEngine.getIdentityService().createUserQuery().count());
     }
 
-    @Scheduled(fixedRate = 36000000L) // Once an hour
-    void getTenantCount(){
+    @Scheduled(fixedRate = 36000000L)
+        // Once an hour
+    void getTenantCount() {
         tenantCount.increment(processEngine.getIdentityService().createTenantQuery().count());
     }
 
     @Scheduled(fixedRate = 60000L)
-    void getActiveProcessInstances(){
+    void getActiveProcessInstances() {
         activeProcessInstances.increment(processEngine.getRuntimeService().createProcessInstanceQuery().active().count());
     }
 
-    @Scheduled(fixedRate = 36000000L) // Once an hour
-    void getCompletedProcessInstances(){
+    @Scheduled(fixedRate = 36000000L)
+        // Once an hour
+    void getCompletedProcessInstances() {
         completedProcessInstances.increment(processEngine.getHistoryService().createHistoricProcessInstanceQuery().completed().count());
     }
 
     @Scheduled(fixedRate = 60000L)
-    void getActiveProcessDefinitions(){
+    void getActiveProcessDefinitions() {
         activeProcessDefinitions.increment(processEngine.getRepositoryService().createProcessDefinitionQuery().active().count());
     }
 
     @Scheduled(fixedRate = 60000L)
-    void getDeployments(){
+    void getDeployments() {
         deployments.increment(processEngine.getRepositoryService().createDeploymentQuery().count());
     }
 
     @Scheduled(fixedRate = 60000L)
-    void getActiveExternalTasks(){
+    void getActiveExternalTasks() {
         activeExternalTasks.increment(processEngine.getExternalTaskService().createExternalTaskQuery().active().count());
     }
 
     @Scheduled(fixedRate = 60000L)
-    void getActiveLockedExternalTasks(){
+    void getActiveLockedExternalTasks() {
         activeLockedExternalTasks.increment(processEngine.getExternalTaskService().createExternalTaskQuery().active().locked().count());
     }
 
     @Scheduled(fixedRate = 60000L)
-    void getActiveNotLockedExternalTasks(){
+    void getActiveNotLockedExternalTasks() {
         activeNotLockedExternalTasks.increment(processEngine.getExternalTaskService().createExternalTaskQuery().active().notLocked().count());
     }
 

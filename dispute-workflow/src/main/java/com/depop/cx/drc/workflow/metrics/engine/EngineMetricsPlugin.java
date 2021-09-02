@@ -23,10 +23,12 @@ import javax.annotation.PostConstruct;
 public class EngineMetricsPlugin extends AbstractCamundaConfiguration implements CamundaMetricsConfiguration {
 
     private final MeterRegistry micrometerRegistry;
+    private final String prefix;
     private MetricsProperty metrics;
 
-    public EngineMetricsPlugin(final MeterRegistry micrometerRegistry) {
+    public EngineMetricsPlugin(final MeterRegistry micrometerRegistry, final String prefix) {
         this.micrometerRegistry = micrometerRegistry;
+        this.prefix = prefix;
     }
 
     @PostConstruct
@@ -47,7 +49,7 @@ public class EngineMetricsPlugin extends AbstractCamundaConfiguration implements
 
         final var camundaRegistry = configuration.getMetricsRegistry();
         final var executor = configuration.getCommandExecutorTxRequired();
-        final var reporter = new EngineMetricsReporter(camundaRegistry, micrometerRegistry, executor);
+        final var reporter = new EngineMetricsReporter(camundaRegistry, micrometerRegistry, executor, prefix);
         reporter.setReportingIntervalInSeconds(30);
         configuration.setDbMetricsReporter(reporter);
 
