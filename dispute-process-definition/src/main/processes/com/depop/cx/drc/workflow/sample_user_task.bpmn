@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1vqm47w" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.8.1" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.15.0">
+  <bpmn:process id="sample_user_task" name="Sample user task" isExecutable="true" camunda:versionTag="0.1.1">
+    <bpmn:extensionElements>
+      <camunda:properties>
+        <camunda:property name="default_component" value="37a9782b-2f69-4c1e-b520-f5323ac05429:1" />
+      </camunda:properties>
+    </bpmn:extensionElements>
+    <bpmn:startEvent id="start_proc" name="start" camunda:initiator="initiator">
+      <bpmn:extensionElements>
+        <camunda:executionListener expression="${execution.setVariable(&#39;active_user&#39;, execution.getVariable(&#39;initiator&#39;))}" event="start" />
+      </bpmn:extensionElements>
+      <bpmn:outgoing>start_setup_flow</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:endEvent id="end_proc" name="end">
+      <bpmn:incoming>buyer_flow_end_flow</bpmn:incoming>
+      <bpmn:incoming>buyer_flow_timeout_end_flow</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="start_setup_flow" sourceRef="start_proc" targetRef="Activity_0h33wac" />
+    <bpmn:subProcess id="Activity_0h33wac">
+      <bpmn:extensionElements>
+        <camunda:executionListener expression="${execution.setVariable(&#39;active_user&#39;, execution.getVariable(&#39;initiator&#39;))}" event="start" />
+        <camunda:executionListener expression="${execution.removeVariable(&#39;active_user&#39;)}&#34;" event="end" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>start_setup_flow</bpmn:incoming>
+      <bpmn:outgoing>buyer_flow_end_flow</bpmn:outgoing>
+      <bpmn:startEvent id="buyer_flow_start" name="buyer flow&#10;start">
+        <bpmn:outgoing>buyer_flow_start_buyer_choice_task_flow</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:endEvent id="buyer_flow_end" name="buyer_flow_end">
+        <bpmn:incoming>buyer_choice_task_buyer_choice_end_flow</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="buyer_flow_start_buyer_choice_task_flow" sourceRef="buyer_flow_start" targetRef="buyer_choice_task" />
+      <bpmn:sequenceFlow id="buyer_choice_task_buyer_choice_end_flow" sourceRef="buyer_choice_task" targetRef="buyer_flow_end" />
+      <bpmn:userTask id="buyer_choice_task" name="Buyer Choice" camunda:assignee="${initiator}">
+        <bpmn:extensionElements>
+          <camunda:properties>
+            <camunda:property name="primary_component" value="id_goes_here" />
+          </camunda:properties>
+        </bpmn:extensionElements>
+        <bpmn:incoming>buyer_flow_start_buyer_choice_task_flow</bpmn:incoming>
+        <bpmn:outgoing>buyer_choice_task_buyer_choice_end_flow</bpmn:outgoing>
+      </bpmn:userTask>
+    </bpmn:subProcess>
+    <bpmn:sequenceFlow id="buyer_flow_end_flow" sourceRef="Activity_0h33wac" targetRef="end_proc" />
+    <bpmn:boundaryEvent id="buyer_flow_timeout" camunda:asyncBefore="true" camunda:exclusive="false" attachedToRef="Activity_0h33wac">
+      <bpmn:outgoing>buyer_flow_timeout_end_flow</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_1gh2elp">
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT1H</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:boundaryEvent>
+    <bpmn:sequenceFlow id="buyer_flow_timeout_end_flow" sourceRef="buyer_flow_timeout" targetRef="end_proc" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="sample_user_task">
+      <bpmndi:BPMNEdge id="Flow_1475i7l_di" bpmnElement="buyer_flow_timeout_end_flow">
+        <di:waypoint x="520" y="132" />
+        <di:waypoint x="520" y="60" />
+        <di:waypoint x="640" y="60" />
+        <di:waypoint x="640" y="221" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1isnyny_di" bpmnElement="buyer_flow_end_flow">
+        <di:waypoint x="580" y="239" />
+        <di:waypoint x="622" y="239" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_06vmunz_di" bpmnElement="start_setup_flow">
+        <di:waypoint x="188" y="239" />
+        <di:waypoint x="240" y="239" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="start_proc">
+        <dc:Bounds x="152" y="221" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="159" y="264" width="22" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_159tcrf_di" bpmnElement="end_proc">
+        <dc:Bounds x="622" y="221" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="631" y="264" width="19" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0h33wac_di" bpmnElement="Activity_0h33wac" isExpanded="true">
+        <dc:Bounds x="240" y="150" width="340" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1xt80xa_di" bpmnElement="buyer_choice_task_buyer_choice_end_flow">
+        <di:waypoint x="460" y="250" />
+        <di:waypoint x="502" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0hgc923_di" bpmnElement="buyer_flow_start_buyer_choice_task_flow">
+        <di:waypoint x="316" y="250" />
+        <di:waypoint x="360" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_0259f1t_di" bpmnElement="buyer_flow_start">
+        <dc:Bounds x="280" y="232" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="273" y="275" width="51" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_03gi7wd_di" bpmnElement="buyer_flow_end">
+        <dc:Bounds x="502" y="232" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="481" y="275" width="78" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0j67bod_di" bpmnElement="buyer_choice_task">
+        <dc:Bounds x="360" y="210" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1epev4i_di" bpmnElement="buyer_flow_timeout">
+        <dc:Bounds x="502" y="132" width="36" height="36" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

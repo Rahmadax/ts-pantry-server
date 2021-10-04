@@ -35,6 +35,9 @@ dependencyManagement {
         dependency("com.datadoghq:dd-trace-api:0.80.0")
         dependency("com.datadoghq:dd-trace-ot:0.80.0")
 
+        // Upgrading version of jnr-posix due to snyk DOS vulnerability report.
+        dependency("com.github.jnr:jnr-posix:3.1.8")
+
         // Upgrading version of apache commons compress due to snyk DOS vulnerability report.
         dependency("org.apache.commons:commons-compress:1.21")
 

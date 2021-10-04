@@ -14,10 +14,10 @@ loadbalancer:
   certificate: arn:aws:acm:us-east-1:183284569534:certificate/c352c7cd-9b12-43a0-8227-3670f0367bec
 resources:
   limits:
-    memory: 1G
+    memory: 4G
   requests:
-    memory: 800M
-    cpu: 200m
+    memory: 4G
+    cpu: 2
 secrets:
   ENV_DB_PASSWORD: staging/services/user/default/dispute/workflow/_default/postgres_app_password
   ENV_OKTA_CLIENT_ID: staging/services/user/default/dispute/workflow/_default/okta_client_id
