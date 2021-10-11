@@ -26,9 +26,9 @@ pipeline {
                 sh "make ci"
                 cicd.snykDependencyScan()
             }
+            script { infra = readYaml(file: 'infra/stage_values.yaml') }
             sh "make docker_build"
-            String dockerRepo = sh(label: 'Get docker repo', returnStdout: true, script: '''#!/bin/sh -e\ngrep ^docker_repository Makefile | awk \'{print $NF}\'''').trim()
-            cicd.snykContainerScan('.', true, dockerRepo, '', '', 'Dockerfile.prebuilt')
+            cicd.snykContainerScan('.', true, infra.image['repository'], '', '', 'Dockerfile.prebuilt')
             sh "make docker_push"
           }
         }
@@ -86,7 +86,7 @@ pipeline {
           def deploymentDirectory = ''
           def portyardConfig = ''
           def releaseName = ''
-          def cicdConfig = ["slack_channel":"cx-alerts"]
+          def cicdConfig = ["slack_channel":"cx-alerts", "SNYK_MONITOR":"true", "LOCAL_DOCKERFILE":"Dockerfile.prebuilt"]
           cicd.deploy(envName, deploymentDirectory, portyardConfig, releaseName, contractTests, cicdConfig)
         }
       }
