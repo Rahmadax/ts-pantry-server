@@ -1,6 +1,6 @@
 # Dispute Resolution Centre - Process Engine
 
-This is a Java (jdk 11, kotlin 1.4.31) and Spring Boot (2.5.0) project built using gradle (v7.1).
+This is a Java (jdk 11, kotlin 1.5.31) and Spring Boot (2.5.5) project built using gradle (v7.2).
 
 The following build profiles are available:
 
@@ -49,28 +49,5 @@ https://depopmarket.atlassian.net/wiki/spaces/BD/pages/1298530340/Setup+artifact
 
 ### Local Postgres Database
 
-The local development profile will use an in memory h2 instance by default. To create a local postgres instance please use DPDB.
+The default local development profile will use an in memory h2 instance by default. To create a local postgres instance please use DPDB.
 
-### Local Datadog Credentials
-
-When running locally, exporting of metrics to datadog is disabled by default.
-
-Export can be enabled by adding an api and application key to your local development application properties:
-
-`<project>/dispute-workflow/src/main/resources/application-local.yaml`
-
-This file should not be committed to the vcs and is included in the git ignore file.
-
-```yaml
-management:
-  metrics:
-    export:
-      datadog:
-        enabled: true
-        api-key: <api-key>
-        application-key: <application-key>
-```
-
-## How To Contribute
-
-TODO

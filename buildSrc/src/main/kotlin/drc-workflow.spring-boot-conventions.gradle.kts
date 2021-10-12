@@ -1,7 +1,7 @@
 plugins {
     id("org.springframework.boot")
     id("drc-workflow.kotlin-conventions")
-    kotlin("plugin.spring")
+    id("org.jetbrains.kotlin.plugin.spring")
 }
 
 dependencies {
@@ -16,12 +16,6 @@ dependencies {
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
-}
-
-dependencyManagement {
-    imports {
-        mavenBom(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
-    }
 }
 
 configurations {

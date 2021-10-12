@@ -10,13 +10,14 @@ configure<io.snyk.gradle.plugin.SnykExtension> {
 }
 
 // Version management
-// NOTE: Spring boot dependency versions are managed by the spring boot BOM
-// please see drc-workflow.spring-boot-conventions.gradle.kts
 dependencyManagement {
 
     imports {
         // Camunda Dependencies
         mavenBom("org.camunda.bpm:camunda-bom:7.15.0")
+
+        // Spring dependencies
+        mavenBom(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
     }
 
     dependencies {
@@ -34,6 +35,9 @@ dependencyManagement {
         // Datadog dependencies
         dependency("com.datadoghq:dd-trace-api:0.80.0")
         dependency("com.datadoghq:dd-trace-ot:0.80.0")
+
+        // General dependencies
+        dependency("io.github.microutils:kotlin-logging-jvm:2.0.11")
 
         // Upgrading version of jnr-posix due to snyk DOS vulnerability report.
         dependency("com.github.jnr:jnr-posix:3.1.8")

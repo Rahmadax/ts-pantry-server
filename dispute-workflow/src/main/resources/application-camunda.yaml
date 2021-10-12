@@ -16,6 +16,7 @@ camunda:
       max-wait: 1000
       wait-time-in-millis: 100
       max-jobs-per-acquisition: 1
+
 ---
 
 # h2 profile
