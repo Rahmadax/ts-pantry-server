@@ -1,0 +1,46 @@
+---
+nameOverride: user-default-dispute-workflow
+fullnameOverride: user-default-dispute-workflow
+namespace: user-default
+envname: prod
+accountTag: prod-svcs
+service_domain: user
+service_group: default
+service_name: dispute
+service_role: workflow
+iamRoleARN: arn:aws:iam::093904767316:role/service-user-default-dispute-workflow
+image:
+  repository: 594471699039.dkr.ecr.us-east-1.amazonaws.com/user-default/dispute-workflow
+  pullPolicy: IfNotPresent
+loadbalancer:
+  access_log_bucket: us-east-1-prod-svcs-elb-access-logs
+  securitygroups: sg-0a9d907d6394cd811
+  certificate: arn:aws:acm:us-east-1:093904767316:certificate/2dd52cee-0303-445f-80ed-dddea1b10281
+resources:
+  limits:
+    memory: 8G
+  requests:
+    memory: 8G
+    cpu: 4
+secrets:
+  ENV_DB_PASSWORD: production/services/user/default/dispute/workflow/_default/postgres_app_password
+  ENV_OKTA_CLIENT_ID: production/services/user/default/dispute/workflow/_default/okta_client_id
+  ENV_OKTA_CLIENT_SECRET: production/services/user/default/dispute/workflow/_default/okta_client_secret
+serviceConfig:
+  JAVA_OPTS: ""
+  SPRING_PROFILES_ACTIVE: production_deployment
+  ENV_DB_URL: jdbc:postgresql://service-user-default-dispute-workflow-12-6.ckh7hwnufggc.us-east-1.rds.amazonaws.com/disputeworkflow
+  ENV_DB_USER: disputeworkflow_app
+  ENV_OKTA_CLIENT_ISSUER_URI: https://depop.okta.com
+  ENV_OKTA_CLIENT_REDIRECT_URI: https://user-default-dispute-workflow.prod-svcs.dpop.co.uk
+  ENV_OAUTH2_RESOURCE_SERVER_JWK_SET_URI: https://security-default-clientauth-api.prod-app.dpop.co.uk/.well-known/jwks.json
+  ENV_OAUTH2_RESOURCE_SERVER_ISSUER_URI: depop-oauth-introspection
+autoscaling:
+  cpu: 65
+  memory: 75
+  minReplicas: 3
+  maxReplicas: 4
+cluster: production
+chart:
+  name: scala-service
+  version: "~1.10.0"
