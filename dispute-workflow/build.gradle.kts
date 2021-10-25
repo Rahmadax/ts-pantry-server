@@ -32,6 +32,10 @@ dependencies {
     implementation("org.camunda.spin:camunda-spin-core")
     implementation("org.camunda.spin:camunda-spin-dataformat-json-jackson")
 
+    // GraalVM Javascript
+    implementation("org.graalvm.js:js")
+    implementation("org.graalvm.js:js-scriptengine")
+
     // Submodules
     implementation(project(":dispute-process-definition"))
 
@@ -55,4 +59,6 @@ dependencies {
 val buildProfile: String? by project
 apply(plugin = "profile.${buildProfile ?: "default"}")
 
-
+tasks.getByName<org.springframework.boot.gradle.tasks.run.BootRun>("bootRun") {
+    systemProperty("polyglot.engine.WarnInterpreterOnly", false)
+}

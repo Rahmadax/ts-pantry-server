@@ -6,7 +6,7 @@ plugins {
 configure<io.snyk.gradle.plugin.SnykExtension> {
     val snykApiKey = System.getenv("SNYK_TOKEN") ?: project.properties.getOrDefault("snyk_token", null) as String? ?: ""
     setApi(snykApiKey)
-    setArguments("--all-sub-projects")
+    setArguments("--all-sub-projects --policy-path=.snyk")
 }
 
 // Version management
@@ -14,13 +14,17 @@ dependencyManagement {
 
     imports {
         // Camunda Dependencies
-        mavenBom("org.camunda.bpm:camunda-bom:7.15.0")
+        mavenBom("org.camunda.bpm:camunda-bom:7.16.0")
 
         // Spring dependencies
         mavenBom(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
     }
 
     dependencies {
+
+        // GraalVM JS Engine
+        dependency("org.graalvm.js:js:21.3.0")
+        dependency("org.graalvm.js:js-scriptengine:21.3.0")
 
         // Security dependencies
         dependency("com.depop:depop-jwt_2.13:0.0.23")
@@ -41,9 +45,6 @@ dependencyManagement {
 
         // Upgrading version of jnr-posix due to snyk DOS vulnerability report.
         dependency("com.github.jnr:jnr-posix:3.1.8")
-
-        // Upgrading version of apache commons compress due to snyk DOS vulnerability report.
-        dependency("org.apache.commons:commons-compress:1.21")
 
         // Upgrade jersey due to a snyk info disclosure vulnerability report.
         dependencySet("org.glassfish.jersey.containers:2.34") {
