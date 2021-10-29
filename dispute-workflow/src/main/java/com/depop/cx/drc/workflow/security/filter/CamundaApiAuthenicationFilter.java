@@ -40,7 +40,8 @@ public class CamundaApiAuthenicationFilter extends CamundaAuthenticationFilter {
         final var principal = authentication.getPrincipal();
 
         if (principal instanceof Jwt) {
-            final var username = ((Jwt) principal).getSubject();
+            final Jwt jwt = (Jwt) principal;
+            final var username = isOpstool(authentication) ? OPSTOOLS_CLAIM : jwt.getSubject();
             engine.getIdentityService().setAuthentication(username, getUserGroups(authentication));
         } else {
             engine.getIdentityService().clearAuthentication();

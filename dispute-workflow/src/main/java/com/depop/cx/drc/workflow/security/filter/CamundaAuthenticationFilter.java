@@ -2,7 +2,9 @@ package com.depop.cx.drc.workflow.security.filter;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.rest.util.EngineUtil;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -28,10 +30,22 @@ import java.util.stream.Collectors;
 @SuppressWarnings("NullableProblems")
 public abstract class CamundaAuthenticationFilter extends OncePerRequestFilter {
 
+    protected static final String OPSTOOLS_CLAIM = "opstools";
+    private static final String ROLE_PREFIX = "ROLE_";
     private final String engineName;
 
     protected CamundaAuthenticationFilter(final String engineName) {
         this.engineName = engineName;
+    }
+
+    protected static List<String> getUserGroups(final Authentication authentication) {
+        return authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .filter(Objects::nonNull)
+                .filter(res -> res.startsWith(ROLE_PREFIX))
+                .map(res -> res.replaceFirst("^" + ROLE_PREFIX, ""))
+                .map(String::toLowerCase)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -48,13 +62,13 @@ public abstract class CamundaAuthenticationFilter extends OncePerRequestFilter {
 
     }
 
-    protected static List<String> getUserGroups(final org.springframework.security.core.Authentication authentication) {
-        return authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .filter(Objects::nonNull)
-                .filter(res -> res.startsWith("ROLE_"))
-                .map(res -> res.replaceFirst("^ROLE_", ""))
-                .collect(Collectors.toList());
+    protected boolean isOpstool(final Authentication authentication) {
+        final var principal = authentication.getPrincipal();
+        if (principal instanceof Jwt) {
+            Jwt jwt = (Jwt) principal;
+            return jwt.hasClaim(OPSTOOLS_CLAIM) && (boolean) jwt.getClaim(OPSTOOLS_CLAIM);
+        }
+        return false;
     }
 
     protected abstract void doFilterWithEngine(final HttpServletRequest req,

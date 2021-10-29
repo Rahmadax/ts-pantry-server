@@ -19,6 +19,8 @@ import java.util.stream.Collectors;
 public class DepopJwtGrantedAuthoritiesConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
 
     private static final String[] CLAIM_SETS = new String[]{"legacy_roles", "mfa_roles", "int_svc_mfa_roles"};
+    private static final String ROLE_PREFIX = "ROLE_";
+    private static final String OPSTOOLS_CLAIM = "opstools";
 
     private final JwtGrantedAuthoritiesConverter defaultAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
 
@@ -37,9 +39,14 @@ public class DepopJwtGrantedAuthoritiesConverter implements Converter<Jwt, Colle
                         jwt.getClaimAsStringList(claimSet)
                                 .stream()
                                 .filter(Objects::nonNull)
-                                .map(claim -> "ROLE_" + claim.toUpperCase())
+                                .map(claim -> ROLE_PREFIX + claim.toUpperCase())
                                 .map(claim -> new DepopGrantedAuthority(claimSet, claim)))
                 .collect(Collectors.toSet()));
+
+        if (jwt.hasClaim(OPSTOOLS_CLAIM) && (boolean) jwt.getClaim(OPSTOOLS_CLAIM)) {
+            result.add(new DepopGrantedAuthority(OPSTOOLS_CLAIM, ROLE_PREFIX + OPSTOOLS_CLAIM));
+        }
+
         return result;
     }
 
