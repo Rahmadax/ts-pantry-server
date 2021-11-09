@@ -19,7 +19,7 @@ sqitch_version: v1.1.0
 sqitch_image: tools/sqitch
 sqitch_timeout: 60
 
-migra_version: 3.0.1612089247
+migra_version: 3.0.1621480950
 migra_image: tools/migra
 
 liquibase_version: 4.2.1
