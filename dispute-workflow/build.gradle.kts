@@ -38,6 +38,7 @@ dependencies {
 
     // Submodules
     implementation(project(":dispute-process-definition"))
+    implementation(project(":dispute-tasks"))
 
     // Metrics support
     implementation("io.micrometer:micrometer-jersey2")

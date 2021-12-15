@@ -12,10 +12,6 @@ camunda:
       schema-update: false
     deployment-resource-pattern: classpath*:com/depop/cx/drc/workflow/*.bpmn
     default-serialization-format: application/json
-    job-execution:
-      max-wait: 1000
-      wait-time-in-millis: 100
-      max-jobs-per-acquisition: 1
 
 ---
 

@@ -20,7 +20,13 @@ dependencyManagement {
         mavenBom(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
     }
 
+    configurations.all {
+        exclude(group = "org.apache.logging.log4j", module = "log4j-api")
+        exclude(group = "org.apache.logging.log4j", module = "log4j-to-slf4j")
+    }
+
     dependencies {
+
 
         // GraalVM JS Engine
         dependency("org.graalvm.js:js:21.3.0")
@@ -37,8 +43,8 @@ dependencyManagement {
         dependency("io.opentracing:opentracing-mock:0.33.0")
 
         // Datadog dependencies
-        dependency("com.datadoghq:dd-trace-api:0.80.0")
-        dependency("com.datadoghq:dd-trace-ot:0.80.0")
+        dependency("com.datadoghq:dd-trace-api:0.91.0")
+        dependency("com.datadoghq:dd-trace-ot:0.91.0")
 
         // General dependencies
         dependency("io.github.microutils:kotlin-logging-jvm:2.0.11")
@@ -46,25 +52,8 @@ dependencyManagement {
         // Upgrading version of jnr-posix due to snyk DOS vulnerability report.
         dependency("com.github.jnr:jnr-posix:3.1.8")
 
-        // Upgrade jersey due to a snyk info disclosure vulnerability report.
-        dependencySet("org.glassfish.jersey.containers:2.34") {
-            entry("jersey-container-servlet")
-            entry("jersey-container-servlet-core")
-        }
-
-        dependencySet("org.glassfish.jersey.core:2.34") {
-            entry("jersey-common")
-            entry("jersey-client")
-            entry("jersey-server")
-        }
-
-        dependencySet("org.glassfish.jersey.ext:2.34") {
-            entry("jersey-bean-validation")
-            entry("jersey-entity-filtering")
-            entry("jersey-spring5")
-        }
-        dependency("org.glassfish.jersey.inject:jersey-hk2:2.34")
-        dependency("org.glassfish.jersey.media:jersey-media-json-jackson:2.34")
+        //SNYK-JAVA-IONETTY-2314893
+        dependency("io.netty:netty-codec-http:4.1.71.Final")
 
     }
 

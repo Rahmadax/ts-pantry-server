@@ -1,0 +1,74 @@
+depop:
+  drc:
+    client:
+      checkout-host: https://checkout-default-checkout-server.stage-app.dpop.co.uk/
+      drc-host: https://user-default-dispute-internal.stage-app.dpop.co.uk/
+      payments-host: https://payments-default-payments-api.stage-app.dpop.co.uk/
+      shipping-host: https://fulfilment-default-shipping-internal.stage-app.dpop.co.uk/
+
+spring:
+  security:
+    oauth2:
+      client:
+        provider:
+          depop:
+            token-uri: https://security-default-clientauth-api.stage-app.dpop.co.uk/oauth2/access_token/
+        registration:
+          depop:
+            authorization-grant-type: client_credentials
+            client-authentication-method: client_secret_post
+            provider: depop
+
+
+---
+
+# local profile
+spring:
+  config:
+    activate:
+      on-profile: local
+
+---
+
+# stage profile
+spring:
+  config:
+    activate:
+      on-profile: stage
+  security:
+    oauth2:
+      client:
+        registration:
+          depop:
+            client-id: ${ENV_DEPOP_CLIENT_ID}
+            client-secret: ${ENV_DEPOP_CLIENT_SECRET}
+depop:
+  drc:
+    client:
+      checkout-host: ${CHECKOUT_HOST}
+      drc-host: ${DRC_HOST}
+      payments-host: ${PAYMENTS_HOST}
+      shipping-host: ${SHIPPING_HOST}
+      shipping-api-secret: ${ENV_SHIPPING_API_SECRET}
+---
+
+# production profile
+spring:
+  config:
+    activate:
+      on-profile: production
+  security:
+    oauth2:
+      client:
+        registration:
+          depop:
+            client-id: ${ENV_DEPOP_CLIENT_ID}
+            client-secret: ${ENV_DEPOP_CLIENT_SECRET}
+depop:
+  drc:
+    client:
+      checkout-host: ${CHECKOUT_HOST}
+      drc-host: ${DRC_HOST}
+      payments-host: ${PAYMENTS_HOST}
+      shipping-host: ${SHIPPING_HOST}
+      shipping-api-secret: ${ENV_SHIPPING_API_SECRET}

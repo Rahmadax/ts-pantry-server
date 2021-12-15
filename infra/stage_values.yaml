@@ -22,6 +22,9 @@ secrets:
   ENV_DB_PASSWORD: staging/services/user/default/dispute/workflow/_default/postgres_app_password
   ENV_OKTA_CLIENT_ID: staging/services/user/default/dispute/workflow/_default/okta_client_id
   ENV_OKTA_CLIENT_SECRET: staging/services/user/default/dispute/workflow/_default/okta_client_secret
+  ENV_DEPOP_CLIENT_ID: staging/services/user/default/dispute/workflow/_default/depop_client_id
+  ENV_DEPOP_CLIENT_SECRET: staging/services/user/default/dispute/workflow/_default/depop_client_secret
+  ENV_SHIPPING_API_SECRET: staging/services/user/default/dispute/workflow/_default/shipping_api_secret
 serviceConfig:
   JAVA_OPTS: "-Dpolyglot.engine.WarnInterpreterOnly=false"
   SPRING_PROFILES_ACTIVE: stage_deployment
@@ -31,6 +34,11 @@ serviceConfig:
   ENV_OKTA_CLIENT_REDIRECT_URI: https://user-default-dispute-workflow.stage-svcs.dpop.co.uk
   ENV_OAUTH2_RESOURCE_SERVER_JWK_SET_URI: https://security-default-clientauth-api.stage-app.dpop.co.uk/.well-known/jwks.json
   ENV_OAUTH2_RESOURCE_SERVER_ISSUER_URI: depop-oauth-introspection
+  ENV_DEPOP_CLIENT_TOKEN_URL: "https://security-default-clientauth-api.stage-app.dpop.co.uk/oauth2/access_token/"
+  CHECKOUT_HOST: "https://checkout-default-checkout-server.stage-app.dpop.co.uk"
+  DRC_HOST: "https://user-default-dispute-internal.stage-app.dpop.co.uk"
+  PAYMENTS_HOST: "https://payments-default-payments-api.stage-app.dpop.co.uk/"
+  SHIPPING_HOST: "https://fulfilment-default-shipping-internal.stage-app.dpop.co.uk"
 autoscaling:
   cpu: 65
   memory: 75
