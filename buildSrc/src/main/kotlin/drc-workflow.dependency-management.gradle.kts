@@ -55,6 +55,9 @@ dependencyManagement {
         //SNYK-JAVA-IONETTY-2314893
         dependency("io.netty:netty-codec-http:4.1.71.Final")
 
+        // SNYK-JAVA-COMH2DATABASE-2331071 | SNYK-JAVA-COMH2DATABASE-1769238
+        dependency("com.h2database:h2:2.0.206")
+
     }
 
 }
