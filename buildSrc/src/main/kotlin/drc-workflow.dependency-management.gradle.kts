@@ -29,8 +29,8 @@ dependencyManagement {
 
 
         // GraalVM JS Engine
-        dependency("org.graalvm.js:js:21.3.0")
-        dependency("org.graalvm.js:js-scriptengine:21.3.0")
+        dependency("org.graalvm.js:js:22.0.0")
+        dependency("org.graalvm.js:js-scriptengine:22.0.0")
 
         // Security dependencies
         dependency("com.depop:depop-jwt_2.13:0.0.23")
@@ -56,7 +56,7 @@ dependencyManagement {
         dependency("io.netty:netty-codec-http:4.1.71.Final")
 
         // SNYK-JAVA-COMH2DATABASE-2331071 | SNYK-JAVA-COMH2DATABASE-1769238
-        dependency("com.h2database:h2:2.0.206")
+        dependency("com.h2database:h2:2.1.210")
 
     }
 

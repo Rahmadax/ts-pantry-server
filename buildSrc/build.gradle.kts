@@ -12,10 +12,10 @@ tasks.withType<KotlinCompile> {
 }
 
 dependencies {
-    implementation(kotlin(module = "gradle-plugin", version = "1.6.0"))
-    implementation("org.jetbrains.kotlin:kotlin-allopen:1.6.0")
+    implementation(kotlin(module = "gradle-plugin", version = "1.6.10"))
+    implementation("org.jetbrains.kotlin:kotlin-allopen:1.6.10")
     implementation("io.spring.gradle:dependency-management-plugin:1.0.11.RELEASE")
-    implementation("org.springframework.boot:spring-boot-gradle-plugin:2.6.1")
+    implementation("org.springframework.boot:spring-boot-gradle-plugin:2.6.3")
     implementation("io.snyk.gradle.plugin.snykplugin:io.snyk.gradle.plugin.snykplugin.gradle.plugin:0.4")
 }
 

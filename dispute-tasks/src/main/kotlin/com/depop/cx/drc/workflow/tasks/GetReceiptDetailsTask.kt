@@ -1,9 +1,6 @@
 package com.depop.cx.drc.workflow.tasks
 
-import com.depop.cx.drc.workflow.client.CheckoutClient
-import com.depop.cx.drc.workflow.client.PaymentsClient
-import com.depop.cx.drc.workflow.client.Receipt
-import com.depop.cx.drc.workflow.client.ShippingClient
+import com.depop.cx.drc.workflow.client.*
 import mu.KotlinLogging
 import org.camunda.bpm.engine.delegate.BpmnError
 import org.camunda.bpm.engine.delegate.DelegateExecution
@@ -15,14 +12,22 @@ private const val SELLER_ID_PROPERTY = "seller"
 private const val RECEIPT_CREATED_AT_PROPERTY = "receipt_created_at"
 private const val PAYMENT_PROVIDER_PROPERTY = "payment_provider"
 private const val SHIPPING_STATUS_PROPERTY = "shipping_status"
-private const val IS_TRACKED_PROPERTY = "is_tracked"
 private const val IS_REFUNDABLE_PROPERTY = "is_refundable"
+private const val IS_TRACKED_PROPERTY = "is_tracked"
+private const val PARCEL_ID = "parcel_id"
+
 
 data class ReceiptDetails(
     val receipt: Receipt,
     val shippingStatus: String,
+    val isRefundable: Boolean,
     val isTracked: Boolean,
-    val isRefundable: Boolean
+    val parcelId: String?
+)
+
+data class PrimaryParcelDetails(
+    val isTracked: Boolean,
+    val parcelId: String?
 )
 
 class GetReceiptDetailsTask(
@@ -60,13 +65,21 @@ class GetReceiptDetailsTask(
         return Mono.zip(
             getReceipt(receiptId).zipWhen { receipt -> isRefundable(receipt) },
             getShippingStatus(receiptId),
-            isTracked(receiptId)
+            getPrimaryParcelDetails(receiptId)
         ).flatMap { data ->
             val receipt = data.t1.t1
             val isRefundable = data.t1.t2
             val shippingStatus = data.t2
-            val isTracked = data.t3
-            Mono.just(ReceiptDetails(receipt, shippingStatus, isTracked, isRefundable))
+            val parcel = data.t3
+            Mono.just(
+                ReceiptDetails(
+                    receipt,
+                    shippingStatus,
+                    isRefundable,
+                    parcel.isTracked,
+                    parcel.parcelId
+                )
+            )
         }.block()
             ?: throw IllegalStateException("Unable to find receipt with id $receiptId")
     }
@@ -85,25 +98,50 @@ class GetReceiptDetailsTask(
         else paymentsClient.getPayment(receipt.paymentId).mapNotNull { payment -> payment?.isRefundable ?: false }
     }
 
-    private fun isTracked(receiptId: Long): Mono<Boolean> {
+    private fun getPrimaryParcelDetails(receiptId: Long): Mono<PrimaryParcelDetails> {
         return shippingClient.getParcelIds(receiptId)
             .flatMap { parcels -> shippingClient.getParcelDetails(parcels.ids) }
-            .map { parcelDetails ->
-                parcelDetails.values.fold(parcelDetails.isNotEmpty()) { tracked, parcel ->
-                    tracked && (parcel.providerDetails?.manualParcelTrackingNumber?.isNotBlank() ?: false
-                            || parcel.providerDetails?.depopParcelTracking?.reference?.isNotBlank() ?: false)
+            .map {
+                if (it == null || it.isEmpty()) {
+                    PrimaryParcelDetails(false, null)
+                } else {
+
+                    // There are potentially multiple parcels, for the time being we'll use the first.
+                    // This needs improvement as order is not defined.
+                    val parcel = it[it.keys.first()]
+                    val trackingNumber = getTrackingNumber(parcel)
+                    val isTracked = trackingNumber?.isNotBlank() ?: false
+
+                    // The parcel ID is used
+                    val parcelId = parcel?.id
+                    PrimaryParcelDetails(isTracked, parcelId)
                 }
             }
+    }
+
+    private fun getTrackingNumber(parcel: ParcelDetails?): String? {
+        var trackingNumber : String? = null
+        if(parcel!=null){
+            trackingNumber = parcel.providerDetails?.manualParcelTrackingNumber
+            if (trackingNumber == null) {
+                trackingNumber = parcel.providerDetails?.depopParcelTracking?.reference
+            }
+        }
+        return trackingNumber
     }
 
     private fun setVariables(execution: DelegateExecution, details: ReceiptDetails?) {
         execution.setVariableLocal(BUYER_ID_PROPERTY, details?.receipt?.buyerId?.toString() ?: "")
         execution.setVariableLocal(SELLER_ID_PROPERTY, details?.receipt?.sellerId?.toString() ?: "")
-        execution.setVariableLocal(RECEIPT_CREATED_AT_PROPERTY, details?.receipt?.created?.toOffsetDateTime()?.toString() ?: "") // Using offset to ensure ISO8601 compatibility
+        execution.setVariableLocal(
+            RECEIPT_CREATED_AT_PROPERTY,
+            details?.receipt?.created?.toOffsetDateTime()?.toString() ?: ""
+        ) // Using offset to ensure ISO8601 compatibility
         execution.setVariableLocal(PAYMENT_PROVIDER_PROPERTY, details?.receipt?.paymentProvider ?: "")
         execution.setVariableLocal(SHIPPING_STATUS_PROPERTY, details?.shippingStatus ?: "")
-        execution.setVariableLocal(IS_TRACKED_PROPERTY, details?.isTracked ?: "")
         execution.setVariableLocal(IS_REFUNDABLE_PROPERTY, details?.isRefundable ?: "")
+        execution.setVariableLocal(IS_TRACKED_PROPERTY, details?.isTracked ?: "")
+        execution.setVariableLocal(PARCEL_ID, details?.parcelId ?: "")
     }
 
 
