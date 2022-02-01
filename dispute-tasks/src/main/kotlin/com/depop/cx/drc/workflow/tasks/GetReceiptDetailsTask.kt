@@ -120,12 +120,13 @@ class GetReceiptDetailsTask(
     }
 
     private fun getTrackingNumber(parcel: ParcelDetails?): String? {
-        var trackingNumber : String? = null
-        if(parcel!=null){
-            trackingNumber = parcel.providerDetails?.manualParcelTrackingNumber
-            if (trackingNumber == null) {
-                trackingNumber = parcel.providerDetails?.depopParcelTracking?.reference
-            }
+        val trackingNumber : String?
+        // Parcels with a depop shipping label should always have a tracking number.  Manually shipped parcels
+        // may not have one.
+        if(parcel?.providerDetails?.depopParcelTracking != null) {
+            trackingNumber = parcel.providerDetails.depopParcelTracking.reference ?: "Currently unavailable"
+        } else {
+            trackingNumber = parcel?.providerDetails?.manualParcelTrackingNumber
         }
         return trackingNumber
     }
