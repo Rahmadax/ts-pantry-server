@@ -19,10 +19,11 @@ class SetDisputeStatusTask(private val drcClient: DrcClient) : AbstractTask() {
 
         if (disputeId != null && disputeStatus != null) {
 
-            logger.debug { "Setting status $disputeStatus on dispute $disputeId." }
+            logger.info { "Setting status $disputeStatus on dispute $disputeId." }
             drcClient.setDisputeStatus(disputeId, disputeStatus).block()
 
         } else {
+            logger.error { "Unable to find dispute ID or status in the task context." }
             throw BpmnError(
                 TaskErrorCode.FAILURE.code,
                 "$DISPUTE_ID_PROPERTY and $DISPUTE_STATUS_PROPERTY must not be null or empty."
