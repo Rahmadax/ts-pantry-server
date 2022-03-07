@@ -15,6 +15,7 @@ dependencies {
 
     // General
     implementation("org.camunda.bpm:camunda-engine")
+    implementation("org.camunda.spin:camunda-spin-core")
 
 }
 

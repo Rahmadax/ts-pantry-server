@@ -6,10 +6,8 @@ import com.depop.cx.drc.workflow.client.CheckoutClient
 import com.depop.cx.drc.workflow.client.DrcClient
 import com.depop.cx.drc.workflow.client.PaymentsClient
 import com.depop.cx.drc.workflow.client.ShippingClient
-import com.depop.cx.drc.workflow.tasks.GetReceiptDetailsTask
-import com.depop.cx.drc.workflow.tasks.SetDisputeParticipantTask
-import com.depop.cx.drc.workflow.tasks.SetDisputeStatusTask
-import com.depop.cx.drc.workflow.tasks.SetProcessDatesTask
+import com.depop.cx.drc.workflow.listener.DefaultProcessStartListener
+import com.depop.cx.drc.workflow.tasks.*
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -31,5 +29,11 @@ class WorkflowTaskConfiguration {
 
     @Bean
     fun setProcessDatesTask() = SetProcessDatesTask()
+
+    @Bean
+    fun updateContextTask() = UpdateContextTask()
+
+    @Bean
+    fun defaultProcessStartListener() = DefaultProcessStartListener()
 
 }

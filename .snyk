@@ -9,5 +9,10 @@ ignore:
   SNYK-JAVA-IONETTY-1042268:
     - '*':
         reason: None Given
-        expires: 2022-02-23T14:47:28.321Z
-        created: 2022-01-24T14:47:28.325Z
+        expires: 2022-04-06T14:40:56.721Z
+        created: 2022-03-07T14:40:56.724Z
+  SNYK-JAVA-ORGJETBRAINSKOTLIN-2393744:
+    - '*':
+        reason: None Given
+        expires: 2022-04-06T14:15:26.456Z
+        created: 2022-03-07T14:15:26.460Z

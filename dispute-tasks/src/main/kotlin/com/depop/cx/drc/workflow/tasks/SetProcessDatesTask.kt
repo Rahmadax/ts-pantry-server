@@ -19,8 +19,8 @@ private const val EMBARGO_DAYS_PROPERTY = "embargo_days"
 private const val AUTO_ESCALATION_DAYS_PROPERTY = "auto_escalation_days"
 
 private const val EMBARGO_DAYS_DEFAULT = 7L
-private const val AUTO_ESCALATION_DAYS_DEFAULT = 30L
-private const val RESPONSE_DAYS_DEFAULT = 3L
+private const val AUTO_ESCALATION_DAYS_DEFAULT = 7L
+private const val RESPONSE_DAYS_DEFAULT = 7L
 
 class SetProcessDatesTask : AbstractTask() {
 

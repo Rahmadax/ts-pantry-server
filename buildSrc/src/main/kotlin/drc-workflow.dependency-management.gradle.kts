@@ -52,11 +52,13 @@ dependencyManagement {
         // Upgrading version of jnr-posix due to snyk DOS vulnerability report.
         dependency("com.github.jnr:jnr-posix:3.1.8")
 
-        //SNYK-JAVA-IONETTY-2314893
-        dependency("io.netty:netty-codec-http:4.1.71.Final")
-
         // SNYK-JAVA-COMH2DATABASE-2331071 | SNYK-JAVA-COMH2DATABASE-1769238
         dependency("com.h2database:h2:2.1.210")
+
+        // SNYK-JAVA-ORGAPACHETOMCATEMBED-2414084
+        dependency("org.apache.tomcat.embed:tomcat-embed-core:9.0.58")
+        dependency("org.apache.tomcat.embed:tomcat-embed-el:9.0.58")
+        dependency("org.apache.tomcat.embed:tomcat-embed-websocket:9.0.58")
 
     }
 
