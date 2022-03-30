@@ -27,7 +27,12 @@ spring:
   config:
     activate:
       on-profile: local
-
+  security:
+    oauth2:
+      client:
+        provider:
+          depop:
+            token-uri: https://security-default-clientauth-api.stage-app.dpop.co.uk/oauth2/access_token/
 ---
 
 # stage profile
@@ -38,6 +43,9 @@ spring:
   security:
     oauth2:
       client:
+        provider:
+          depop:
+            token-uri: ${ENV_DEPOP_CLIENT_TOKEN_URL}
         registration:
           depop:
             client-id: ${ENV_DEPOP_CLIENT_ID}
@@ -60,6 +68,9 @@ spring:
   security:
     oauth2:
       client:
+        provider:
+          depop:
+            token-uri: ${ENV_DEPOP_CLIENT_TOKEN_URL}
         registration:
           depop:
             client-id: ${ENV_DEPOP_CLIENT_ID}

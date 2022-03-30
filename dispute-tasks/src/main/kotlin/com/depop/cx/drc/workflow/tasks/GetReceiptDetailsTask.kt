@@ -49,16 +49,9 @@ class GetReceiptDetailsTask(
             )
 
         logger.debug { "Getting receipt details for receipt $receiptId" }
+        val details = getReceiptDetails(receiptId)
+        setVariables(execution, details)
 
-        try {
-            val details = getReceiptDetails(receiptId)
-            setVariables(execution, details)
-        } catch (e: Exception) {
-            throw BpmnError(
-                TaskErrorCode.FAILURE.code,
-                "Unable to load details for receipt with id $receiptId.", e
-            )
-        }
     }
 
     private fun getReceiptDetails(receiptId: Long): ReceiptDetails {
