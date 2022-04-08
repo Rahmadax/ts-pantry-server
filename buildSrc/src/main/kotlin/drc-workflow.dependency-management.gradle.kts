@@ -55,11 +55,6 @@ dependencyManagement {
         // SNYK-JAVA-COMH2DATABASE-2331071 | SNYK-JAVA-COMH2DATABASE-1769238
         dependency("com.h2database:h2:2.1.210")
 
-        // SNYK-JAVA-ORGAPACHETOMCATEMBED-2414084
-        dependency("org.apache.tomcat.embed:tomcat-embed-core:9.0.58")
-        dependency("org.apache.tomcat.embed:tomcat-embed-el:9.0.58")
-        dependency("org.apache.tomcat.embed:tomcat-embed-websocket:9.0.58")
-
     }
 
 }
