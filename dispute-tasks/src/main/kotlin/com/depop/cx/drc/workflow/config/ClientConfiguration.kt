@@ -2,10 +2,7 @@
 
 package com.depop.cx.drc.workflow.config
 
-import com.depop.cx.drc.workflow.client.CheckoutClient
-import com.depop.cx.drc.workflow.client.DrcClient
-import com.depop.cx.drc.workflow.client.PaymentsClient
-import com.depop.cx.drc.workflow.client.ShippingClient
+import com.depop.cx.drc.workflow.client.*
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.ConstructorBinding
 import org.springframework.boot.context.properties.EnableConfigurationProperties
@@ -36,7 +33,8 @@ data class ClientProperties(
     val drcHost: URI,
     val paymentsHost: URI,
     val shippingHost: URI,
-    val shippingApiSecret: String
+    val shippingApiSecret: String,
+    val userHost: URI
 )
 
 @Configuration
@@ -157,6 +155,24 @@ class ClientConfiguration {
             .build()
 
         return ShippingClient(webClient)
+    }
+
+    @Bean
+    fun userClient(
+        clientProperties: ClientProperties,
+        webClientBuilder: WebClient.Builder,
+        authorizedClientManager: ReactiveOAuth2AuthorizedClientManager
+    ): UserClient {
+
+        val oauth = ServerOAuth2AuthorizedClientExchangeFilterFunction(authorizedClientManager)
+        oauth.setDefaultClientRegistrationId(DEPOP_CLIENT_REGISTRATION_ID)
+
+        val webClient = webClientBuilder
+            .baseUrl(clientProperties.userHost.toString())
+            .filter(oauth) // filter to add depop jwt to the Authorization header.
+            .build()
+
+        return UserClient(webClient)
     }
 
     // Sets the Authorization header using the provided LLJWT

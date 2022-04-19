@@ -39,6 +39,7 @@ serviceConfig:
   DRC_HOST: "https://user-default-dispute-internal.stage-app.dpop.co.uk"
   PAYMENTS_HOST: "https://payments-default-payments-api.stage-app.dpop.co.uk/"
   SHIPPING_HOST: "https://fulfilment-default-shipping-internal.stage-app.dpop.co.uk"
+  USER_HOST: "https://django-int-api.stage-app.dpop.co.uk"
 autoscaling:
   cpu: 65
   memory: 75

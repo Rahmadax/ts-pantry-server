@@ -5,6 +5,7 @@ depop:
       drc-host: https://user-default-dispute-internal.stage-app.dpop.co.uk/
       payments-host: https://payments-default-payments-api.stage-app.dpop.co.uk/
       shipping-host: https://fulfilment-default-shipping-internal.stage-app.dpop.co.uk/
+      user-host: https://django-int-api.stage-app.dpop.co.uk/
 
 spring:
   security:
@@ -58,6 +59,7 @@ depop:
       payments-host: ${PAYMENTS_HOST}
       shipping-host: ${SHIPPING_HOST}
       shipping-api-secret: ${ENV_SHIPPING_API_SECRET}
+      user-host: ${USER_HOST}
 ---
 
 # production profile

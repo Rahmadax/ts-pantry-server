@@ -2,10 +2,7 @@
 
 package com.depop.cx.drc.workflow.config
 
-import com.depop.cx.drc.workflow.client.CheckoutClient
-import com.depop.cx.drc.workflow.client.DrcClient
-import com.depop.cx.drc.workflow.client.PaymentsClient
-import com.depop.cx.drc.workflow.client.ShippingClient
+import com.depop.cx.drc.workflow.client.*
 import com.depop.cx.drc.workflow.listener.DefaultProcessStartListener
 import com.depop.cx.drc.workflow.tasks.*
 import org.springframework.context.annotation.Bean
@@ -32,6 +29,9 @@ class WorkflowTaskConfiguration {
 
     @Bean
     fun updateContextTask() = UpdateContextTask()
+
+    @Bean
+    fun bannedUserTask(userClient: UserClient) = BannedUserTask(userClient)
 
     @Bean
     fun defaultProcessStartListener() = DefaultProcessStartListener()
