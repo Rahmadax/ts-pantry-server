@@ -85,3 +85,4 @@ depop:
       payments-host: ${PAYMENTS_HOST}
       shipping-host: ${SHIPPING_HOST}
       shipping-api-secret: ${ENV_SHIPPING_API_SECRET}
+      user-host: ${USER_HOST}
