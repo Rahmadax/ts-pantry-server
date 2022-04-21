@@ -20,7 +20,9 @@ class SetDisputeStatusTask(private val drcClient: DrcClient) : AbstractTask() {
         if (disputeId != null && disputeStatus != null) {
 
             logger.info { "Setting status $disputeStatus on dispute $disputeId." }
+
             drcClient.setDisputeStatus(disputeId, disputeStatus).block()
+            execution.processInstance.setVariableLocal(DISPUTE_STATUS_PROPERTY, disputeStatus)
 
         } else {
             logger.error { "Unable to find dispute ID or status in the task context." }
