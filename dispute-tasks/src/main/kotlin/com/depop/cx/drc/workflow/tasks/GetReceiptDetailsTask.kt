@@ -15,6 +15,7 @@ private const val SHIPPING_STATUS_PROPERTY = "shipping_status"
 private const val IS_REFUNDABLE_PROPERTY = "is_refundable"
 private const val IS_TRACKED_PROPERTY = "is_tracked"
 private const val PARCEL_ID = "parcel_id"
+private const val IS_FULLY_REFUNDED = "is_fully_refunded"
 
 
 data class ReceiptDetails(
@@ -136,6 +137,7 @@ class GetReceiptDetailsTask(
         execution.setVariableLocal(IS_REFUNDABLE_PROPERTY, details?.isRefundable ?: "")
         execution.setVariableLocal(IS_TRACKED_PROPERTY, details?.isTracked ?: "")
         execution.setVariableLocal(PARCEL_ID, details?.parcelId ?: "")
+        execution.setVariableLocal(IS_FULLY_REFUNDED, details?.receipt?.isFullyRefunded() ?: "")
     }
 
 
