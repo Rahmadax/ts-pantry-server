@@ -9,6 +9,8 @@ iamRoleARN: arn:aws:iam::093904767316:role/service-user-default-dispute-workflow
 image:
   repository: 594471699039.dkr.ecr.us-east-1.amazonaws.com/user-default/dispute-workflow
   pullPolicy: IfNotPresent
+linkerd:
+  enabled: true
 loadbalancer:
   access_log_bucket: us-east-1-prod-svcs-elb-access-logs
   securitygroups: sg-0a9d907d6394cd811
@@ -37,9 +39,9 @@ serviceConfig:
   ENV_OAUTH2_RESOURCE_SERVER_ISSUER_URI: depop-oauth-introspection
   ENV_DEPOP_CLIENT_TOKEN_URL: "https://security-default-clientauth-api.prod-app.dpop.co.uk/oauth2/access_token/"
   CHECKOUT_HOST: "https://checkout-default-checkout-server.prod-app.dpop.co.uk"
-  DRC_HOST: "https://user-default-dispute-internal.prod-app.dpop.co.uk"
+  DRC_HOST: "https://user-default-dispute-internal.eks-default.prod-app.dpop.co.uk"
   PAYMENTS_HOST: "https://payments-default-payments-api.prod-app.dpop.co.uk/"
-  SHIPPING_HOST: "https://fulfilment-default-shipping-internal.prod-app.dpop.co.uk"
+  SHIPPING_HOST: "https://fulfilment-default-shipping-internal.eks-default.prod-app.dpop.co.uk"
   USER_HOST: "https://django-int-api.prod-app.dpop.co.uk"
 autoscaling:
   cpu: 65

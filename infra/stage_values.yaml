@@ -8,6 +8,8 @@ service_role: workflow
 iamRoleARN: arn:aws:iam::183284569534:role/service-user-default-dispute-workflow
 image:
   repository: 594471699039.dkr.ecr.us-east-1.amazonaws.com/user-default/dispute-workflow
+linkerd:
+  enabled: true
 loadbalancer:
   access_log_bucket: us-east-1-stage-svcs-elb-access-logs
   securitygroups: sg-050dfecc994a32014
@@ -36,9 +38,9 @@ serviceConfig:
   ENV_OAUTH2_RESOURCE_SERVER_ISSUER_URI: depop-oauth-introspection
   ENV_DEPOP_CLIENT_TOKEN_URL: "https://security-default-clientauth-api.stage-app.dpop.co.uk/oauth2/access_token/"
   CHECKOUT_HOST: "https://checkout-default-checkout-server.stage-app.dpop.co.uk"
-  DRC_HOST: "https://user-default-dispute-internal.stage-app.dpop.co.uk"
+  DRC_HOST: "https://user-default-dispute-internal.eks-default.stage-app.dpop.co.uk"
   PAYMENTS_HOST: "https://payments-default-payments-api.stage-app.dpop.co.uk/"
-  SHIPPING_HOST: "https://fulfilment-default-shipping-internal.stage-app.dpop.co.uk"
+  SHIPPING_HOST: "https://fulfilment-default-shipping-internal.eks-default.stage-app.dpop.co.uk"
   USER_HOST: "https://django-int-api.stage-app.dpop.co.uk"
 autoscaling:
   cpu: 65
