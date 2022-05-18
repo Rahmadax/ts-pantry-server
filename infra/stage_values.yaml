@@ -37,11 +37,11 @@ serviceConfig:
   ENV_OAUTH2_RESOURCE_SERVER_JWK_SET_URI: https://security-default-clientauth-api.stage-app.dpop.co.uk/.well-known/jwks.json
   ENV_OAUTH2_RESOURCE_SERVER_ISSUER_URI: depop-oauth-introspection
   ENV_DEPOP_CLIENT_TOKEN_URL: "https://security-default-clientauth-api.stage-app.dpop.co.uk/oauth2/access_token/"
-  CHECKOUT_HOST: "https://checkout-default-checkout-server.stage-app.dpop.co.uk"
+  CHECKOUT_HOST: "https://checkout-default-checkout-server.eks-default.stage-app.dpop.co.uk"
   DRC_HOST: "https://user-default-dispute-internal.eks-default.stage-app.dpop.co.uk"
   PAYMENTS_HOST: "https://payments-default-payments-api.stage-app.dpop.co.uk/"
   SHIPPING_HOST: "https://fulfilment-default-shipping-internal.eks-default.stage-app.dpop.co.uk"
-  USER_HOST: "https://django-int-api.stage-app.dpop.co.uk"
+  USER_HOST: "https://django-default-snakeskin-api.eks-default.stage-app.dpop.co.uk"
 autoscaling:
   cpu: 65
   memory: 75
