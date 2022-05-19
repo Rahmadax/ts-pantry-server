@@ -16,3 +16,8 @@ ignore:
         reason: None Given
         expires: 2022-04-06T14:15:26.456Z
         created: 2022-03-07T14:15:26.460Z
+  SNYK-JAVA-ORGSPRINGFRAMEWORKSECURITY-2833359:
+    - '*':
+        reason: None Given
+        expires: 2022-06-18T10:24:42.701342Z
+        created: 2022-05-19T10:24:42.701342Z
