@@ -49,7 +49,7 @@ class GetReceiptDetailsTask(
                 "$RECEIPT_ID_PROPERTY must not be null."
             )
 
-        logger.debug { "Getting receipt details for receipt $receiptId" }
+        logger.info { "Getting receipt details for receipt $receiptId" }
         val details = getReceiptDetails(receiptId)
         setVariables(execution, details)
 
