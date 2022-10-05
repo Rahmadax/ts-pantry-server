@@ -21,7 +21,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: https://security-default-clientauth-api.stage-app.dpop.co.uk/.well-known/jwks.json
+          jwk-set-uri: https://security-default-clientauth-api.eks-default.stage-app.dpop.co.uk/.well-known/jwks.json
           issuer-uri: depop-oauth-introspection
       client:
         provider:

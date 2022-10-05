@@ -6,18 +6,18 @@ Workflow engine service for providing dispute workflow to users of dispute resol
 
 ## Service Details
 
-| Metadata            | Value                                                                  |
-|---------------------|------------------------------------------------------------------------|
-| Service Level       | 4                                                                      |
-| Hostname Production | https://user-default-dispute-workflow.prod-service.dpop.co.uk          |
-| Hostname Staging    | https://user-default-dispute-workflow.stage-svcs.dpop.co.uk            |
-| Cosmos              | [Dashboard](https://cosmos.depop.com/service/user-default-dispute-workflow)|
-| API Documentation   | [Camunda REST API](https://docs.camunda.org/manual/7.5/reference/rest/)|
-| Owning Team         | CX                                                                     |
-| User Agent          | Depop-Service user-default-dispute-workflow                            |
-| RabbitMQ            | No                                                                     |
-| Kafka               | No                                                                     |
-| Camunda Cockpit     | [Camunda Cockpit](https://user-default-dispute-cms.stage-svcs.dpop.co.uk)|
+| Metadata            | Value                                                                                |
+|---------------------|--------------------------------------------------------------------------------------|
+| Service Level       | 4                                                                                    |
+| Hostname Production | https://user-default-dispute-workflow.eks-default.prod-service.dpop.co.uk            |
+| Hostname Staging    | https://user-default-dispute-workflow.eks-default.stage-svcs.dpop.co.uk              |
+| Cosmos              | [Dashboard](https://cosmos.depop.com/service/user-default-dispute-workflow)          |
+| API Documentation   | [Camunda REST API](https://docs.camunda.org/manual/7.5/reference/rest/)              |
+| Owning Team         | CX                                                                                   |
+| User Agent          | Depop-Service user-default-dispute-workflow                                          |
+| RabbitMQ            | No                                                                                   |
+| Kafka               | No                                                                                   |
+| Camunda Cockpit     | [Camunda Cockpit](https://user-default-dispute-cms.eks-default.stage-svcs.dpop.co.uk)|
 
 ### Observability
 

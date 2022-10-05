@@ -1,10 +1,10 @@
 depop:
   drc:
     client:
-      checkout-host: https://checkout-default-checkout-server.stage-app.dpop.co.uk/
-      drc-host: https://user-default-dispute-internal.stage-app.dpop.co.uk/
-      payments-host: https://payments-default-payments-api.stage-app.dpop.co.uk/
-      shipping-host: https://fulfilment-default-shipping-internal.stage-app.dpop.co.uk/
+      checkout-host: https://checkout-default-checkout-server.eks-default.stage-app.dpop.co.uk/
+      drc-host: https://user-default-dispute-internal.eks-default.stage-app.dpop.co.uk/
+      payments-host: https://payments-default-payments-api.eks-default.stage-app.dpop.co.uk/
+      shipping-host: https://fulfilment-default-shipping-internal.eks-default.stage-app.dpop.co.uk/
       user-host: https://django-int-api.stage-app.dpop.co.uk/
 
 spring:
@@ -13,7 +13,7 @@ spring:
       client:
         provider:
           depop:
-            token-uri: https://security-default-clientauth-api.stage-app.dpop.co.uk/oauth2/access_token/
+            token-uri: https://security-default-clientauth-api.eks-default.stage-app.dpop.co.uk/oauth2/access_token/
         registration:
           depop:
             authorization-grant-type: client_credentials
@@ -33,7 +33,7 @@ spring:
       client:
         provider:
           depop:
-            token-uri: https://security-default-clientauth-api.stage-app.dpop.co.uk/oauth2/access_token/
+            token-uri: https://security-default-clientauth-api.eks-default.stage-app.dpop.co.uk/oauth2/access_token/
 ---
 
 # stage profile
