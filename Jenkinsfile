@@ -2,9 +2,9 @@ pipeline {
   options {
     buildDiscarder(logRotator(numToKeepStr: '5'))
     ansiColor('xterm')
+    parallelsAlwaysFailFast()
   }
 
-  // prevent tasks running on agents unless specified
   agent none
 
   stages {
@@ -16,27 +16,44 @@ pipeline {
       }
     }
 
-    // Build a JAR file for the service and dockerise it and push to ECR:
-    stage('build and scan') {
-      agent any
-      steps {
-        measure {
-          script {
-            cicd.withSecret('kv-jenkins/global/credentials','jfrog_api_key','JFROG_API_KEY') {
-                sh "make ci"
-                cicd.snykDependencyScan()
+    // Build a JAR file for the service:
+    stage('build') {
+      parallel {
+        stage('assemble') {
+          agent any
+          steps {
+            measure {
+              script {
+                cicd.withSecret('kv-jenkins/global/credentials','jfrog_api_key','JFROG_API_KEY') {
+                  sh "make ci"
+                }
+                sh "make docker_build"
+                script { infra = readYaml(file: 'infra/stage_values.yaml') }
+                cicd.snykContainerScan('.', true, infra.image['repository'], '', '', 'Dockerfile.prebuilt')
+                sh "make docker_push"
+              }
             }
-            script { infra = readYaml(file: 'infra/stage_values.yaml') }
-            sh "make docker_build"
-            cicd.snykContainerScan('.', true, infra.image['repository'], '', '', 'Dockerfile.prebuilt')
-            sh "make docker_push"
+          }
+        }
+        stage('scan') {
+          agent any
+          steps {
+            measure {
+              script {
+                cicd.snykDependencyScan()
+                env.DEPLOY_TO_STAGE = (env.BRANCH_NAME == 'master' || !pullRequest.draft && (upToDateWith('stage') || deployedBranch() == env.CHANGE_BRANCH)) ? 'yes' : 'no'
+              }
+            }
           }
         }
       }
     }
 
     // Prompt for deploy to stage:
-    stage('stage deployment prompt') {
+    stage('stage deploy prompt') {
+      when {
+        not { environment name: 'DEPLOY_TO_STAGE', value: 'yes' }
+      }
       steps {
         script {
           env.DEPLOY_TO_STAGE = cicd.proceedPromptWithTimeout('stage')
@@ -44,32 +61,32 @@ pipeline {
       }
     }
 
-    // Deploy to staging, run Dredd tests:
-    stage('deploy to staging') {
-      when {
-         environment name: 'DEPLOY_TO_STAGE', value: 'yes'
-      }
-      steps {
-        script {
-          def envName = 'stage'
-          def contractTests = false
-          def deploymentDirectory = ''
-          def portyardConfig = ''
-          def releaseName = ''
-          def cicdConfig = ["slack_channel":"cx-alerts"]
-          cicd.deploy(envName, deploymentDirectory, portyardConfig, releaseName, contractTests, cicdConfig)
-        }
-      }
-    }
-
-    // Prompt for deploy to prod:
-    stage('prod deployment prompt') {
+    stage('pre-deploy check') {
+      agent any
       when {
         environment name: 'DEPLOY_TO_STAGE', value: 'yes'
       }
       steps {
         script {
-          env.DEPLOY_TO_PROD = cicd.proceedPromptWithTimeout('prod')
+          def deployed = deployedBranch()
+          upToDate = upToDateWith('stage') || deployed == env.CHANGE_BRANCH
+          if (!upToDate) {
+            slackSend channel: 'fulfilment', color: 'warning', message: "Deploying <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> over `${deployed}` to staging :shipit_parrot:"
+          }
+        }
+      }
+    }
+
+    // Deploy to staging
+    stage('deploy to stage') {
+      when {
+        environment name: 'DEPLOY_TO_STAGE', value: 'yes'
+      }
+      steps {
+        measure {
+          script {
+            cicd.deploy('stage')
+          }
         }
       }
     }
@@ -77,17 +94,19 @@ pipeline {
     // Deploy to prod:
     stage('deploy to prod') {
       when {
-        environment name: 'DEPLOY_TO_PROD', value: 'yes'
+        branch 'master'
       }
       steps {
-        script {
-          def envName = 'prod'
-          def contractTests = false
-          def deploymentDirectory = ''
-          def portyardConfig = ''
-          def releaseName = ''
-          def cicdConfig = ["slack_channel":"cx-alerts", "SNYK_MONITOR":"true", "LOCAL_DOCKERFILE":"Dockerfile.prebuilt"]
-          cicd.deploy(envName, deploymentDirectory, portyardConfig, releaseName, contractTests, cicdConfig)
+        measure {
+          script {
+            def contractTests = false
+            def deploymentDirectory = ''
+            def portyardConfig = ''
+            def releaseName = ''
+            def cicdConfig = ["SNYK_MONITOR":"true", "LOCAL_DOCKERFILE":"Dockerfile.prebuilt"]
+            cicd.deploy('prod', deploymentDirectory, portyardConfig, releaseName, contractTests, cicdConfig)
+            slackSend channel: 'fulfilment', color: 'good', message: "Deployed <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> to production :dancinghamster:"
+          }
         }
       }
     }
@@ -95,12 +114,42 @@ pipeline {
 
   post {
     success {
-      script { cicd.buildSuccess() }
+      script {
+        cicd.buildSuccess()
+      }
     }
 
     failure {
-      slackSend channel: 'cx-alerts', color: 'bad', message: '<' + env.RUN_DISPLAY_URL + '|' + env.JOB_NAME + '> failed'
-      script { cicd.buildFailure() }
+      script {
+        cicd.buildFailure()
+        if (env.BRANCH_NAME == 'master') {
+          slackSend channel: 'fulfilment', color: 'bad', message: "Failed to deploy <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> :cry:"
+        }
+      }
     }
   }
+}
+
+
+def upToDateWith(tag) {
+  def upToDate = false
+  try {
+    def cicdGit = new com.depop.cicd.Git()
+    cicdGit.createUpstream()
+    sh "git fetch upstream refs/tags/${tag}"
+    upToDate = sh(script: "git merge-base --is-ancestor ${tag} ${env.GIT_COMMIT}", returnStatus: true) == 0
+  } catch (e) { echo "$e" }
+  return upToDate
+}
+
+def deployedBranch() {
+  def branch = ""
+  try {
+    serviceName = cicd.getServiceName()
+    branch = sh(
+      script: "curl -s https://cosmos.depop.com/api/v1/service/${serviceName} | jq -r '.deployments.staging[0].git_branch'",
+      returnStdout: true
+    )
+  } catch (e) { echo "$e" }
+  return branch.trim()
 }
