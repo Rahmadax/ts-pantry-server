@@ -35,6 +35,8 @@ dependencyManagement {
         // Security dependencies
         dependency("com.depop:depop-jwt_2.13:0.0.23")
         dependency("com.okta.spring:okta-spring-security-oauth2:1.1.0")
+        dependency("org.springframework.security:spring-security-web:5.6.9")
+        dependency("org.springframework.security:spring-security-oauth2-client:5.6.9")
 
         // Opentracing dependencies
         dependency("io.opentracing.contrib:opentracing-spring-cloud-starter:0.5.9")
