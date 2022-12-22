@@ -9,7 +9,7 @@ Workflow engine service for providing dispute workflow to users of dispute resol
 | Metadata            | Value                                                                                |
 |---------------------|--------------------------------------------------------------------------------------|
 | Service Level       | 4                                                                                    |
-| Hostname Production | https://user-default-dispute-workflow.eks-default.prod-service.dpop.co.uk            |
+| Hostname Production | https://user-default-dispute-workflow.eks-default.prod-svcs.dpop.co.uk               |
 | Hostname Staging    | https://user-default-dispute-workflow.eks-default.stage-svcs.dpop.co.uk              |
 | Cosmos              | [Dashboard](https://cosmos.depop.com/service/user-default-dispute-workflow)          |
 | API Documentation   | [Camunda REST API](https://docs.camunda.org/manual/7.5/reference/rest/)              |

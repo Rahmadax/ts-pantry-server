@@ -42,7 +42,7 @@ serviceConfig:
   DRC_HOST: "https://user-default-dispute-internal.eks-default.prod-app.dpop.co.uk"
   PAYMENTS_HOST: "https://payments-default-payments-api.eks-default.prod-app.dpop.co.uk/"
   SHIPPING_HOST: "https://fulfilment-default-shipping-internal.eks-default.prod-app.dpop.co.uk"
-  USER_HOST: "https://django-int-api.prod-app.dpop.co.uk"
+  USER_HOST: "https://django-default-snakeskin-api.eks-default.prod-app.dpop.co.uk"
 autoscaling:
   cpu: 65
   memory: 75
