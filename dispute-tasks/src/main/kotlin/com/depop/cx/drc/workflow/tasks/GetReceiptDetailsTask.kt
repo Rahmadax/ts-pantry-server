@@ -88,7 +88,7 @@ class GetReceiptDetailsTask(
     }
 
     private fun isRefundable(receipt: Receipt): Mono<Boolean> {
-        return if ("STRIPE" != receipt.paymentProvider) Mono.just(false)
+        return if ("STRIPE" != receipt.paymentProvider && "KLARNA" != receipt.paymentProvider) Mono.just(false)
         else paymentsClient.getPayment(receipt.paymentId).mapNotNull { payment -> payment?.isRefundable ?: false }
     }
 
