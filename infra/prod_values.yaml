@@ -34,7 +34,7 @@ serviceConfig:
   ENV_DB_URL: jdbc:postgresql://service-user-default-dispute-workflow-12-6.ckh7hwnufggc.us-east-1.rds.amazonaws.com/disputeworkflow
   ENV_DB_USER: disputeworkflow_app
   ENV_OKTA_CLIENT_ISSUER_URI: https://depop.okta.com
-  ENV_OKTA_CLIENT_REDIRECT_URI: https://user-default-dispute-workflow.prod-svcs.dpop.co.uk
+  ENV_OKTA_CLIENT_REDIRECT_URI: https://user-default-dispute-workflow.eks-default.prod-svcs.dpop.co.uk
   ENV_OAUTH2_RESOURCE_SERVER_JWK_SET_URI: https://security-default-clientauth-api.eks-default.prod-app.dpop.co.uk/.well-known/jwks.json
   ENV_OAUTH2_RESOURCE_SERVER_ISSUER_URI: depop-oauth-introspection
   ENV_DEPOP_CLIENT_TOKEN_URL: "https://security-default-clientauth-api.eks-default.prod-app.dpop.co.uk/oauth2/access_token/"

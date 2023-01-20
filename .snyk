@@ -6,19 +6,8 @@ version: v1.22.1
 patch: {}
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
-  SNYK-JAVA-IONETTY-1042268:
-    - '*':
-        reason: None Given
-        expires: 2022-04-06T14:40:56.721Z
-        created: 2022-03-07T14:40:56.724Z
-  SNYK-JAVA-ORGJETBRAINSKOTLIN-2393744:
-    - '*':
-        reason: None Given
-        expires: 2022-04-06T14:15:26.456Z
-        created: 2022-03-07T14:15:26.460Z
   SNYK-JAVA-COMH2DATABASE-31685:
     - '*':
         reason: webAllowOthers not enabled
         expires: 2023-03-19T19:25:25.460Z
         created: 2023-01-19T19:25:25.460Z
-
