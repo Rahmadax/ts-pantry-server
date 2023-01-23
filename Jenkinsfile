@@ -145,11 +145,10 @@ def upToDateWith(tag) {
 def deployedBranch() {
   def branch = ""
   try {
-    serviceName = cicd.getServiceName()
     branch = sh(
-      script: "curl -s https://cosmos.depop.com/api/v1/service/${serviceName} | jq -r '.deployments.staging[0].git_branch'",
+      script: "curl -s https://catalog.dflt-ops.dpop.co.uk/api/v2/deployment/user/default/workflow/dispute/staging/staging | jq -r '.[0].git_branch'",
       returnStdout: true
     )
   } catch (e) { echo "$e" }
   return branch.trim()
-}
+} 
