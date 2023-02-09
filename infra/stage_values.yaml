@@ -5,15 +5,17 @@ service_domain: user
 service_group: default
 service_name: dispute
 service_role: workflow
+dns_override_fqdn: disputes-stage.depop.systems
 iamRoleARN: arn:aws:iam::183284569534:role/service-user-default-dispute-workflow
 image:
   repository: 594471699039.dkr.ecr.us-east-1.amazonaws.com/user-default/dispute-workflow
 linkerd:
   enabled: true
 loadbalancer:
+  to_keep: true
   access_log_bucket: us-east-1-stage-svcs-elb-access-logs
   securitygroups: sg-050dfecc994a32014
-  certificate: arn:aws:acm:us-east-1:183284569534:certificate/c352c7cd-9b12-43a0-8227-3670f0367bec
+  certificate: 'arn:aws:acm:us-east-1:183284569534:certificate/c352c7cd-9b12-43a0-8227-3670f0367bec,arn:aws:acm:us-east-1:183284569534:certificate/e0a438f1-911e-4916-9be0-92cbd99e573e'
 resources:
   limits:
     memory: 4G
@@ -33,7 +35,7 @@ serviceConfig:
   ENV_DB_URL: jdbc:postgresql://service-user-default-dispute-workflow.cnrpoumyfd1x.us-east-1.rds.amazonaws.com/disputeworkflow
   ENV_DB_USER: disputeworkflow_app
   ENV_OKTA_CLIENT_ISSUER_URI: https://depop.okta.com
-  ENV_OKTA_CLIENT_REDIRECT_URI: https://user-default-dispute-workflow.eks-default.stage-svcs.dpop.co.uk
+  ENV_OKTA_CLIENT_REDIRECT_URI: https://disputes-stage.depop.systems
   ENV_OAUTH2_RESOURCE_SERVER_JWK_SET_URI: https://security-default-clientauth-api.eks-default.stage-app.dpop.co.uk/.well-known/jwks.json
   ENV_OAUTH2_RESOURCE_SERVER_ISSUER_URI: depop-oauth-introspection
   ENV_DEPOP_CLIENT_TOKEN_URL: "https://security-default-clientauth-api.eks-default.stage-app.dpop.co.uk/oauth2/access_token/"
