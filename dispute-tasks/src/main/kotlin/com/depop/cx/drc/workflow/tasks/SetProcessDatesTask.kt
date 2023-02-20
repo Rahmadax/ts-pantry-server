@@ -18,7 +18,7 @@ private const val RESPONSE_DUE_DAYS_PROPERTY = "response_due_days"
 private const val EMBARGO_DAYS_PROPERTY = "embargo_days"
 private const val AUTO_ESCALATION_DAYS_PROPERTY = "auto_escalation_days"
 
-private const val EMBARGO_DAYS_DEFAULT = 7L
+private const val EMBARGO_DAYS_DEFAULT = 5L
 private const val AUTO_ESCALATION_DAYS_DEFAULT = 7L
 private const val RESPONSE_DAYS_DEFAULT = 7L
 
