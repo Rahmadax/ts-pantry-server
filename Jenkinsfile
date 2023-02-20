@@ -1,4 +1,5 @@
 pipeline {
+  triggers{ cron('H H(8-15) * * *') }
   options {
     buildDiscarder(logRotator(numToKeepStr: '5'))
     ansiColor('xterm')
@@ -9,9 +10,11 @@ pipeline {
 
   stages {
     stage('setup') {
+      agent any
       steps {
         script {
-          cicd.setupBuild()
+          cicd.setupBuild(["fullCheckout": true])
+          env.DEPLOY_TO_STAGE = 'no'
         }
       }
     }
@@ -21,16 +24,21 @@ pipeline {
       parallel {
         stage('assemble') {
           agent any
+          when {
+            anyOf {
+              not { triggeredBy 'TimerTrigger' }
+              not { branch 'master' }
+            }
+          }
           steps {
             measure {
               script {
-                cicd.withSecret('kv-jenkins/global/credentials','jfrog_api_key','JFROG_API_KEY') {
-                  sh "make ci"
-                }
+                cicd.withSecret('kv-jenkins/global/credentials','jfrog_api_key','JFROG_API_KEY') { sh "make ci" }
                 sh "make docker_build"
                 script { infra = readYaml(file: 'infra/stage_values.yaml') }
                 cicd.snykContainerScan('.', true, infra.image['repository'], '', '', 'Dockerfile.prebuilt')
                 sh "make docker_push"
+                env.DEPLOY_TO_STAGE = canDeployTo('stage') ? 'yes' : 'no'
               }
             }
           }
@@ -41,7 +49,15 @@ pipeline {
             measure {
               script {
                 cicd.snykDependencyScan()
-                env.DEPLOY_TO_STAGE = (env.BRANCH_NAME == 'master' || !pullRequest.draft && (upToDateWith('stage') || deployedBranch() == env.CHANGE_BRANCH)) ? 'yes' : 'no'
+              }
+            }
+          }
+          post {
+            failure {
+              script {
+                if (env.BRANCH_NAME == 'master') {
+                  slackSend channel: 'fulfilment', color: 'bad', message: "CVE found on  <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> :alert:"
+                }
               }
             }
           }
@@ -52,7 +68,10 @@ pipeline {
     // Prompt for deploy to stage:
     stage('stage deploy prompt') {
       when {
-        not { environment name: 'DEPLOY_TO_STAGE', value: 'yes' }
+        allOf {
+          not { environment name: 'DEPLOY_TO_STAGE', value: 'yes' }
+          not { triggeredBy 'TimerTrigger' }
+        }
       }
       steps {
         script {
@@ -68,8 +87,8 @@ pipeline {
       }
       steps {
         script {
-          def deployed = deployedBranch()
-          upToDate = upToDateWith('stage') || deployed == env.CHANGE_BRANCH
+          def deployed = cicd.deployedBranch()
+          upToDate = cicd.isBranchRebased('stage', env.GIT_COMMIT) || deployed == env.CHANGE_BRANCH
           if (!upToDate) {
             slackSend channel: 'fulfilment', color: 'warning', message: "Deploying <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> over `${deployed}` to staging :shipit_parrot:"
           }
@@ -94,17 +113,15 @@ pipeline {
     // Deploy to prod:
     stage('deploy to prod') {
       when {
-        branch 'master'
+        allOf {
+          branch 'master'
+          not { triggeredBy 'TimerTrigger' }
+        }
       }
       steps {
         measure {
           script {
-            def contractTests = false
-            def deploymentDirectory = ''
-            def portyardConfig = ''
-            def releaseName = ''
-            def cicdConfig = ["SNYK_MONITOR":"true", "LOCAL_DOCKERFILE":"Dockerfile.prebuilt"]
-            cicd.deploy('prod', deploymentDirectory, portyardConfig, releaseName, contractTests, cicdConfig)
+            cicd.deploy(envName: 'prod', testContract: false, SNYK_MONITOR: true, LOCAL_DOCKERFILE: "Dockerfile.prebuilt")
             slackSend channel: 'fulfilment', color: 'good', message: "Deployed <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> to production :dancinghamster:"
           }
         }
@@ -122,33 +139,18 @@ pipeline {
     failure {
       script {
         cicd.buildFailure()
-        if (env.BRANCH_NAME == 'master') {
-          slackSend channel: 'fulfilment', color: 'bad', message: "Failed to deploy <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> :cry:"
+        if (!cicd.isCausedByTimer() && env.BRANCH_NAME == 'master') {
+          slackSend channel: 'fulfilment', color: 'bad', message: "Failed to deploy <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> :sob:"
         }
       }
     }
   }
 }
 
-
-def upToDateWith(tag) {
-  def upToDate = false
+def canDeployTo(tag) {
+  def ok = false
   try {
-    def cicdGit = new com.depop.cicd.Git()
-    cicdGit.createUpstream()
-    sh "git fetch upstream refs/tags/${tag}"
-    upToDate = sh(script: "git merge-base --is-ancestor ${tag} ${env.GIT_COMMIT}", returnStatus: true) == 0
+    ok = !cicd.isCausedByTimer() && (env.BRANCH_NAME == 'master' || !pullRequest.draft && (cicd.isBranchRebased(tag, env.GIT_COMMIT) || cicd.deployedBranch() == env.CHANGE_BRANCH))
   } catch (e) { echo "$e" }
-  return upToDate
+  return ok
 }
-
-def deployedBranch() {
-  def branch = ""
-  try {
-    branch = sh(
-      script: "curl -s https://catalog.dflt-ops.dpop.co.uk/api/v2/deployment/user/default/workflow/dispute/staging/staging | jq -r '.[0].git_branch'",
-      returnStdout: true
-    )
-  } catch (e) { echo "$e" }
-  return branch.trim()
-} 
