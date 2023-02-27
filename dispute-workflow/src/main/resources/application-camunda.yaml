@@ -27,6 +27,9 @@ camunda:
       password: demo
     database:
       schema-update: true
+    generic-properties:
+      properties:
+        historyRemovalTimeStrategy: "start"
 
 ---
 
@@ -43,6 +46,14 @@ spring:
   config:
     activate:
       on-profile: stage
+camunda:
+  bpm:
+    generic-properties:
+      properties:
+        historyTimeToLive: P30D
+        historyCleanupJobLogTimeToLive: P7D
+        historyCleanupBatchWindowStartTime: "00:00"
+        historyCleanupBatchWindowEndTime: "09:00"
 
 ---
 
@@ -51,3 +62,11 @@ spring:
   config:
     activate:
       on-profile: production
+camunda:
+  bpm:
+    generic-properties:
+      properties:
+        historyTimeToLive: P180D
+        historyCleanupJobLogTimeToLive: P7D
+        historyCleanupBatchWindowStartTime: "05:00"
+        historyCleanupBatchWindowEndTime: "11:00"
