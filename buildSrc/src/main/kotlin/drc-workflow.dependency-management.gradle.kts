@@ -63,7 +63,8 @@ dependencyManagement {
         // SNYK-JAVA-COMSQUAREUPOKHTTP3-2958044
         dependency("com.squareup.okhttp3:okhttp:4.9.2")
 
-
+        // SNYK-JAVA-COMMONSFILEUPLOAD-3326457
+        dependency("commons-fileupload:commons-fileupload:1.5")
 
     }
 
