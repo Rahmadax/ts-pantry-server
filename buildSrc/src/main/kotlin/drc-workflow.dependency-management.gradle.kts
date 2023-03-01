@@ -14,7 +14,7 @@ dependencyManagement {
 
     imports {
         // Camunda Dependencies
-        mavenBom("org.camunda.bpm:camunda-bom:7.18.0")
+        mavenBom("org.camunda.bpm:camunda-bom:7.16.0")
 
         // Spring dependencies
         mavenBom(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
