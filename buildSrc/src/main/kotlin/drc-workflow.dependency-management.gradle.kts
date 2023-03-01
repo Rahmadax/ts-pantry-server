@@ -14,7 +14,7 @@ dependencyManagement {
 
     imports {
         // Camunda Dependencies
-        mavenBom("org.camunda.bpm:camunda-bom:7.16.0")
+        mavenBom("org.camunda.bpm:camunda-bom:7.18.0")
 
         // Spring dependencies
         mavenBom(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
@@ -63,7 +63,8 @@ dependencyManagement {
         // SNYK-JAVA-COMSQUAREUPOKHTTP3-2958044
         dependency("com.squareup.okhttp3:okhttp:4.9.2")
 
-
+        // SNYK-JAVA-COMMONSFILEUPLOAD-3326457
+        dependency("commons-fileupload:commons-fileupload:1.5")
 
     }
 
