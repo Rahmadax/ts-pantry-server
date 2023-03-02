@@ -12,6 +12,10 @@ camunda:
       schema-update: false
     deployment-resource-pattern: classpath*:com/depop/cx/drc/workflow/*.bpmn
     default-serialization-format: application/json
+    generic-properties:
+      properties:
+        historyCleanupStrategy: removalTimeBased
+        historyRemovalTimeStrategy: start
 
 ---
 
@@ -27,9 +31,6 @@ camunda:
       password: demo
     database:
       schema-update: true
-    generic-properties:
-      properties:
-        historyRemovalTimeStrategy: "start"
 
 ---
 
@@ -50,10 +51,11 @@ camunda:
   bpm:
     generic-properties:
       properties:
+        historyCleanupEnabled: true
         historyTimeToLive: P30D
         historyCleanupJobLogTimeToLive: P7D
-        historyCleanupBatchWindowStartTime: "00:00"
-        historyCleanupBatchWindowEndTime: "09:00"
+        historyCleanupBatchWindowStartTime: "07:00"
+        historyCleanupBatchWindowEndTime: "20:00"
 
 ---
 
@@ -66,6 +68,7 @@ camunda:
   bpm:
     generic-properties:
       properties:
+        historyCleanupEnabled: true
         historyTimeToLive: P180D
         historyCleanupJobLogTimeToLive: P7D
         historyCleanupBatchWindowStartTime: "05:00"
