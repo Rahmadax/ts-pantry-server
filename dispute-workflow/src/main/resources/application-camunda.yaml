@@ -14,8 +14,8 @@ camunda:
     default-serialization-format: application/json
     generic-properties:
       properties:
-        historyCleanupStrategy: removalTimeBased
-        historyRemovalTimeStrategy: start
+        history-cleanup-strategy: removalTimeBased
+        history-removal-time-strategy: start
 
 ---
 
@@ -51,11 +51,11 @@ camunda:
   bpm:
     generic-properties:
       properties:
-        historyCleanupEnabled: true
-        historyTimeToLive: P30D
-        historyCleanupJobLogTimeToLive: P7D
-        historyCleanupBatchWindowStartTime: "07:00"
-        historyCleanupBatchWindowEndTime: "20:00"
+        history-cleanup-enabled: true
+        history-time-to-live: P30D
+        history-cleanup-job-log-time-to-live: P7D
+        history-cleanup-batch-window-start-time: 07:00
+        history-cleanup-batch-window-end-time: 20:00
 
 ---
 
@@ -68,8 +68,8 @@ camunda:
   bpm:
     generic-properties:
       properties:
-        historyCleanupEnabled: true
-        historyTimeToLive: P180D
-        historyCleanupJobLogTimeToLive: P7D
-        historyCleanupBatchWindowStartTime: "05:00"
-        historyCleanupBatchWindowEndTime: "11:00"
+        history-cleanup-enabled: true
+        history-time-to-live: P180D
+        history-cleanup-job-log-time-to-live: P7D
+        history-cleanup-batch-window-start-time: 05:00
+        history-cleanup-batch-window-end-time: 11:00
