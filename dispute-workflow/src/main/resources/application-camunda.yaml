@@ -16,11 +16,6 @@ camunda:
       properties:
         history-cleanup-strategy: removalTimeBased
         history-removal-time-strategy: start
-        history-cleanup-enabled: true
-        history-time-to-live: P180D
-        history-cleanup-job-log-time-to-live: P7D
-        history-cleanup-batch-window-start-time: 05:00
-        history-cleanup-batch-window-end-time: 11:00
 
 ---
 
@@ -44,6 +39,15 @@ spring:
   config:
     activate:
       on-profile: local
+camunda:
+  bpm:
+    generic-properties:
+      properties:
+        history-cleanup-enabled: true
+        history-time-to-live: P30D
+        history-cleanup-job-log-time-to-live: P7D
+        history-cleanup-batch-window-start-time: "07:00"
+        history-cleanup-batch-window-end-time: "20:00"
 
 ---
 
@@ -52,6 +56,15 @@ spring:
   config:
     activate:
       on-profile: stage
+camunda:
+  bpm:
+    generic-properties:
+      properties:
+        history-cleanup-enabled: true
+        history-time-to-live: P30D
+        history-cleanup-job-log-time-to-live: P7D
+        history-cleanup-batch-window-start-time: "07:00"
+        history-cleanup-batch-window-end-time: "20:00"
 
 ---
 
@@ -60,3 +73,12 @@ spring:
   config:
     activate:
       on-profile: production
+camunda:
+  bpm:
+    generic-properties:
+      properties:
+        history-cleanup-enabled: true
+        history-time-to-live: P180D
+        history-cleanup-job-log-time-to-live: P7D
+        history-cleanup-batch-window-start-time: "05:00"
+        history-cleanup-batch-window-end-time: "11:00"
