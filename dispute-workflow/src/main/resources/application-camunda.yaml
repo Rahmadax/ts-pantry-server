@@ -18,6 +18,8 @@ camunda:
         history-removal-time-strategy: start
     job-execution:
       enabled: true
+    metrics:
+      enabled: false
 
 ---
 
