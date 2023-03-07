@@ -16,6 +16,7 @@ camunda:
       properties:
         history-cleanup-strategy: removalTimeBased
         history-removal-time-strategy: start
+        history-cleanup-metrics-enabled: false
     job-execution:
       enabled: true
     metrics:
