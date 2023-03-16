@@ -15,10 +15,10 @@ camunda:
     generic-properties:
       properties:
         history-cleanup-enabled: true
+        history-cleanup-metrics-enabled: false
         history-cleanup-strategy: removalTimeBased
         history-removal-time-strategy: start
         history-cleanup-job-log-time-to-live: P7D
-        history-cleanup-metrics-enabled: false
     job-execution:
       enabled: true
     metrics:
@@ -50,9 +50,12 @@ camunda:
   bpm:
     generic-properties:
       properties:
-        history-time-to-live: P30D
-        history-cleanup-batch-window-start-time: "07:00"
-        history-cleanup-batch-window-end-time: "20:00"
+        batch-operation-history-time-to-live: P1D
+        history-time-to-live: P7D
+        history-cleanup-job-log-time-to-live: P1D
+        history-cleanup-batch-window-start-time: "00:00"
+        history-cleanup-batch-window-end-time: "23:59"
+        task-metrics-time-to-live: P1D
 
 ---
 
@@ -65,9 +68,12 @@ camunda:
   bpm:
     generic-properties:
       properties:
+        batch-operation-history-time-to-live: P2D
         history-time-to-live: P30D
+        history-cleanup-job-log-time-to-live: P2D
         history-cleanup-batch-window-start-time: "07:00"
         history-cleanup-batch-window-end-time: "20:00"
+        task-metrics-time-to-live: P2D
 
 ---
 
@@ -80,6 +86,11 @@ camunda:
   bpm:
     generic-properties:
       properties:
+        batch-operation-history-time-to-live: P7D
         history-time-to-live: P180D
-        history-cleanup-batch-window-start-time: "05:00"
-        history-cleanup-batch-window-end-time: "11:00"
+        history-cleanup-job-log-time-to-live: P7D
+        history-cleanup-batch-window-start-time: "04:00"
+        history-cleanup-batch-window-end-time: "12:00"
+        history-cleanup-degree-of-parallelism: 3
+        history-cleanup-batch-size: 200
+        task-metrics-time-to-live: P7D
