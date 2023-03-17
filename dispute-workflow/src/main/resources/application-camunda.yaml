@@ -91,6 +91,6 @@ camunda:
         history-cleanup-job-log-time-to-live: P7D
         history-cleanup-batch-window-start-time: "04:00"
         history-cleanup-batch-window-end-time: "12:00"
-        history-cleanup-degree-of-parallelism: 3
-        history-cleanup-batch-size: 200
+        history-cleanup-degree-of-parallelism: 1
+        history-cleanup-batch-size: 100
         task-metrics-time-to-live: P7D
