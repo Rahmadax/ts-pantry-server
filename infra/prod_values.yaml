@@ -21,7 +21,7 @@ resources:
     memory: 8G
   requests:
     memory: 8G
-    cpu: 100m
+    cpu: 150m
 secrets:
   ENV_DB_PASSWORD: production/services/user/default/dispute/workflow/_default/postgres_app_password
   ENV_OKTA_CLIENT_ID: production/services/user/default/dispute/workflow/_default/okta_client_id
