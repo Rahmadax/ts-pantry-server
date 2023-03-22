@@ -22,7 +22,7 @@ resources:
   requests:
     memory: 8G
     cpu: 200m
-livenessProbe:
+readinessProbe:
   initialDelaySeconds: 400
 secrets:
   ENV_DB_PASSWORD: production/services/user/default/dispute/workflow/_default/postgres_app_password
