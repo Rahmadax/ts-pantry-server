@@ -16,3 +16,8 @@ ignore:
         reason: Service not working with spring 2.7
         expires: 2023-06-01T17:40:49.460Z
         created: 2023-03-01T17:40:49.460Z
+  SNYK-JAVA-COMH2DATABASE-31685:
+    - '*':
+        reason: H2 database used only locally
+        expires: 2023-06-22T10:44:32.460Z
+        created: 2023-03-22T10:44:32.460Z
