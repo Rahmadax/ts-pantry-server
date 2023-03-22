@@ -21,7 +21,7 @@ resources:
     memory: 8G
   requests:
     memory: 8G
-    cpu: 4
+    cpu: 150m
 secrets:
   ENV_DB_PASSWORD: production/services/user/default/dispute/workflow/_default/postgres_app_password
   ENV_OKTA_CLIENT_ID: production/services/user/default/dispute/workflow/_default/okta_client_id
@@ -44,11 +44,6 @@ serviceConfig:
   PAYMENTS_HOST: "https://payments-default-payments-api.eks-default.prod-app.dpop.co.uk/"
   SHIPPING_HOST: "https://fulfilment-default-shipping-internal.eks-default.prod-app.dpop.co.uk"
   USER_HOST: "https://django-default-snakeskin-api.eks-default.prod-app.dpop.co.uk"
-autoscaling:
-  cpu: 65
-  memory: 75
-  minReplicas: 3
-  maxReplicas: 4
 cluster: production
 chart:
   name: scala-service
