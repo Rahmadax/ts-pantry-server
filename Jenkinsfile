@@ -1,5 +1,5 @@
 pipeline {
-  triggers{ cron('H H(8-15) * * *') }
+  triggers{ cron(env.BRANCH_NAME == 'master' ? 'H H(8-15) * * *' : '') }
   options {
     buildDiscarder(logRotator(numToKeepStr: '5'))
     ansiColor('xterm')
@@ -55,7 +55,7 @@ pipeline {
           post {
             failure {
               script {
-                if (env.BRANCH_NAME == 'master') {
+                if (cicd.isCausedByTimer()) {
                   slackSend channel: 'fulfilment', color: 'bad', message: "CVE found on  <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> :alert:"
                 }
               }
