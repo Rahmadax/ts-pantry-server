@@ -22,8 +22,6 @@ resources:
   requests:
     memory: 8G
     cpu: 150m
-readinessProbe:
-  initialDelaySeconds: 30
 secrets:
   ENV_DB_PASSWORD: production/services/user/default/dispute/workflow/_default/postgres_app_password
   ENV_OKTA_CLIENT_ID: production/services/user/default/dispute/workflow/_default/okta_client_id
