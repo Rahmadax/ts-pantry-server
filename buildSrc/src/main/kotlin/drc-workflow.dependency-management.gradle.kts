@@ -66,9 +66,6 @@ dependencyManagement {
         // SNYK-JAVA-COMMONSFILEUPLOAD-3326457
         dependency("commons-fileupload:commons-fileupload:1.5")
 
-        // SNYK-JAVA-NETMINIDEV-3369748
-        dependency("net.minidev:json-smart:2.4.10")
-
     }
 
 }
