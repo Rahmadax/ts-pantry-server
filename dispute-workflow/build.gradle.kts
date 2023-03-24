@@ -41,7 +41,7 @@ dependencies {
     implementation(project(":dispute-tasks"))
 
     // Metrics support
-    implementation("io.micrometer:micrometer-jersey2")
+    implementation("io.micrometer:micrometer-core")
     implementation("io.micrometer:micrometer-registry-statsd")
 
     // Tracing support

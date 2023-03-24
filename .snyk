@@ -11,8 +11,3 @@ ignore:
         reason: webAllowOthers not enabled
         expires: 2023-06-19T19:25:25.460Z
         created: 2023-01-19T19:25:25.460Z
-  SNYK-JAVA-ORGAPACHETOMCATEMBED-3326459:
-    - '*':
-        reason: Service not working with spring 2.7
-        expires: 2023-06-01T17:40:49.460Z
-        created: 2023-03-01T17:40:49.460Z

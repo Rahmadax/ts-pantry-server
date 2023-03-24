@@ -34,10 +34,7 @@ pipeline {
             measure {
               script {
                 cicd.withSecret('kv-jenkins/global/credentials','jfrog_api_key','JFROG_API_KEY') { sh "make ci" }
-                sh "make docker_build"
-                script { infra = readYaml(file: 'infra/stage_values.yaml') }
-                cicd.snykContainerScan('.', true, infra.image['repository'], '', '', 'Dockerfile.prebuilt')
-                sh "make docker_push"
+                sh "make docker_build docker_push"
                 env.DEPLOY_TO_STAGE = canDeployTo('stage') ? 'yes' : 'no'
               }
             }
