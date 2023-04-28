@@ -29,8 +29,8 @@ dependencyManagement {
 
 
         // GraalVM JS Engine
-        dependency("org.graalvm.js:js:22.0.0")
-        dependency("org.graalvm.js:js-scriptengine:22.0.0")
+        dependency("org.graalvm.js:js:22.3.2")
+        dependency("org.graalvm.js:js-scriptengine:22.3.2")
 
         // Security dependencies
         dependency("com.depop:depop-jwt_2.13:0.0.23")
