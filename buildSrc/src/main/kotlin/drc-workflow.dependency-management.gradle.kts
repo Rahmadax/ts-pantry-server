@@ -66,6 +66,9 @@ dependencyManagement {
         // SNYK-JAVA-COMMONSFILEUPLOAD-3326457
         dependency("commons-fileupload:commons-fileupload:1.5")
 
+        // SNYK-JAVA-ORGJSON-5488379
+        dependency("org.json:json:20230227")
+
     }
 
 }
