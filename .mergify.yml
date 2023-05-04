@@ -1,0 +1,19 @@
+pull_request_rules:
+  - name: automatic merge for scala-steward pull requests
+    conditions:
+      - author=depop-scala-steward-github-app[bot]
+      - check-success=continuous-integration/jenkins/pr-head
+      - check-success=snyk/dependency/test
+      - schedule=Mon-Fri 10:00-17:00[Europe/London]
+    actions:
+      review:
+        type: APPROVE
+        message: Automatically approving scala-steward PR 
+      queue:
+        method: merge
+  - name: keep PRs up-to-date with main # to allow the PR to rejoin the queue automatically 
+    conditions:
+      - author=depop-scala-steward-github-app[bot]
+      - -conflict # skip PRs with conflicts
+    actions:
+      update:
