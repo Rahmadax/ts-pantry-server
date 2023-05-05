@@ -11,3 +11,8 @@ ignore:
         reason: webAllowOthers not enabled
         expires: 2023-06-19T19:25:25.460Z
         created: 2023-01-19T19:25:25.460Z
+  SNYK-JAVA-ORGJSON-5488379:
+    - '*':
+        reason: introduced by Snyk itself
+        expires: 2023-08-04T14:11:25.460Z
+        created: 2023-05-05T14:11:25.460Z
