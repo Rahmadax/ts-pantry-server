@@ -29,14 +29,14 @@ dependencyManagement {
 
 
         // GraalVM JS Engine
-        dependency("org.graalvm.js:js:22.0.0")
-        dependency("org.graalvm.js:js-scriptengine:22.0.0")
+        dependency("org.graalvm.js:js:22.3.2")
+        dependency("org.graalvm.js:js-scriptengine:22.3.2")
 
         // Security dependencies
         dependency("com.depop:depop-jwt_2.13:0.0.23")
         dependency("com.okta.spring:okta-spring-security-oauth2:1.1.0")
-        dependency("org.springframework.security:spring-security-web:5.7.7")
-        dependency("org.springframework.security:spring-security-oauth2-client:5.7.7")
+        dependency("org.springframework.security:spring-security-web:5.7.8")
+        dependency("org.springframework.security:spring-security-oauth2-client:5.7.8")
 
         // Opentracing dependencies
         dependency("io.opentracing.contrib:opentracing-spring-cloud-starter:0.5.9")
