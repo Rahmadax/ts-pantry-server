@@ -13,7 +13,11 @@ pull_request_rules:
         method: merge
   - name: keep PRs up-to-date with main # to allow the PR to rejoin the queue automatically 
     conditions:
-      - author=depop-scala-steward-github-app[bot]
+      - or:
+        - author=depop-github-merge-bot
+        - author=depop-jenkins-github-app[bot]
+        - author=depop-scala-steward-github-app[bot]
+        - author=dependabot[bot]
       - -conflict # skip PRs with conflicts
     actions:
       update:
