@@ -15,7 +15,7 @@ loadbalancer:
   to_keep: true
   access_log_bucket: us-east-1-prod-svcs-elb-access-logs
   securitygroups: sg-0a9d907d6394cd811
-  certificate: 'arn:aws:acm:us-east-1:093904767316:certificate/2dd52cee-0303-445f-80ed-dddea1b10281,arn:aws:acm:us-east-1:093904767316:certificate/d0c46172-5267-4cb0-8baa-062357fc532f'
+  certificate: 'arn:aws:acm:us-east-1:093904767316:certificate/2552a016-50f6-4f43-8a22-ca5dabdbb68b,arn:aws:acm:us-east-1:093904767316:certificate/d0c46172-5267-4cb0-8baa-062357fc532f'
 resources:
   limits:
     memory: 8G

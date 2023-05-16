@@ -15,7 +15,7 @@ loadbalancer:
   to_keep: true
   access_log_bucket: us-east-1-stage-svcs-elb-access-logs
   securitygroups: sg-050dfecc994a32014
-  certificate: 'arn:aws:acm:us-east-1:183284569534:certificate/c352c7cd-9b12-43a0-8227-3670f0367bec,arn:aws:acm:us-east-1:183284569534:certificate/e0a438f1-911e-4916-9be0-92cbd99e573e'
+  certificate: 'arn:aws:acm:us-east-1:183284569534:certificate/04efed22-1a3c-4d1c-b644-7ef61dc11e95,arn:aws:acm:us-east-1:183284569534:certificate/e0a438f1-911e-4916-9be0-92cbd99e573e'
 resources:
   limits:
     memory: 4G
