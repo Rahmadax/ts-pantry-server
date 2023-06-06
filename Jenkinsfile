@@ -62,7 +62,6 @@ pipeline {
       }
     }
 
-    // Prompt for deploy to stage:
     stage('stage deploy prompt') {
       when {
         allOf {
@@ -77,7 +76,7 @@ pipeline {
       }
     }
 
-    stage('pre-deploy check') {
+    stage('pre-deploy stage') {
       agent any
       when {
         environment name: 'DEPLOY_TO_STAGE', value: 'yes'
@@ -93,7 +92,6 @@ pipeline {
       }
     }
 
-    // Deploy to staging
     stage('deploy to stage') {
       when {
         environment name: 'DEPLOY_TO_STAGE', value: 'yes'
@@ -107,7 +105,23 @@ pipeline {
       }
     }
 
-    // Deploy to prod:
+    stage('pre-deploy prod') {
+      agent any
+      when {
+        allOf {
+          branch 'master'
+          not { triggeredBy 'TimerTrigger' }
+        }
+      }
+      steps {
+        script {
+          def rebased = cicd.isBranchRebased('prod', env.GIT_COMMIT)
+          def releaseNotes = sh(script: "git log --format=format:-%x20%s --no-merges prod..${env.GIT_COMMIT}", returnStdout: true)
+          slackSend channel: 'fulfilment', color: rebased ? 'good' : 'warning', message: "Deploying <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> to production :shipit_parrot:\n${releaseNotes}"
+        }
+      }
+    }
+
     stage('deploy to prod') {
       when {
         allOf {
