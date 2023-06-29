@@ -15,7 +15,7 @@ ecr_repository: 594471699039.dkr.ecr.us-east-1.amazonaws.com
 ecr_user: AWS
 
 sqitch_config_dir: .sqitch
-sqitch_version: v1.1.0
+sqitch_version: v1.3.1
 sqitch_image: tools/sqitch
 sqitch_timeout: 60
 
