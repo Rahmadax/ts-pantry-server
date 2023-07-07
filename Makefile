@@ -6,7 +6,7 @@ interactive ?=
 build_command ?= TERM=dumb ./gradlew build -PbuildProfile=ci --no-daemon
 
 ci:
-	docker run --rm $(interactive) -e JFROG_API_KEY --entrypoint=$(entrypoint) -v $$PWD/:/work -w /work $(build_image) sh -c "$(build_command)"
+	docker run --rm $(interactive) --entrypoint=$(entrypoint) -v $$PWD/:/work -w /work $(build_image) sh -c "$(build_command)"
 
 interactive:
 	$(MAKE) ci command='sh' interactive='-it'

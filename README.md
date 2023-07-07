@@ -31,22 +31,6 @@ The spring boot profiles are automatically set when building and running using g
 
 This project uses the depop JFrog artifactory for dependency resolution.
 
-Please add your api key to your global gradle properties file `~/.gradle/gradle.properties`
-
-```properties
-jfrog_api_key=<api-key>
-```
-
-The key can also be set via an environment variable.
-
-```shell
-> export JFROG_API_KEY=<api-key>
-```
-
-For more information on getting an API key please see here:
-
-https://depopmarket.atlassian.net/wiki/spaces/BD/pages/1298530340/Setup+artifactory+access+locally
-
 ### Local Postgres Database
 
 The default local development profile will use an in memory h2 instance by default. To create a local postgres instance please use DPDB.
