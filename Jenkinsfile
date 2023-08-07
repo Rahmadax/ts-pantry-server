@@ -53,7 +53,8 @@ pipeline {
             failure {
               script {
                 if (cicd.isCausedByTimer()) {
-                  slackSend channel: 'fulfilment', color: 'bad', message: "CVE found on  <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> :alert:"
+                  def msg = cicd.snykScanSummary('slack')
+                  slackSend channel: 'fulfilment', color: 'bad', message: "CVE found on  <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> :alert:\n\n${msg}"
                 }
               }
             }
