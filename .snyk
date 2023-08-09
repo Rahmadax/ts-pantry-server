@@ -14,5 +14,5 @@ ignore:
   SNYK-JAVA-ORGJSON-5488379:
     - '*':
         reason: introduced by Snyk itself
-        expires: 2023-08-04T14:11:25.460Z
+        expires: 2023-10-04T14:11:25.460Z
         created: 2023-05-05T14:11:25.460Z
