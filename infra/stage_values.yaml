@@ -1,4 +1,3 @@
----
 envname: stage
 accountTag: stage-svcs
 service_domain: user
@@ -15,7 +14,11 @@ loadbalancer:
   to_keep: true
   access_log_bucket: us-east-1-stage-svcs-elb-access-logs
   securitygroups: sg-050dfecc994a32014
-  certificate: 'arn:aws:acm:us-east-1:183284569534:certificate/04efed22-1a3c-4d1c-b644-7ef61dc11e95,arn:aws:acm:us-east-1:183284569534:certificate/e0a438f1-911e-4916-9be0-92cbd99e573e'
+  certificate: arn:aws:acm:us-east-1:183284569534:certificate/04efed22-1a3c-4d1c-b644-7ef61dc11e95,arn:aws:acm:us-east-1:183284569534:certificate/e0a438f1-911e-4916-9be0-92cbd99e573e
+  alb:
+    securitygroups: sg-050dfecc994a32014
+    access_log_bucket: us-east-1-stage-svcs-elb-access-logs
+    certificate: arn:aws:acm:us-east-1:183284569534:certificate/04efed22-1a3c-4d1c-b644-7ef61dc11e95,arn:aws:acm:us-east-1:183284569534:certificate/e0a438f1-911e-4916-9be0-92cbd99e573e
 resources:
   limits:
     memory: 4G
@@ -30,7 +33,7 @@ secrets:
   ENV_DEPOP_CLIENT_SECRET: staging/services/user/default/dispute/workflow/_default/depop_client_secret
   ENV_SHIPPING_API_SECRET: staging/services/user/default/dispute/workflow/_default/shipping_api_secret
 serviceConfig:
-  JAVA_OPTS: "-Dpolyglot.engine.WarnInterpreterOnly=false"
+  JAVA_OPTS: -Dpolyglot.engine.WarnInterpreterOnly=false
   SPRING_PROFILES_ACTIVE: stage_deployment
   ENV_DB_URL: jdbc:postgresql://service-user-default-dispute-workflow.cnrpoumyfd1x.us-east-1.rds.amazonaws.com/disputeworkflow
   ENV_DB_USER: disputeworkflow_app
@@ -38,12 +41,12 @@ serviceConfig:
   ENV_OKTA_CLIENT_REDIRECT_URI: https://disputes-stage.depop.systems
   ENV_OAUTH2_RESOURCE_SERVER_JWK_SET_URI: https://security-default-clientauth-api.eks-default.stage-app.dpop.co.uk/.well-known/jwks.json
   ENV_OAUTH2_RESOURCE_SERVER_ISSUER_URI: depop-oauth-introspection
-  ENV_DEPOP_CLIENT_TOKEN_URL: "https://security-default-clientauth-api.eks-default.stage-app.dpop.co.uk/oauth2/access_token/"
-  CHECKOUT_HOST: "https://checkout-default-checkout-server.eks-default.stage-app.dpop.co.uk"
-  DRC_HOST: "https://user-default-dispute-internal.eks-default.stage-app.dpop.co.uk"
-  PAYMENTS_HOST: "https://payments-default-payments-api.eks-default.stage-app.dpop.co.uk/"
-  SHIPPING_HOST: "https://fulfilment-default-shipping-internal.eks-default.stage-app.dpop.co.uk"
-  USER_HOST: "https://django-default-snakeskin-api.eks-default.stage-app.dpop.co.uk"
+  ENV_DEPOP_CLIENT_TOKEN_URL: https://security-default-clientauth-api.eks-default.stage-app.dpop.co.uk/oauth2/access_token/
+  CHECKOUT_HOST: https://checkout-default-checkout-server.eks-default.stage-app.dpop.co.uk
+  DRC_HOST: https://user-default-dispute-internal.eks-default.stage-app.dpop.co.uk
+  PAYMENTS_HOST: https://payments-default-payments-api.eks-default.stage-app.dpop.co.uk/
+  SHIPPING_HOST: https://fulfilment-default-shipping-internal.eks-default.stage-app.dpop.co.uk
+  USER_HOST: https://django-default-snakeskin-api.eks-default.stage-app.dpop.co.uk
 autoscaling:
   cpu: 65
   memory: 75
@@ -52,4 +55,4 @@ autoscaling:
 cluster: staging
 chart:
   name: scala-service
-  version: "^1.10.0"
+  version: ^1.10.0

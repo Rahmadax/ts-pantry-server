@@ -1,4 +1,3 @@
----
 envname: prod
 accountTag: prod-svcs
 service_domain: user
@@ -15,7 +14,11 @@ loadbalancer:
   to_keep: true
   access_log_bucket: us-east-1-prod-svcs-elb-access-logs
   securitygroups: sg-0a9d907d6394cd811
-  certificate: 'arn:aws:acm:us-east-1:093904767316:certificate/2552a016-50f6-4f43-8a22-ca5dabdbb68b,arn:aws:acm:us-east-1:093904767316:certificate/d0c46172-5267-4cb0-8baa-062357fc532f'
+  certificate: arn:aws:acm:us-east-1:093904767316:certificate/2552a016-50f6-4f43-8a22-ca5dabdbb68b,arn:aws:acm:us-east-1:093904767316:certificate/d0c46172-5267-4cb0-8baa-062357fc532f
+  alb:
+    securitygroups: sg-0a9d907d6394cd811
+    access_log_bucket: us-east-1-prod-svcs-elb-access-logs
+    certificate: arn:aws:acm:us-east-1:093904767316:certificate/2552a016-50f6-4f43-8a22-ca5dabdbb68b,arn:aws:acm:us-east-1:093904767316:certificate/d0c46172-5267-4cb0-8baa-062357fc532f
 resources:
   limits:
     memory: 8G
@@ -30,7 +33,7 @@ secrets:
   ENV_DEPOP_CLIENT_SECRET: production/services/user/default/dispute/workflow/_default/depop_client_secret
   ENV_SHIPPING_API_SECRET: production/services/user/default/dispute/workflow/_default/shipping_api_secret
 serviceConfig:
-  JAVA_OPTS: "-Dpolyglot.engine.WarnInterpreterOnly=false"
+  JAVA_OPTS: -Dpolyglot.engine.WarnInterpreterOnly=false
   SPRING_PROFILES_ACTIVE: production_deployment
   ENV_DB_URL: jdbc:postgresql://service-user-default-dispute-workflow-12-6.ckh7hwnufggc.us-east-1.rds.amazonaws.com/disputeworkflow
   ENV_DB_USER: disputeworkflow_app
@@ -38,13 +41,13 @@ serviceConfig:
   ENV_OKTA_CLIENT_REDIRECT_URI: https://disputes.depop.systems
   ENV_OAUTH2_RESOURCE_SERVER_JWK_SET_URI: https://security-default-clientauth-api.eks-default.prod-app.dpop.co.uk/.well-known/jwks.json
   ENV_OAUTH2_RESOURCE_SERVER_ISSUER_URI: depop-oauth-introspection
-  ENV_DEPOP_CLIENT_TOKEN_URL: "https://security-default-clientauth-api.eks-default.prod-app.dpop.co.uk/oauth2/access_token/"
-  CHECKOUT_HOST: "https://checkout-default-checkout-server.eks-default.prod-app.dpop.co.uk"
-  DRC_HOST: "https://user-default-dispute-internal.eks-default.prod-app.dpop.co.uk"
-  PAYMENTS_HOST: "https://payments-default-payments-api.eks-default.prod-app.dpop.co.uk/"
-  SHIPPING_HOST: "https://fulfilment-default-shipping-internal.eks-default.prod-app.dpop.co.uk"
-  USER_HOST: "https://django-default-snakeskin-api.eks-default.prod-app.dpop.co.uk"
+  ENV_DEPOP_CLIENT_TOKEN_URL: https://security-default-clientauth-api.eks-default.prod-app.dpop.co.uk/oauth2/access_token/
+  CHECKOUT_HOST: https://checkout-default-checkout-server.eks-default.prod-app.dpop.co.uk
+  DRC_HOST: https://user-default-dispute-internal.eks-default.prod-app.dpop.co.uk
+  PAYMENTS_HOST: https://payments-default-payments-api.eks-default.prod-app.dpop.co.uk/
+  SHIPPING_HOST: https://fulfilment-default-shipping-internal.eks-default.prod-app.dpop.co.uk
+  USER_HOST: https://django-default-snakeskin-api.eks-default.prod-app.dpop.co.uk
 cluster: production
 chart:
   name: scala-service
-  version: "^1.10.0"
+  version: ^1.10.0
