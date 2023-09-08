@@ -1,3 +1,5 @@
+environment: staging
+accountName: services-staging
 envname: stage
 accountTag: stage-svcs
 service_domain: user

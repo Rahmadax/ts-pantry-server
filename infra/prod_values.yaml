@@ -1,3 +1,5 @@
+environment: production
+accountName: services-production
 envname: prod
 accountTag: prod-svcs
 service_domain: user
@@ -51,3 +53,6 @@ cluster: production
 chart:
   name: scala-service
   version: ^1.10.0
+autoscaling:
+  maxReplicas: 12
+  minReplicas: 4
