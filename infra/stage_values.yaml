@@ -1,18 +1,15 @@
 environment: staging
 accountName: services-staging
-envname: stage
 accountTag: stage-svcs
 service_domain: user
 service_group: default
 service_name: dispute
 service_role: workflow
 dns_override_fqdn: disputes-stage.depop.systems
-iamRoleARN: arn:aws:iam::183284569534:role/service-user-default-dispute-workflow
 image:
   repository: 594471699039.dkr.ecr.us-east-1.amazonaws.com/user-default/dispute-workflow
-linkerd:
-  enabled: true
 loadbalancer:
+  port: 9000
   alb:
     securitygroups: sg-050dfecc994a32014
     access_log_bucket: us-east-1-stage-svcs-elb-access-logs
@@ -51,7 +48,8 @@ autoscaling:
   memory: 75
   minReplicas: 3
   maxReplicas: 4
-cluster: staging
 chart:
-  name: scala-service
-  version: ^1.10.0
+  name: generic-service
+  version: ^2
+logging:
+  logback: false
