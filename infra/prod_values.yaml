@@ -51,3 +51,6 @@ autoscaling:
   minReplicas: 4
 logging:
   logback: false
+datadogTracing:
+  agent:
+    enabled: false

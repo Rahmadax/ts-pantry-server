@@ -53,3 +53,6 @@ chart:
   version: ^2
 logging:
   logback: false
+datadogTracing:
+  agent:
+    enabled: false
