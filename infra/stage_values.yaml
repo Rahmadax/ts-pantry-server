@@ -5,22 +5,23 @@ service_domain: user
 service_group: default
 service_name: dispute
 service_role: workflow
+
 dns_override_fqdn: disputes-stage.depop.systems
-image:
-  repository: 594471699039.dkr.ecr.us-east-1.amazonaws.com/user-default/dispute-workflow
+
 loadbalancer:
   port: 9000
   alb:
-    securitygroups: sg-050dfecc994a32014
     access_log_bucket: us-east-1-stage-svcs-elb-access-logs
     certificate: arn:aws:acm:us-east-1:183284569534:certificate/04efed22-1a3c-4d1c-b644-7ef61dc11e95,arn:aws:acm:us-east-1:183284569534:certificate/e0a438f1-911e-4916-9be0-92cbd99e573e
     enabled: true
+
 resources:
   limits:
-    memory: 4G
+    memory: 4Gi
   requests:
-    memory: 4G
-    cpu: 2
+    memory: 4Gi
+    cpu: 2000m
+
 secrets:
   ENV_DB_PASSWORD: staging/services/user/default/dispute/workflow/_default/postgres_app_password
   ENV_OKTA_CLIENT_ID: staging/services/user/default/dispute/workflow/_default/okta_client_id
@@ -28,6 +29,7 @@ secrets:
   ENV_DEPOP_CLIENT_ID: staging/services/user/default/dispute/workflow/_default/depop_client_id
   ENV_DEPOP_CLIENT_SECRET: staging/services/user/default/dispute/workflow/_default/depop_client_secret
   ENV_SHIPPING_API_SECRET: staging/services/user/default/dispute/workflow/_default/shipping_api_secret
+
 serviceConfig:
   JAVA_OPTS: -Dpolyglot.engine.WarnInterpreterOnly=false
   SPRING_PROFILES_ACTIVE: stage_deployment
@@ -43,16 +45,17 @@ serviceConfig:
   PAYMENTS_HOST: https://payments-default-payments-api.eks-default.stage-app.dpop.co.uk/
   SHIPPING_HOST: https://fulfilment-default-shipping-internal.eks-default.stage-app.dpop.co.uk
   USER_HOST: https://django-default-snakeskin-api.eks-default.stage-app.dpop.co.uk
+
 autoscaling:
   cpu: 65
   memory: 75
   minReplicas: 3
   maxReplicas: 4
+
 chart:
   name: generic-service
   version: ^2
-logging:
-  logback: false
+
 datadogTracing:
   agent:
     enabled: false
