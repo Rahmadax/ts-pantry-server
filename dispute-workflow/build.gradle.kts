@@ -12,7 +12,11 @@ dependencies {
 
     // Spring
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-jersey")
+    implementation("org.springframework.boot:spring-boot-starter-jersey") {
+      exclude("org.apache.tomcat.embed:tomcat-embed-core")
+    }
+    // Snyk https://security.snyk.io/vuln/SNYK-JAVA-ORGAPACHETOMCATEMBED-5953331
+    implementation("org.apache.tomcat.embed:tomcat-embed-core:9.0.81")
     implementation("org.springframework.boot:spring-boot-starter-web")
 
     // Session

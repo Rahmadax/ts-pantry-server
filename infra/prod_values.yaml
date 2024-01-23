@@ -6,21 +6,21 @@ service_group: default
 service_name: dispute
 service_role: workflow
 dns_override_fqdn: disputes.depop.systems
-image:
-  repository: 594471699039.dkr.ecr.us-east-1.amazonaws.com/user-default/dispute-workflow
+
 loadbalancer:
   port: 9000
   alb:
-    securitygroups: sg-0a9d907d6394cd811
     access_log_bucket: us-east-1-prod-svcs-elb-access-logs
     certificate: arn:aws:acm:us-east-1:093904767316:certificate/2552a016-50f6-4f43-8a22-ca5dabdbb68b,arn:aws:acm:us-east-1:093904767316:certificate/d0c46172-5267-4cb0-8baa-062357fc532f
     enabled: true
+
 resources:
   limits:
-    memory: 8G
+    memory: 8Gi
   requests:
-    memory: 8G
+    memory: 8Gi
     cpu: 150m
+
 secrets:
   ENV_DB_PASSWORD: production/services/user/default/dispute/workflow/_default/postgres_app_password
   ENV_OKTA_CLIENT_ID: production/services/user/default/dispute/workflow/_default/okta_client_id
@@ -43,11 +43,15 @@ serviceConfig:
   PAYMENTS_HOST: https://payments-default-payments-api.eks-default.prod-app.dpop.co.uk/
   SHIPPING_HOST: https://fulfilment-default-shipping-internal.eks-default.prod-app.dpop.co.uk
   USER_HOST: https://django-default-snakeskin-api.eks-default.prod-app.dpop.co.uk
+
 chart:
   name: generic-service
   version: ^2
+
 autoscaling:
   maxReplicas: 12
   minReplicas: 4
-logging:
-  logback: false
+
+datadogTracing:
+  agent:
+    enabled: false
