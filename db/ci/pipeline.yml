@@ -7,7 +7,7 @@ resource_types:
   - name: ecr-image
     type: registry-image
     source:
-      repository: depop/concourse-registry-image
+      repository: ghcr.io/depoplabs/concourse-registry-image
   - name: pull-request
     type: ecr-image
     source:
