@@ -29,8 +29,9 @@ dependencyManagement {
 
 
         // GraalVM JS Engine
-        dependency("org.graalvm.js:js:22.3.2")
-        dependency("org.graalvm.js:js-scriptengine:22.3.2")
+        // https://security.snyk.io/vuln/SNYK-JAVA-ORGGRAALVMSDK-6163607
+        dependency("org.graalvm.js:js:22.3.4")
+        dependency("org.graalvm.js:js-scriptengine:22.3.4")
 
         // Security dependencies
         dependency("com.depop:depop-jwt_2.13:0.0.23")
@@ -65,6 +66,15 @@ dependencyManagement {
 
         // SNYK-JAVA-COMMONSFILEUPLOAD-3326457
         dependency("commons-fileupload:commons-fileupload:1.5")
+
+        // https://security.snyk.io/vuln/SNYK-JAVA-CHQOSLOGBACK-6094942
+        dependency("ch.qos.logback:logback-core:1.2.13")
+
+        // https://security.snyk.io/vuln/SNYK-JAVA-CHQOSLOGBACK-6097492
+        dependency("ch.qos.logback:logback-classic:1.2.13")
+
+        // https://security.snyk.io/vuln/SNYK-JAVA-COMJAYWAYJSONPATH-6140361
+        dependency("com.jayway.jsonpath:json-path:2.9.0")
 
     }
 

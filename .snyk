@@ -21,3 +21,18 @@ ignore:
         reason: introduced by Snyk itself
         expires: 2024-04-04T14:11:25.460Z
         created: 2023-10-24T11:11:25.460Z
+  SNYK-JAVA-ORGGRAALVMSDK-6163607:
+    - '*':
+        reason: Graalvm js 23.x.x does not support java8
+        expires: 2024-04-22T11:11:25.460Z
+        created: 2024-01-23T11:11:25.460Z
+  SNYK-JAVA-ORGGRAALVMSDK-6162757:
+    - '*':
+        reason: Graalvm js 23.x.x does not support java8
+        expires: 2024-04-22T11:11:25.460Z
+        created: 2024-01-23T11:11:25.460Z
+  SNYK-JAVA-ORGGRAALVMSDK-6164703:
+    - '*':
+        reason: Graalvm js 23.x.x does not support java8
+        expires: 2024-04-22T11:11:25.460Z
+        created: 2024-01-23T11:11:25.460Z
