@@ -16,9 +16,9 @@ loadbalancer:
 
 resources:
   limits:
-    memory: 8Gi
+    memory: 5Gi
   requests:
-    memory: 8Gi
+    memory: 3Gi
     cpu: 150m
 
 secrets:
