@@ -36,3 +36,13 @@ ignore:
         reason: Graalvm js 23.x.x does not support java8
         expires: 2024-04-22T11:11:25.460Z
         created: 2024-01-23T11:11:25.460Z
+  SNYK-JAVA-ORGSPRINGFRAMEWORK-6261586:
+    - '*':
+        reason: Springboot 3.1.9 requires java 17
+        expires: 2024-05-26T11:11:25.460Z
+        created: 2024-02-26T11:11:25.460Z
+  SNYK-JAVA-COMNIMBUSDS-6247633:
+    - '*':
+        reason: Springboot 3.1.9 requires java 17
+        expires: 2024-05-26T11:11:25.460Z
+        created: 2024-02-26T11:11:25.460Z
