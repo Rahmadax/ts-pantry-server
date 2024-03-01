@@ -7,7 +7,6 @@ import org.camunda.bpm.engine.delegate.DelegateExecution
 import reactor.core.publisher.Mono
 import java.time.ZonedDateTime
 
-private const val DISPUTE_ID_PROPERTY = "dispute_id"
 private const val RECEIPT_ID_PROPERTY = "receipt_id"
 private const val BUYER_ID_PROPERTY = "buyer"
 private const val SELLER_ID_PROPERTY = "seller"
@@ -137,17 +136,6 @@ class GetReceiptDetailsTask(
     }
 
     private fun setVariables(execution: DelegateExecution, details: ReceiptDetails?) {
-        val disputeId = execution.getUUIDVariableOrNull(DISPUTE_ID_PROPERTY)
-        logger.info { "Setting buyer id ${details?.receipt?.buyerId} on dispute $disputeId." }
-        logger.info { "Setting seller id ${details?.receipt?.sellerId} on dispute $disputeId." }
-        logger.info { "Setting created date ${details?.receipt?.created?.toOffsetDateTime()} on dispute $disputeId." }
-        logger.info { "Setting payment provider ${details?.receipt?.paymentProvider} on dispute $disputeId." }
-        logger.info { "Setting shipping status ${details?.shippingStatus} on dispute $disputeId." }
-        logger.info { "Setting is refundable ${details?.isRefundable} on dispute $disputeId." }
-        logger.info { "Setting parcel id ${details?.parcelId} on dispute $disputeId." }
-        logger.info { "Setting is fully refunded ${details?.receipt?.isFullyRefunded()} on dispute $disputeId." }
-        logger.info { "Setting shipped date ${details?.shippedAt?.toOffsetDateTime()} on dispute $disputeId." }
-
         execution.setVariableLocal(BUYER_ID_PROPERTY, details?.receipt?.buyerId?.toString() ?: "")
         execution.setVariableLocal(SELLER_ID_PROPERTY, details?.receipt?.sellerId?.toString() ?: "")
         execution.setVariableLocal(
