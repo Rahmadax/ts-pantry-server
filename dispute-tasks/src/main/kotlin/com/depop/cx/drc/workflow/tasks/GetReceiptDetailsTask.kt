@@ -5,6 +5,7 @@ import mu.KotlinLogging
 import org.camunda.bpm.engine.delegate.BpmnError
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import reactor.core.publisher.Mono
+import java.time.ZonedDateTime
 
 private const val RECEIPT_ID_PROPERTY = "receipt_id"
 private const val BUYER_ID_PROPERTY = "buyer"
@@ -16,6 +17,7 @@ private const val IS_REFUNDABLE_PROPERTY = "is_refundable"
 private const val IS_TRACKED_PROPERTY = "is_tracked"
 private const val PARCEL_ID = "parcel_id"
 private const val IS_FULLY_REFUNDED = "is_fully_refunded"
+private const val SHIPPED_TIME = "shipped_at"
 
 
 data class ReceiptDetails(
@@ -23,12 +25,14 @@ data class ReceiptDetails(
     val shippingStatus: String,
     val isRefundable: Boolean,
     val isTracked: Boolean,
-    val parcelId: String?
+    val parcelId: String?,
+    val shippedAt: ZonedDateTime?
 )
 
 data class PrimaryParcelDetails(
     val isTracked: Boolean,
-    val parcelId: String?
+    val parcelId: String?,
+    val shippedAt: ZonedDateTime?
 )
 
 class GetReceiptDetailsTask(
@@ -71,7 +75,8 @@ class GetReceiptDetailsTask(
                     shippingStatus,
                     isRefundable,
                     parcel.isTracked,
-                    parcel.parcelId
+                    parcel.parcelId,
+                    parcel.shippedAt
                 )
             )
         }.block()
@@ -97,7 +102,7 @@ class GetReceiptDetailsTask(
             .flatMap { parcels -> shippingClient.getParcelDetails(parcels.ids) }
             .map {
                 if (it == null || it.isEmpty()) {
-                    PrimaryParcelDetails(false, null)
+                    PrimaryParcelDetails(false, null, null)
                 } else {
 
                     // There are potentially multiple parcels, for the time being we'll use the first.
@@ -108,7 +113,8 @@ class GetReceiptDetailsTask(
 
                     // The parcel ID is used
                     val parcelId = parcel?.id
-                    PrimaryParcelDetails(isTracked, parcelId)
+                    val shippedAt = getShippedTime(parcel)
+                    PrimaryParcelDetails(isTracked, parcelId, shippedAt)
                 }
             }
     }
@@ -125,6 +131,10 @@ class GetReceiptDetailsTask(
         return trackingNumber
     }
 
+    private fun getShippedTime(parcel: ParcelDetails?): ZonedDateTime? {
+        return parcel?.providerDetails?.depopParcelShippedAt ?: parcel?.providerDetails?.manualParcelShippedAt
+    }
+
     private fun setVariables(execution: DelegateExecution, details: ReceiptDetails?) {
         execution.setVariableLocal(BUYER_ID_PROPERTY, details?.receipt?.buyerId?.toString() ?: "")
         execution.setVariableLocal(SELLER_ID_PROPERTY, details?.receipt?.sellerId?.toString() ?: "")
@@ -138,6 +148,7 @@ class GetReceiptDetailsTask(
         execution.setVariableLocal(IS_TRACKED_PROPERTY, details?.isTracked ?: "")
         execution.setVariableLocal(PARCEL_ID, details?.parcelId ?: "")
         execution.setVariableLocal(IS_FULLY_REFUNDED, details?.receipt?.isFullyRefunded() ?: "")
+        execution.setVariableLocal(SHIPPED_TIME, details?.shippedAt?.toOffsetDateTime()?.toString() ?: "")
     }
 
 

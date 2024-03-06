@@ -3,6 +3,7 @@ package com.depop.cx.drc.workflow.client
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Mono
+import java.time.ZonedDateTime
 
 private const val GET_SHIPPING_DETAILS = "/internal/v2/shipping-statuses/{receiptId}/"
 private const val GET_PARCEL_IDS = "/internal/v2/parcels/by-purchase-id/{receiptId}/"
@@ -37,7 +38,9 @@ data class ParcelDetails(
 data class ParcelProviderDetails(
     @JsonProperty("state") val status: String?,
     @JsonProperty("shipping_tracking_number") val manualParcelTrackingNumber: String?,
-    @JsonProperty("tracking") val depopParcelTracking: DepopParcelTracking?
+    @JsonProperty("tracking") val depopParcelTracking: DepopParcelTracking?,
+    @JsonProperty("shipped_at") val manualParcelShippedAt: ZonedDateTime?,
+    @JsonProperty("shipment_timestamp") val depopParcelShippedAt: ZonedDateTime?
 )
 
 data class DepopParcelTracking(@JsonProperty("reference") val reference: String?)
