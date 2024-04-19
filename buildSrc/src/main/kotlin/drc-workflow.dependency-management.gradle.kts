@@ -36,8 +36,9 @@ dependencyManagement {
         // Security dependencies
         dependency("com.depop:depop-jwt_2.13:0.0.23")
         dependency("com.okta.spring:okta-spring-security-oauth2:1.1.0")
-        dependency("org.springframework.security:spring-security-web:5.7.8")
-        dependency("org.springframework.security:spring-security-oauth2-client:5.7.8")
+        dependency("org.springframework.security:spring-security-core:5.7.12")
+        dependency("org.springframework.security:spring-security-web:5.7.12")
+        dependency("org.springframework.security:spring-security-oauth2-client:5.7.12")
 
         // Opentracing dependencies
         dependency("io.opentracing.contrib:opentracing-spring-cloud-starter:0.5.9")
@@ -48,6 +49,9 @@ dependencyManagement {
         // Datadog dependencies
         dependency("com.datadoghq:dd-trace-api:0.110.0")
         dependency("com.datadoghq:dd-trace-ot:0.110.0")
+
+        // SNYK-JAVA-ORGSPRINGFRAMEWORK-6444790
+        dependency("org.springframework:spring-web:5.3.34")
 
         // General dependencies
         dependency("io.github.microutils:kotlin-logging-jvm:2.0.11")
