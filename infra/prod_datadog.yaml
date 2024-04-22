@@ -1,0 +1,28 @@
+service_domain: user
+service_group: default
+service_name: dispute
+service_role: workflow
+accountName: services-production
+accountTag: prod-svcs
+environment: production
+serviceTier: critical
+serviceOwner: fulfilment
+
+defaults:
+  pagerduty:
+    enabled: true
+
+stdv1Monitors:
+  enabled: true
+  
+  metricsLayers:
+  - layer: controller
+    p95LatencyThreshold: 3000
+    failurePercentageThreshold: 2
+  - layer: client
+    p95LatencyThreshold: 3000
+    failurePercentageThreshold: 2
+
+chart:
+  name: datadog
+  version: ^0.4.17
