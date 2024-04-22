@@ -1,0 +1,20 @@
+service_domain: user
+service_group: default
+service_name: dispute
+service_role: workflow
+accountName: services-staging
+accountTag: stage-svcs
+environment: staging
+serviceTier: critical
+serviceOwner: fulfilment
+
+defaults:
+  pagerduty:
+    enabled: false
+
+stdv1Monitors:
+  enabled: false
+
+chart:
+  name: datadog
+  version: ^0.4.17
