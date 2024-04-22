@@ -30,8 +30,8 @@ dependencyManagement {
 
         // GraalVM JS Engine
         // https://security.snyk.io/vuln/SNYK-JAVA-ORGGRAALVMSDK-6163607
-        dependency("org.graalvm.js:js:22.3.4")
-        dependency("org.graalvm.js:js-scriptengine:22.3.4")
+        dependency("org.graalvm.js:js:22.3.5")
+        dependency("org.graalvm.js:js-scriptengine:22.3.5")
 
         // Security dependencies
         dependency("com.depop:depop-jwt_2.13:0.0.23")
