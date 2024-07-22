@@ -9,30 +9,30 @@ ignore:
   SNYK-JAVA-COMH2DATABASE-31685:
     - '*':
         reason: webAllowOthers not enabled
-        expires: 2024-05-25T19:25:25.460Z
+        expires: 2024-08-25T19:25:25.460Z
         created: 2023-01-19T19:25:25.460Z
   SNYK-JAVA-ORGJSON-5488379:
     - '*':
         reason: introduced by Snyk itself
-        expires: 2024-05-04T14:11:25.460Z
+        expires: 2024-08-04T14:11:25.460Z
         created: 2023-05-05T14:11:25.460Z
   SNYK-JAVA-ORGJSON-5962464:
     - '*':
         reason: introduced by Snyk itself
-        expires: 2024-05-04T14:11:25.460Z
+        expires: 2024-08-04T14:11:25.460Z
         created: 2023-10-24T11:11:25.460Z
   SNYK-JAVA-ORGGRAALVMSDK-6162757:
     - '*':
         reason: Graalvm js 23.x.x does not support java8
-        expires: 2024-05-22T11:11:25.460Z
+        expires: 2024-08-22T11:11:25.460Z
         created: 2024-01-23T11:11:25.460Z
   SNYK-JAVA-ORGSPRINGFRAMEWORK-6261586:
     - '*':
         reason: Springboot 3.1.9 requires java 17
-        expires: 2024-05-26T11:11:25.460Z
+        expires: 2024-08-26T11:11:25.460Z
         created: 2024-02-26T11:11:25.460Z
   SNYK-JAVA-COMNIMBUSDS-6247633:
     - '*':
         reason: Springboot 3.1.9 requires java 17
-        expires: 2024-05-26T11:11:25.460Z
+        expires: 2024-08-26T11:11:25.460Z
         created: 2024-02-26T11:11:25.460Z

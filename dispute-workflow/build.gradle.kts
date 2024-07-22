@@ -16,7 +16,7 @@ dependencies {
       exclude("org.apache.tomcat.embed:tomcat-embed-core")
     }
     // Snyk https://security.snyk.io/vuln/SNYK-JAVA-ORGAPACHETOMCATEMBED-6092281
-    implementation("org.apache.tomcat.embed:tomcat-embed-core:9.0.88")
+    implementation("org.apache.tomcat.embed:tomcat-embed-core:9.0.90")
     implementation("org.apache.tomcat.embed:tomcat-embed-websocket:9.0.88")
     
     implementation("org.springframework.boot:spring-boot-starter-web")
