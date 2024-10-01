@@ -14,9 +14,9 @@ dependencies {
       exclude("io.netty:netty-codec-http")
       exclude("io.netty:netty-codec-http2")
     }
-    // Snyk https://security.snyk.io/vuln/SNYK-JAVA-IONETTY-5953332
-    implementation("io.netty:netty-codec-http:4.1.100.Final")
-    implementation("io.netty:netty-codec-http2:4.1.100.Final")
+
+    implementation("io.netty:netty-codec-http:4.1.113.Final")
+    implementation("io.netty:netty-codec-http2:4.1.113.Final")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
 
     // General

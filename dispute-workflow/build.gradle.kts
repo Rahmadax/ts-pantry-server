@@ -7,7 +7,7 @@ plugins {
 dependencies {
 
     // General
-    implementation("com.google.guava:guava:30.1.1-jre")
+    implementation("com.google.guava:guava:32.0.0-jre")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
     // Spring

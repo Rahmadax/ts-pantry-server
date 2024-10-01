@@ -8,6 +8,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtGra
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -24,6 +25,8 @@ public class DepopJwtGrantedAuthoritiesConverter implements Converter<Jwt, Colle
 
     private final JwtGrantedAuthoritiesConverter defaultAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
 
+    private List<String> blockedAuthorities = List.of();
+
     /**
      * Extract {@link DepopGrantedAuthority}s from the given {@link Jwt}.
      *
@@ -39,6 +42,7 @@ public class DepopJwtGrantedAuthoritiesConverter implements Converter<Jwt, Colle
                         jwt.getClaimAsStringList(claimSet)
                                 .stream()
                                 .filter(Objects::nonNull)
+                                .filter(auth -> !getBlockedAuthorities().contains(auth))
                                 .map(claim -> ROLE_PREFIX + claim.toUpperCase())
                                 .map(claim -> new DepopGrantedAuthority(claimSet, claim)))
                 .collect(Collectors.toSet()));
@@ -50,4 +54,11 @@ public class DepopJwtGrantedAuthoritiesConverter implements Converter<Jwt, Colle
         return result;
     }
 
+    public List<String> getBlockedAuthorities() {
+        return blockedAuthorities;
+    }
+
+    public void setBlockedAuthorities(List<String> blockedAuthorities) {
+        this.blockedAuthorities = blockedAuthorities;
+    }
 }

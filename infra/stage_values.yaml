@@ -29,6 +29,8 @@ secrets:
   ENV_DEPOP_CLIENT_ID: staging/services/user/default/dispute/workflow/_default/depop_client_id
   ENV_DEPOP_CLIENT_SECRET: staging/services/user/default/dispute/workflow/_default/depop_client_secret
   ENV_SHIPPING_API_SECRET: staging/services/user/default/dispute/workflow/_default/shipping_api_secret
+  ENV_API_USERNAME: staging/services/user/default/dispute/workflow/_default/api_username
+  ENV_API_PASSWORD: staging/services/user/default/dispute/workflow/_default/api_password
 
 serviceConfig:
   JAVA_OPTS: -Dpolyglot.engine.WarnInterpreterOnly=false

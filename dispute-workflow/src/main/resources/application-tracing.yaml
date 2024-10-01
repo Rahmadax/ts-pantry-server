@@ -3,17 +3,16 @@ opentracing:
   datadog:
     enabled: true
     trace:
-      enabled: true
+      enabled: false
       health-metrics:
         enabled: true
       startup-logs: true
-    writer-type: LoggingWriter
     logs-injection: true
 
 logging:
   level:
     io:
-      opentelemetry: INFO
+      opentelemetry: WARN
     datadog:
       trace:
         common:

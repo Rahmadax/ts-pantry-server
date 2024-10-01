@@ -14,11 +14,20 @@ val javaVersion = JavaVersion.VERSION_11
 java {
     sourceCompatibility = javaVersion
     targetCompatibility = javaVersion
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(javaVersion.majorVersion))
+    }
+}
+
+kotlin {
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(javaVersion.majorVersion))
+    }
 }
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib")
 }
 
 tasks.withType<KotlinCompile> {

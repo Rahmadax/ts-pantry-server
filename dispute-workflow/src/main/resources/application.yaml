@@ -2,6 +2,7 @@
 server:
   port: 9000
 
+
 spring:
   output:
     ansi:
@@ -32,6 +33,11 @@ management:
   endpoint:
     health:
       enabled: true
+
+api:
+  security:
+    username: ${ENV_API_USERNAME:drc_admin}
+    password: ${ENV_API_PASSWORD:${random.uuid}}
 
 ---
 

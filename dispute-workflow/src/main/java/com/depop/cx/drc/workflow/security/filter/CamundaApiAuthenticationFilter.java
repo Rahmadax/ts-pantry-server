@@ -3,6 +3,7 @@ package com.depop.cx.drc.workflow.security.filter;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -24,9 +25,9 @@ import java.io.IOException;
  * @author Tom Greasley
  */
 
-public class CamundaApiAuthenicationFilter extends CamundaAuthenticationFilter {
+public class CamundaApiAuthenticationFilter extends CamundaAuthenticationFilter {
 
-    public CamundaApiAuthenicationFilter(final String engineName) {
+    public CamundaApiAuthenticationFilter(final String engineName) {
         super(engineName);
     }
 
@@ -37,12 +38,18 @@ public class CamundaApiAuthenicationFilter extends CamundaAuthenticationFilter {
                                    final ProcessEngine engine) throws ServletException, IOException {
 
         final var authentication = SecurityContextHolder.getContext().getAuthentication();
-        final var principal = authentication.getPrincipal();
-
-        if (principal instanceof Jwt) {
-            final Jwt jwt = (Jwt) principal;
-            final var username = isOpstool(authentication) ? OPSTOOLS_CLAIM : jwt.getSubject();
-            engine.getIdentityService().setAuthentication(username, getUserGroups(authentication));
+        if(authentication != null && authentication.isAuthenticated()) {
+            final var principal = authentication.getPrincipal();
+            if (principal instanceof Jwt) {
+                final Jwt jwt = (Jwt) principal;
+                final var username = isOpstool(authentication) ? OPSTOOLS_CLAIM : jwt.getSubject();
+                engine.getIdentityService().setAuthentication(username, getUserGroups(authentication));
+            } else if (principal instanceof User){
+                final User user = (User) principal;
+                engine.getIdentityService().setAuthentication(user.getUsername(), getUserGroups(authentication));
+            } else {
+                engine.getIdentityService().clearAuthentication();
+            }
         } else {
             engine.getIdentityService().clearAuthentication();
         }
