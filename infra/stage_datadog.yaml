@@ -15,9 +15,6 @@ defaults:
 stdv1Monitors:
   enabled: false
 
-linkerdMonitors:
-  enabled: false
-
 chart:
   name: datadog
   version: ^1
