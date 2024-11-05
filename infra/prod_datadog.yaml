@@ -23,6 +23,11 @@ stdv1Monitors:
     p95LatencyThreshold: 3000
     failurePercentageThreshold: 2
 
+linkerdMonitors:
+  inboundFailureRate:
+    criticalThreshold: 5
+    warningThreshold: 3
+
 chart:
   name: datadog
   version: ^1
