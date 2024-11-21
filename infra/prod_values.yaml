@@ -33,7 +33,7 @@ secrets:
 serviceConfig:
   JAVA_OPTS: -Dpolyglot.engine.WarnInterpreterOnly=false
   SPRING_PROFILES_ACTIVE: production_deployment
-  ENV_DB_URL: jdbc:postgresql://service-user-default-dispute-workflow-12-6.ckh7hwnufggc.us-east-1.rds.amazonaws.com/disputeworkflow?autosave=conservative
+  ENV_DB_URL: jdbc:postgresql://service-user-default-dispute-workflow-12-6.ckh7hwnufggc.us-east-1.rds.amazonaws.com/disputeworkflow
   ENV_DB_USER: disputeworkflow_app
   ENV_OKTA_CLIENT_ISSUER_URI: https://depop.okta.com
   ENV_OKTA_CLIENT_REDIRECT_URI: https://disputes.depop.systems
