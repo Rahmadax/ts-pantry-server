@@ -28,7 +28,7 @@ liquibase_image: tools/liquibase
 sqlt_version: 1.62
 sqlt_image: tools/sqlt
 
-postgresql_version: 11.5
+postgresql_version: 15.3
 postgresql_image: mirror/postgres
 
 application: disputeworkflow
