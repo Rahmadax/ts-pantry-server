@@ -1,3 +1,9 @@
+#!groovy
+
+def mostRecentCommitterEmail() {
+  return sh(script: "git --no-pager show -s --format='%ae'", returnStdout: true).trim()
+}
+
 pipeline {
   triggers{ cron(env.BRANCH_NAME == 'master' ? 'H H(8-15) * * *' : '') }
   options {
@@ -33,6 +39,8 @@ pipeline {
           steps {
             measure {
               script {
+                env.MOST_RECENT_COMMITTER_EMAIL = mostRecentCommitterEmail()
+
                 sh "make ci"
                 sh "make docker_build docker_push"
                 env.DEPLOY_TO_STAGE = canDeployTo('stage') ? 'yes' : 'no'
@@ -54,7 +62,7 @@ pipeline {
               script {
                 if (cicd.isCausedByTimer()) {
                   def msg = cicd.snykScanSummary('slack')
-                  slackSend channel: 'fulfilment', color: 'bad', message: "CVE found on  <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> :alert:\n\n${msg}"
+                  slackSend channel: 'cx-stream', color: 'bad', message: "CVE found on  <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> :alert:\n\n${msg}"
                 }
               }
             }
@@ -87,7 +95,7 @@ pipeline {
           def deployed = cicd.deployedBranch()
           upToDate = cicd.isBranchRebased('stage', env.GIT_COMMIT) || deployed == env.CHANGE_BRANCH
           if (!upToDate) {
-            slackSend channel: 'fulfilment', color: 'warning', message: "Deploying <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> over `${deployed}` to staging :shipit_parrot:"
+            slackSend channel: 'cx-stream', color: 'warning', message: "Deploying <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> over `${deployed}` to staging :shipit_parrot:"
           }
         }
       }
@@ -118,7 +126,7 @@ pipeline {
         script {
           def rebased = cicd.isBranchRebased('prod', env.GIT_COMMIT)
           def releaseNotes = sh(script: "git log --format=format:-%x20%s --no-merges prod..${env.GIT_COMMIT}", returnStdout: true)
-          slackSend channel: 'fulfilment', color: rebased ? 'good' : 'warning', message: "Deploying <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> to production :shipit_parrot:\n${releaseNotes}"
+          slackSend channel: 'cx-stream', color: rebased ? 'good' : 'warning', message: "Deploying <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> to production :shipit_parrot:\n${releaseNotes}"
         }
       }
     }
@@ -134,7 +142,7 @@ pipeline {
         measure {
           script {
             cicd.deploy(envName: 'prod', runDreddTests: false, SNYK_MONITOR: true, LOCAL_DOCKERFILE: "Dockerfile.prebuilt")
-            slackSend channel: 'fulfilment', color: 'good', message: "Deployed <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> to production :dancinghamster:"
+            slackSend channel: 'cx-stream', color: 'good', message: "Deployed <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> to production :dancinghamster:"
           }
         }
       }
@@ -150,10 +158,22 @@ pipeline {
 
     failure {
       script {
-        cicd.buildFailure()
-        if (!cicd.isCausedByTimer() && env.BRANCH_NAME == 'master') {
-          slackSend channel: 'fulfilment', color: 'bad', message: "Failed to deploy <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> :sob:"
+        if (env.BRANCH_NAME == 'master') {
+          committer_slack_id = null
+          if (env.MOST_RECENT_COMMITTER_EMAIL) {
+            committer_slack_id = slackUserIdFromEmail(email: env.MOST_RECENT_COMMITTER_EMAIL)
+          }
+
+          if (committer_slack_id) {
+            slackSend channel: 'cx-stream', color: 'bad', message: 'Failed to deploy <' + env.RUN_DISPLAY_URL + '|' + env.JOB_NAME + '> , <@' + committer_slack_id + '> :sob:'
+          } else {
+            slackSend channel: 'cx-stream', color: 'bad', message: 'Failed to deploy <' + env.RUN_DISPLAY_URL + '|' + env.JOB_NAME + '> :sob:'
+          }
         }
+      }
+
+      script {
+        cicd.buildFailure()
       }
     }
   }
