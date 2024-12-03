@@ -193,6 +193,9 @@ public class SecurityConfiguration {
                         API_URL_BASE + "/process-instance/*/variables/*",
                         API_URL_BASE + "/variable-instance",
                         API_URL_BASE + "/task",
+                        API_URL_BASE + "/task/*",
+                        API_URL_BASE + "/task/*/attachment",
+                        API_URL_BASE + "/task/*/attachment/*",
                         API_URL_BASE + "/task/*/localVariables",
                         API_URL_BASE + "/history/variable-instance",
                         API_URL_BASE + "/history/process-instance/*",
@@ -202,6 +205,7 @@ public class SecurityConfiguration {
                 .antMatchers(HttpMethod.POST,
                         API_URL_BASE + "/process-definition/key/*/start",
                         API_URL_BASE + "/task/*/complete",
+                        API_URL_BASE + "/task/*/attachment/create",
                         API_URL_BASE + "/message")
                 .hasAnyRole(ROLE_DEPOP_USER, ROLE_DEPOP_SUPERUSER)
 
