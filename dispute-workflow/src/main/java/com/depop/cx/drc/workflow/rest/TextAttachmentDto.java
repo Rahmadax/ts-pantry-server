@@ -20,15 +20,16 @@ public class TextAttachmentDto extends AttachmentDto {
 
     public static TextAttachmentDto fromAttachment(AttachmentDto attachment) {
         TextAttachmentDto taDto = new TextAttachmentDto();
-        taDto.id = attachment.getId();
-        taDto.name = attachment.getName();
-        taDto.type = attachment.getType();
-        taDto.description = attachment.getDescription();
-        taDto.taskId = attachment.getTaskId();
-        taDto.url = attachment.getUrl();
-        taDto.createTime = attachment.getCreateTime();
-        taDto.removalTime = attachment.getRemovalTime();
-        taDto.rootProcessInstanceId = attachment.getRootProcessInstanceId();
+        taDto.setId(attachment.getId());
+        taDto.setName(attachment.getName());
+        taDto.setType(attachment.getType());
+        taDto.setDescription(attachment.getDescription());
+        taDto.setTaskId(attachment.getTaskId());
+        taDto.setUrl(attachment.getUrl());
+        taDto.setCreateTime(attachment.getCreateTime());
+        taDto.setRemovalTime(attachment.getRemovalTime());
+        taDto.setRootProcessInstanceId(attachment.getRootProcessInstanceId());
+
         return taDto;
     }
 

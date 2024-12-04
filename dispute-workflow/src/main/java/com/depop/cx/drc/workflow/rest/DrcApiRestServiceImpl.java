@@ -13,6 +13,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Path("")
 public class DrcApiRestServiceImpl extends AbstractProcessEngineRestServiceImpl {
@@ -76,23 +78,23 @@ public class DrcApiRestServiceImpl extends AbstractProcessEngineRestServiceImpl 
 
         var formData = new MultipartFormData();
 
-        if(attachment.getName() != null) {
-            var part = new WritableFormPart("name", "", attachment.getName());
+        if (attachment.getName() != null) {
+            var part = new WritableFormPart("attachment-name", MediaType.TEXT_PLAIN, attachment.getName());
             formData.addPart(part);
         }
 
-        if(attachment.getType() != null) {
-            var part = new WritableFormPart("type", "", attachment.getType());
+        if (attachment.getType() != null) {
+            var part = new WritableFormPart("attachment-type", MediaType.TEXT_PLAIN, attachment.getType());
             formData.addPart(part);
         }
 
-        if(attachment.getDescription() != null) {
-            var part = new WritableFormPart("description", "", attachment.getDescription());
+        if (attachment.getDescription() != null) {
+            var part = new WritableFormPart("attachment-description", MediaType.TEXT_PLAIN, attachment.getDescription());
             formData.addPart(part);
         }
 
-        if(attachment.getContent() != null) {
-            var part = new WritableFormPart("content", "", attachment.getContent());
+        if (attachment.getContent() != null) {
+            var part = new WritableFormPart("content", MediaType.TEXT_PLAIN, attachment.getContent());
             formData.addPart(part);
         }
 
@@ -100,12 +102,11 @@ public class DrcApiRestServiceImpl extends AbstractProcessEngineRestServiceImpl 
     }
 
     @GET
-    @Path("/task/{taskId}/attachment/{attachmentId}/data")
+    @Path("/task/{taskId}/attachment/{attachmentId}")
     @Produces(MediaType.APPLICATION_JSON)
     public TextAttachmentDto getAttachmentData(@PathParam("taskId") String taskId, @PathParam("attachmentId") String attachmentId) {
         var taskService = super.getTaskRestService(null);
         var task = taskService.getTask(taskId);
-
 
         var attachments = task.getAttachmentResource();
         var attachment = attachments.getAttachment(attachmentId);
@@ -118,6 +119,29 @@ public class DrcApiRestServiceImpl extends AbstractProcessEngineRestServiceImpl 
         textAttachmentDto.setContent(attachmentString);
 
         return textAttachmentDto;
+    }
+
+    @GET
+    @Path("/task/{taskId}/attachment")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<AttachmentDto> getAttachments(@PathParam("taskId") String taskId) {
+        var taskService = super.getTaskRestService(null);
+        var task = taskService.getTask(taskId);
+
+        var attachmentsResource = task.getAttachmentResource();
+        var attachments = attachmentsResource.getAttachments();
+
+        return attachments.stream().map(attachmentDto -> {
+                    var attachmentData = attachmentsResource.getAttachmentData(attachmentDto.getId());
+
+                    var attachmentString = IoUtil.inputStreamAsString(attachmentData);
+
+                    var textAttachmentDto = TextAttachmentDto.fromAttachment(attachmentDto);
+                    textAttachmentDto.setContent(attachmentString);
+
+                    return textAttachmentDto;
+                }
+        ).collect(Collectors.toList());
     }
 
     @Path("/process-definition")
