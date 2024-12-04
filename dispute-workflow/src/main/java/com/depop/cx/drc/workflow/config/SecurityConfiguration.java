@@ -196,7 +196,6 @@ public class SecurityConfiguration {
                         API_URL_BASE + "/task/*",
                         API_URL_BASE + "/task/*/attachment",
                         API_URL_BASE + "/task/*/attachment/*",
-                        API_URL_BASE + "/task/*/attachment/*/content",
                         API_URL_BASE + "/task/*/localVariables",
                         API_URL_BASE + "/history/variable-instance",
                         API_URL_BASE + "/history/process-instance/*",
