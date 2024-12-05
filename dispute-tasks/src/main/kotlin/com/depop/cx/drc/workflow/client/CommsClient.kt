@@ -9,18 +9,17 @@ import java.util.*
 
 private const val SEND = "/send"
 
-class CommsClient (webClient: WebClient) : Client(webClient) {
+class CommsClient(webClient: WebClient) : Client(webClient) {
 
-    fun sendEmail(userId: Long, templateId: UUID, context: Map<String, Any>): Mono<String> {
-        val template = Template(templateId = templateId, channel = Channel.EMAIL)
-        val delivery = Delivery(recipient = userId, channel = Channel.EMAIL)
-        val request = SendRequest(template, context, delivery)
-        return postRequest(SEND, request)
-    }
-
-    fun sendChat(userId: Long, templateId: UUID, context: Map<String, Any>): Mono<String> {
-        val template = Template(templateId = templateId, channel = Channel.CHAT)
-        val delivery = Delivery(recipient = userId, channel = Channel.CHAT)
+    fun send(
+        channel: Channel,
+        recipientId: Long,
+        templateId: UUID,
+        context: Map<String, Any>,
+        idempotencyKey: String = UUID.randomUUID().toString()
+    ): Mono<String> {
+        val template = Template(templateId = templateId, channel = channel)
+        val delivery = Delivery(recipient = recipientId, channel = channel, idempotencyKey = idempotencyKey)
         val request = SendRequest(template, context, delivery)
         return postRequest(SEND, request)
     }
@@ -45,7 +44,7 @@ data class Template(
 data class Delivery(
     @JsonProperty("channel") val channel: Channel,
     @JsonProperty("recipient_user_id") val recipient: Long,
-    @JsonProperty("idempotency_key") val idempotencyKey: UUID = UUID.randomUUID(),
+    @JsonProperty("idempotency_key") val idempotencyKey: String,
 )
 
 enum class Channel(@JsonValue val channel: String) {
