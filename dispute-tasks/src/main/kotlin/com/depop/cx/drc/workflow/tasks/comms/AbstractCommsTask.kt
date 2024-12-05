@@ -33,7 +33,7 @@ abstract class AbstractCommsTask(
         createAttachment(execution.processEngine.taskService, taskId, processId, content)
     }
 
-    fun createAttachment(
+    private fun createAttachment(
         taskService: TaskService,
         processId: String,
         taskId: String,
