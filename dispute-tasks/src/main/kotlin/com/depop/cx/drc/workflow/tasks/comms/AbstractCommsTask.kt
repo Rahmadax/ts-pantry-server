@@ -52,6 +52,6 @@ abstract class AbstractCommsTask(
         }
     }
 
-    protected abstract fun getChannel(): Channel;
+    protected abstract fun getChannel(): Channel
 
 }
