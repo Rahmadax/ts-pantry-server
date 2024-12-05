@@ -36,4 +36,10 @@ class WorkflowTaskConfiguration {
     @Bean
     fun defaultProcessStartListener() = DefaultProcessStartListener()
 
+    @Bean
+    fun sendEmailTask(commsClient: CommsClient) = SendEmailTask(commsClient)
+
+    @Bean
+    fun sendChatTask(commsClient: CommsClient) = SendChatTask(commsClient)
+
 }

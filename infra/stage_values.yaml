@@ -31,7 +31,6 @@ secrets:
   ENV_SHIPPING_API_SECRET: staging/services/user/default/dispute/workflow/_default/shipping_api_secret
   ENV_API_USERNAME: staging/services/user/default/dispute/workflow/_default/api_username
   ENV_API_PASSWORD: staging/services/user/default/dispute/workflow/_default/api_password
-
 serviceConfig:
   JAVA_OPTS: -Dpolyglot.engine.WarnInterpreterOnly=false
   SPRING_PROFILES_ACTIVE: stage_deployment
@@ -47,7 +46,7 @@ serviceConfig:
   PAYMENTS_HOST: https://payments-default-payments-api.eks-default.stage-app.dpop.co.uk/
   SHIPPING_HOST: https://fulfilment-default-shipping-internal.eks-default.stage-app.dpop.co.uk
   USER_HOST: https://django-default-django-api.eks-default.stage-app.dpop.co.uk
-
+  COMMS_HOST: http://comms-hub.martech-default
 autoscaling:
   cpu: 65
   memory: 75

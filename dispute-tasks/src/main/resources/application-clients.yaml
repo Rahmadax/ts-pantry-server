@@ -6,7 +6,7 @@ depop:
       payments-host: https://payments-default-payments-api.eks-default.stage-app.dpop.co.uk/
       shipping-host: https://fulfilment-default-shipping-internal.eks-default.stage-app.dpop.co.uk/
       user-host: https://django-default-django-api.eks-default.stage-app.dpop.co.uk/
-
+      comms-host: https://martech-default-comms-hub.eks-default.stage-svcs.dpop.co.uk
 spring:
   security:
     oauth2:
@@ -60,6 +60,7 @@ depop:
       shipping-host: ${SHIPPING_HOST}
       shipping-api-secret: ${ENV_SHIPPING_API_SECRET}
       user-host: ${USER_HOST}
+      comms-host: ${COMMS_HOST}
 ---
 
 # production profile
@@ -86,3 +87,4 @@ depop:
       shipping-host: ${SHIPPING_HOST}
       shipping-api-secret: ${ENV_SHIPPING_API_SECRET}
       user-host: ${USER_HOST}
+      comms-host: ${COMMS_HOST}

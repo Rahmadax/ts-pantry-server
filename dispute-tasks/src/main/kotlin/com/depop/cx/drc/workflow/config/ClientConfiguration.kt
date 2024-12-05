@@ -34,7 +34,8 @@ data class ClientProperties(
     val paymentsHost: URI,
     val shippingHost: URI,
     val shippingApiSecret: String,
-    val userHost: URI
+    val userHost: URI,
+    val commsHost: URI,
 )
 
 @Configuration
@@ -173,6 +174,25 @@ class ClientConfiguration {
             .build()
 
         return UserClient(webClient)
+    }
+
+    @Bean
+    fun commsClient(
+        clientProperties: ClientProperties,
+        webClientBuilder: WebClient.Builder,
+        authorizedClientManager: ReactiveOAuth2AuthorizedClientManager,
+    ): CommsClient {
+
+        val oauth = ServerOAuth2AuthorizedClientExchangeFilterFunction(authorizedClientManager)
+        oauth.setDefaultClientRegistrationId(DEPOP_CLIENT_REGISTRATION_ID)
+
+        val webClient = webClientBuilder
+            .baseUrl(clientProperties.commsHost.toString())
+            .filter(oauth) // filter to add depop jwt to the Authorization header.
+            .filter(setDepopCustomAuthHeader(true)) // filter to copy the auth header to x-authorisation-jwt
+            .build()
+
+        return CommsClient(webClient)
     }
 
     // Sets the Authorization header using the provided LLJWT
