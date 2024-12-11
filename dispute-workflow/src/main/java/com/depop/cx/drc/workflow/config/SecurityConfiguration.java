@@ -210,6 +210,10 @@ public class SecurityConfiguration {
                         API_URL_BASE + "/message")
                 .hasAnyRole(ROLE_DEPOP_USER, ROLE_DEPOP_SUPERUSER)
 
+                .antMatchers(HttpMethod.DELETE,
+                        API_URL_BASE + "/task/*/attachment/*"
+                ).hasAnyRole(ROLE_DEPOP_USER, ROLE_DEPOP_SUPERUSER)
+
                 // API Access for the external task processing service (dispute-processing-service)
                 .antMatchers(HttpMethod.POST,
                         API_URL_BASE + "/external-task/fetchAndLock",
