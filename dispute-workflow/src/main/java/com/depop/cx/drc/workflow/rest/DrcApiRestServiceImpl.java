@@ -144,6 +144,16 @@ public class DrcApiRestServiceImpl extends AbstractProcessEngineRestServiceImpl 
         ).collect(Collectors.toList());
     }
 
+    @DELETE
+    @Path("/task/{taskId}/attachment/{attachmentId}")
+    @Produces({"application/json"})
+    public void deleteAttachment(@PathParam("taskId") String taskId, @PathParam("attachmentId") String attachmentId) {
+        var taskService = super.getTaskRestService(null);
+        var task = taskService.getTask(taskId);
+        var attachments = task.getAttachmentResource();
+        attachments.deleteAttachment(attachmentId);
+    }
+
     @Path("/process-definition")
     public ProcessDefinitionRestService getProcessDefinitionService() {
         return super.getProcessDefinitionService(null);
