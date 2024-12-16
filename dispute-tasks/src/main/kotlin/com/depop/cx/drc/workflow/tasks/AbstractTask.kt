@@ -1,6 +1,8 @@
 package com.depop.cx.drc.workflow.tasks
 
+
 import mu.KotlinLogging
+import org.camunda.bpm.engine.delegate.BpmnError
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.camunda.bpm.engine.delegate.JavaDelegate
 
@@ -22,7 +24,17 @@ abstract class AbstractTask : JavaDelegate {
     }
 
     private fun handleException(exception: Exception, delegateExecution: DelegateExecution?) {
-        logger.error("Failed to execute task ${delegateExecution?.id ?: "<unknown>"}", exception)
+        logger.error(exception) { "Failed to execute task ${delegateExecution?.id ?: "<unknown>"}" }
+    }
+
+    protected fun validate(key: String, value: Any?) {
+        if(value == null) {
+            logger.error { "Unable to find $key task context." }
+            throw BpmnError(
+                TaskErrorCode.FAILURE.code,
+                "$key must not be null or empty."
+            )
+        }
     }
 
     abstract fun doExecute(execution: DelegateExecution)

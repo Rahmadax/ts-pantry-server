@@ -45,7 +45,7 @@ serviceConfig:
   PAYMENTS_HOST: https://payments-default-payments-api.eks-default.prod-app.dpop.co.uk/
   SHIPPING_HOST: https://fulfilment-default-shipping-internal.eks-default.prod-app.dpop.co.uk
   USER_HOST: https://django-default-django-api.eks-default.prod-app.dpop.co.uk
-
+  COMMS_HOST: http://comms-hub.martech-default
 chart:
   name: generic-service
   version: ^2

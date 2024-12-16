@@ -5,6 +5,8 @@ package com.depop.cx.drc.workflow.config
 import com.depop.cx.drc.workflow.client.*
 import com.depop.cx.drc.workflow.listener.DefaultProcessStartListener
 import com.depop.cx.drc.workflow.tasks.*
+import com.depop.cx.drc.workflow.tasks.comms.SendChatTask
+import com.depop.cx.drc.workflow.tasks.comms.SendEmailTask
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -35,5 +37,11 @@ class WorkflowTaskConfiguration {
 
     @Bean
     fun defaultProcessStartListener() = DefaultProcessStartListener()
+
+    @Bean
+    fun sendEmailTask(commsClient: CommsClient) = SendEmailTask(commsClient)
+
+    @Bean
+    fun sendChatTask(commsClient: CommsClient) = SendChatTask(commsClient)
 
 }
