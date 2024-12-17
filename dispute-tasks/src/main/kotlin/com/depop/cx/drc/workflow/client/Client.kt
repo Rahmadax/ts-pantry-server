@@ -37,4 +37,15 @@ abstract class Client(protected val webClient: WebClient) {
         .retrieve()
         .bodyToMono(T::class.java)
 
+    protected inline fun <reified V : Any, reified T> putRequest(
+        uri: String,
+        request: V,
+        variables: Map<String, *>
+    ): Mono<T> = webClient.put()
+        .uri(uri, variables)
+        .contentType(MediaType.APPLICATION_JSON)
+        .body(Mono.just(request), V::class.java)
+        .retrieve()
+        .bodyToMono(T::class.java)
+
 }
