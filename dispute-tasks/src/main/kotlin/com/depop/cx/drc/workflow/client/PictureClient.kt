@@ -13,7 +13,7 @@ class PictureClient(webClient: WebClient) : Client(webClient) {
         processDefinitionId: String,
         pictureIds: LinkImagesTask.PictureIds,
     ): Mono<String> {
-        return postRequest(LINK, pictureIds, mapOf(
+        return putRequest(LINK, pictureIds, mapOf(
             "entity_type" to "products", // TODO: Update to dispute task when done testing
             "entity_id" to "$processDefinitionId:$taskId")
         )

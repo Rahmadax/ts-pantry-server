@@ -9,7 +9,6 @@ class LinkImagesTask(private val pictureClient: PictureClient) : AbstractTask() 
     override fun doExecute(execution: DelegateExecution) {
         val taskService = execution.processEngine.taskService
         val taskId = execution.id
-        val processDefinitionId = execution.processDefinitionId
 
         val latestPictureIds = taskService.getTaskAttachments(execution.id)
             .filter { attachment -> attachment.type == "PICTURE" }
@@ -25,12 +24,12 @@ class LinkImagesTask(private val pictureClient: PictureClient) : AbstractTask() 
 
         pictureClient.linkImages(
             taskId,
-            processDefinitionId,
+            execution.processDefinitionId,
             PictureIds(latestPictureIds)
         ).block()
     }
 
     data class PictureIds(
-        val picture_ids: List<Any>
+        val pictureIds: List<Any>
     )
 }
