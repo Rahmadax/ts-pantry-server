@@ -195,6 +195,7 @@ class ClientConfiguration {
         return CommsClient(webClient)
     }
 
+    @Bean
     fun pictureClient(
         clientProperties: ClientProperties,
         webClientBuilder: WebClient.Builder,
@@ -205,8 +206,7 @@ class ClientConfiguration {
 
         val webClient = webClientBuilder
             .baseUrl(clientProperties.pictureHost.toString())
-            .filter(oauth) // filter to add depop jwt to the Authorization header.
-            .filter(setDepopCustomAuthHeader(true)) // filter to copy the auth header to x-authorisation-jwt
+            .filter(oauth) // filter to add depop jwt to the Authorization header
             .build()
 
         return PictureClient(webClient)

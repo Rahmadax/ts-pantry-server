@@ -45,6 +45,6 @@ class WorkflowTaskConfiguration {
     fun sendChatTask(commsClient: CommsClient) = SendChatTask(commsClient)
 
     @Bean
-    fun linkImages(pictureClient: PictureClient) = LinkImagesTask(pictureClient)
+    fun linkImagesTask(pictureClient: PictureClient) = LinkImagesTask(pictureClient)
 
 }
