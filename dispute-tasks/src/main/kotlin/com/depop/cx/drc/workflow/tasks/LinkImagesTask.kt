@@ -6,6 +6,7 @@ import mu.KotlinLogging
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import kotlinx.coroutines.*
 
 class LinkImagesTask(private val pictureClient: PictureClient) : AbstractTask() {
     private val logger = KotlinLogging.logger {}
@@ -36,13 +37,18 @@ class LinkImagesTask(private val pictureClient: PictureClient) : AbstractTask() 
                     }
                 }
 
-            pictureClient.linkImages(
-                taskId, execution.processDefinitionId, PictureIds(emptyList()) // Unlink all pictures
-            ).then(
-                // Link the latest 5 pictures
-                pictureClient.linkImages(taskId, execution.processDefinitionId, PictureIds(latestPictureIds))
-            ).block()
+            runBlocking{
+                linkImages(taskId, execution.processDefinitionId, PictureIds(latestPictureIds))
+            }
         }
+    }
+
+    private suspend fun linkImages(taskId: String, processDefinitionId: String, pictureIds: PictureIds){
+        // Unlink all pictures
+        pictureClient.linkImages(taskId, processDefinitionId, PictureIds(emptyList()))
+
+        // Link the latest 5 pictures
+        pictureClient.linkImages(taskId, processDefinitionId, pictureIds)
     }
 
     data class PictureIds(

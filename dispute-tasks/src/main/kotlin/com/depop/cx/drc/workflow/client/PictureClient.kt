@@ -8,14 +8,14 @@ private const val LINK = "/internal/v2/{entity_type}/{entity_id}/pictures/"
 
 class PictureClient(webClient: WebClient) : Client(webClient) {
 
-    fun linkImages(
+    suspend fun linkImages(
         taskId: String,
         processDefinitionId: String,
         pictureIds: LinkImagesTask.PictureIds,
-    ): Mono<String> {
-        return putRequest(LINK, pictureIds, mapOf(
+    ): String {
+        return putCoroutineRequest(LINK, pictureIds, mapOf(
             "entity_type" to "products", // TODO: Update to dispute task when done testing
-            "entity_id" to "$processDefinitionId-$taskId"
+            "entity_id" to "$processDefinitionId:$taskId"
         ))
     }
 }
