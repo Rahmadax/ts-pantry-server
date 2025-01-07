@@ -1,6 +1,7 @@
 package com.depop.cx.drc.workflow.tasks
 
 import com.depop.cx.drc.workflow.client.PictureClient
+import com.fasterxml.jackson.annotation.JsonProperty
 import mu.KotlinLogging
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import java.io.BufferedReader
@@ -35,23 +36,17 @@ class LinkImagesTask(private val pictureClient: PictureClient) : AbstractTask() 
                     }
                 }
 
-            // Unlink all pictures associated with the Dispute Task
             pictureClient.linkImages(
-                taskId,
-                execution.processDefinitionId,
-                PictureIds(emptyList())
-            ).block()
-
-            // Link the latest 5 new pictures
-            pictureClient.linkImages(
-                taskId,
-                execution.processDefinitionId,
-                PictureIds(latestPictureIds)
+                taskId, execution.processDefinitionId, PictureIds(emptyList()) // Unlink all pictures
+            ).then(
+                // Link the latest 5 pictures
+                pictureClient.linkImages(taskId, execution.processDefinitionId, PictureIds(latestPictureIds))
             ).block()
         }
     }
 
     data class PictureIds(
-        val picture_ids: List<Any>
+        @JsonProperty("picture_ids")
+        val pictureIds: List<Any>
     )
 }
