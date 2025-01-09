@@ -335,7 +335,7 @@ public class DrcApiRestServiceImpl extends AbstractProcessEngineRestServiceImpl 
     }
 
     @GET
-    @Path("/process/{processId}/tasks/attachments")
+    @Path("/process-instance/{processId}/tasks/attachments")
     @Produces({"application/json"})
     public Map<String, Map<String, String>> getAttachmentsForProcess(@PathParam("processId") String processId) {
         var taskService = super.getTaskRestService(null);
