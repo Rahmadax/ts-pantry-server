@@ -94,8 +94,7 @@ pipeline {
         measure {
           script {
             def rebased = cicd.isBranchRebased('prod', env.GIT_COMMIT)
-            def releaseNotes = sh(script: "git log --format=format:-%x20%s --no-merges prod..${env.GIT_COMMIT}", returnStdout: true)
-            slackSend channel: 'cx-stream', color: rebased ? 'good' : 'warning', message: "Deploying <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> to production :shipit_parrot:\n${releaseNotes}"
+            slackSend channel: 'cx-stream', color: rebased ? 'good' : 'warning', message: "Deploying <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> to production :shipit_parrot:"
             cicd.deploy(envName: 'prod', runDreddTests: false, SNYK_MONITOR: true, LOCAL_DOCKERFILE: "Dockerfile.prebuilt")
             slackSend channel: 'cx-stream', color: 'good', message: "Deployed <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> to production :dancinghamster:"
           }
