@@ -47,7 +47,6 @@ serviceConfig:
   SHIPPING_HOST: https://fulfilment-default-shipping-internal.eks-default.stage-app.dpop.co.uk
   USER_HOST: https://django-default-django-api.eks-default.stage-app.dpop.co.uk
   COMMS_HOST: http://comms-hub.martech-default
-  PICTURE_HOST: https://media-default-picture-api.eks-default.stage-app.dpop.co.uk
 autoscaling:
   cpu: 65
   memory: 75
