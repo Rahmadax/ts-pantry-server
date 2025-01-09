@@ -350,7 +350,7 @@ public class DrcApiRestServiceImpl extends AbstractProcessEngineRestServiceImpl 
         return completedTasks
                 .stream()
                 .collect(Collectors.toMap(
-                        HistoricTaskInstance::getName,
+                        HistoricTaskInstance::getTaskDefinitionKey,
                         completedTask -> {
                             var attachments = taskService.getTask(completedTask.getId(), false).getAttachmentResource();
                             return attachments
