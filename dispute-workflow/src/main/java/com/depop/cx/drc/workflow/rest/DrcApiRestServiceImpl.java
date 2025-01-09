@@ -5,6 +5,7 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.UriInfo;
 import org.camunda.bpm.engine.HistoryService;
+import org.camunda.bpm.engine.history.HistoricTaskInstance;
 import org.camunda.bpm.engine.rest.*;
 import org.camunda.bpm.engine.rest.dto.task.AttachmentDto;
 import org.camunda.bpm.engine.rest.history.HistoryRestService;
@@ -118,7 +119,7 @@ public class DrcApiRestServiceImpl extends AbstractProcessEngineRestServiceImpl 
         return super.getVersionRestService(null);
     }
 
-/* THE FOLLOWING REST RESOURCES ARE NOT USED BY THE DRC SO WE CAN SAFELY REMOVE THEM FROM THE API: */
+    /* THE FOLLOWING REST RESOURCES ARE NOT USED BY THE DRC SO WE CAN SAFELY REMOVE THEM FROM THE API: */
 
 //    @Path("/execution")
 //    public ExecutionRestService getExecutionService() {
@@ -345,23 +346,23 @@ public class DrcApiRestServiceImpl extends AbstractProcessEngineRestServiceImpl 
                 .finished()
                 .list();
 
-        Map<String, Map<String, String>> taskAttachmentsMap = new HashMap<>();
 
-        completedTasks.forEach(completedTask -> {
-            var attachments = taskService.getTask(completedTask.getId(), false).getAttachmentResource();
-            var taskAttachments = attachments.getAttachments();
+        return completedTasks
+                .stream()
+                .collect(Collectors.toMap(
+                        HistoricTaskInstance::getName,
+                        completedTask -> {
+                            var attachments = taskService.getTask(completedTask.getId(), false).getAttachmentResource();
+                            return attachments
+                                    .getAttachments()
+                                    .stream()
+                                    .collect(Collectors.toMap(
+                                            AttachmentDto::getName,
+                                            attachment -> IoUtil.inputStreamAsString(attachments.getAttachmentData(attachment.getId()))
+                                    ));
+                        }
+                ));
 
-            Map<String, String> attachmentContentMap = new HashMap<>();
-            taskAttachments.forEach(attachment -> {
-                var attachmentData = attachments.getAttachmentData(attachment.getId());
-                var attachmentContent = IoUtil.inputStreamAsString(attachmentData);
-                attachmentContentMap.put(attachment.getName(), attachmentContent);
-            });
-
-            taskAttachmentsMap.put(completedTask.getName(), attachmentContentMap);
-        });
-
-        return taskAttachmentsMap;
     }
 
     protected URI getRelativeEngineUri(String engineName) {
