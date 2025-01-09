@@ -4,6 +4,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.UriInfo;
+import org.camunda.bpm.engine.HistoryService;
 import org.camunda.bpm.engine.rest.*;
 import org.camunda.bpm.engine.rest.dto.task.AttachmentDto;
 import org.camunda.bpm.engine.rest.history.HistoryRestService;
@@ -11,15 +12,20 @@ import org.camunda.bpm.engine.rest.impl.AbstractProcessEngineRestServiceImpl;
 import org.camunda.bpm.engine.rest.impl.VersionRestService;
 import org.camunda.bpm.engine.rest.mapper.MultipartFormData;
 import org.camunda.commons.utils.IoUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Path("")
 @SuppressWarnings("CommentedOutCode")
 public class DrcApiRestServiceImpl extends AbstractProcessEngineRestServiceImpl {
 
+    @Autowired
+    private HistoryService historyService;
     /*
      * The following resources are used by dispute-service:
      *
@@ -326,6 +332,36 @@ public class DrcApiRestServiceImpl extends AbstractProcessEngineRestServiceImpl 
         var task = taskService.getTask(taskId, false);
         var attachments = task.getAttachmentResource();
         attachments.deleteAttachment(attachmentId);
+    }
+
+    @GET
+    @Path("/process/{processId}/tasks/attachments")
+    @Produces({"application/json"})
+    public Map<String, Map<String, String>> getAttachmentsForProcess(@PathParam("processId") String processId) {
+        var taskService = super.getTaskRestService(null);
+        var completedTasks = historyService
+                .createHistoricTaskInstanceQuery()
+                .processInstanceId(processId)
+                .finished()
+                .list();
+
+        Map<String, Map<String, String>> taskAttachmentsMap = new HashMap<>();
+
+        completedTasks.forEach(completedTask -> {
+            var attachments = taskService.getTask(completedTask.getId(), false).getAttachmentResource();
+            var taskAttachments = attachments.getAttachments();
+
+            Map<String, String> attachmentContentMap = new HashMap<>();
+            taskAttachments.forEach(attachment -> {
+                var attachmentData = attachments.getAttachmentData(attachment.getId());
+                var attachmentContent = IoUtil.inputStreamAsString(attachmentData);
+                attachmentContentMap.put(attachment.getName(), attachmentContent);
+            });
+
+            taskAttachmentsMap.put(completedTask.getName(), attachmentContentMap);
+        });
+
+        return taskAttachmentsMap;
     }
 
     protected URI getRelativeEngineUri(String engineName) {
