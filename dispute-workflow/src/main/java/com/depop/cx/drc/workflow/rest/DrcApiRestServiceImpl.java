@@ -361,7 +361,11 @@ public class DrcApiRestServiceImpl extends AbstractProcessEngineRestServiceImpl 
                                             attachment -> IoUtil.inputStreamAsString(attachments.getAttachmentData(attachment.getId()))
                                     ));
                         }
-                ));
+                ))
+                .entrySet()
+                .stream()
+                .filter(entry -> !entry.getValue().isEmpty())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
     }
 
