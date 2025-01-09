@@ -23,6 +23,9 @@ dependencies {
     implementation("org.camunda.bpm:camunda-engine")
     implementation("org.camunda.spin:camunda-spin-core")
 
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+
 }
 
 configurations {
