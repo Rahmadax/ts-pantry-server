@@ -1,49 +1,36 @@
-#!groovy
-
-def mostRecentCommitterEmail() {
-  return sh(script: "git --no-pager show -s --format='%ae'", returnStdout: true).trim()
-}
-
 pipeline {
-  triggers{ cron(env.BRANCH_NAME == 'master' ? 'H H(8-15) * * *' : '') }
+
   options {
     buildDiscarder(logRotator(numToKeepStr: '5'))
     ansiColor('xterm')
     parallelsAlwaysFailFast()
   }
 
+  // prevent tasks running on agents unless specified
   agent none
 
   stages {
+
     stage('setup') {
-      agent any
       steps {
         script {
-          cicd.setupBuild(["fullCheckout": true])
+          cicd.setupBuild()
           env.DEPLOY_TO_STAGE = 'no'
         }
       }
     }
 
     // Build a JAR file for the service:
-    stage('build') {
+    stage('build & scan') {
       parallel {
-        stage('assemble') {
+        stage('build') {
           agent any
-          when {
-            anyOf {
-              not { triggeredBy 'TimerTrigger' }
-              not { branch 'master' }
-            }
-          }
           steps {
             measure {
               script {
-                env.MOST_RECENT_COMMITTER_EMAIL = mostRecentCommitterEmail()
-
+                slackSend channel: 'cx-stream', color: 'good', message: "Building <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}>"
                 sh "make ci"
                 sh "make docker_build docker_push"
-                env.DEPLOY_TO_STAGE = canDeployTo('stage') ? 'yes' : 'no'
               }
             }
           }
@@ -73,10 +60,7 @@ pipeline {
 
     stage('stage deploy prompt') {
       when {
-        allOf {
-          not { environment name: 'DEPLOY_TO_STAGE', value: 'yes' }
-          not { triggeredBy 'TimerTrigger' }
-        }
+        not { branch 'master' }
       }
       steps {
         script {
@@ -85,68 +69,40 @@ pipeline {
       }
     }
 
-    stage('pre-deploy stage') {
-      agent any
-      when {
-        environment name: 'DEPLOY_TO_STAGE', value: 'yes'
-      }
-      steps {
-        script {
-          def deployed = cicd.deployedBranch()
-          upToDate = cicd.isBranchRebased('stage', env.GIT_COMMIT) || deployed == env.CHANGE_BRANCH
-          if (!upToDate) {
-            slackSend channel: 'cx-stream', color: 'warning', message: "Deploying <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> over `${deployed}` to staging :shipit_parrot:"
-          }
-        }
-      }
-    }
-
     stage('deploy to stage') {
       when {
-        environment name: 'DEPLOY_TO_STAGE', value: 'yes'
+        anyOf {
+          branch 'master'
+          environment name: 'DEPLOY_TO_STAGE', value: 'yes'
+        }
       }
       steps {
         measure {
           script {
+            slackSend channel: 'cx-stream', color: 'warning', message: "Deploying <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> to staging :shipit_parrot:"
             cicd.deploy('stage')
           }
         }
       }
     }
 
-    stage('pre-deploy prod') {
-      agent any
-      when {
-        allOf {
-          branch 'master'
-          not { triggeredBy 'TimerTrigger' }
-        }
-      }
-      steps {
-        script {
-          def rebased = cicd.isBranchRebased('prod', env.GIT_COMMIT)
-          def releaseNotes = sh(script: "git log --format=format:-%x20%s --no-merges prod..${env.GIT_COMMIT}", returnStdout: true)
-          slackSend channel: 'cx-stream', color: rebased ? 'good' : 'warning', message: "Deploying <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> to production :shipit_parrot:\n${releaseNotes}"
-        }
-      }
-    }
-
     stage('deploy to prod') {
       when {
-        allOf {
-          branch 'master'
-          not { triggeredBy 'TimerTrigger' }
-        }
+         branch 'master'
       }
       steps {
         measure {
           script {
+            def rebased = cicd.isBranchRebased('prod', env.GIT_COMMIT)
+            def releaseNotes = sh(script: "git log --format=format:-%x20%s --no-merges prod..${env.GIT_COMMIT}", returnStdout: true)
+            slackSend channel: 'cx-stream', color: rebased ? 'good' : 'warning', message: "Deploying <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> to production :shipit_parrot:\n${releaseNotes}"
             cicd.deploy(envName: 'prod', runDreddTests: false, SNYK_MONITOR: true, LOCAL_DOCKERFILE: "Dockerfile.prebuilt")
             slackSend channel: 'cx-stream', color: 'good', message: "Deployed <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> to production :dancinghamster:"
           }
         }
       }
     }
+
   }
 
   post {
@@ -158,31 +114,9 @@ pipeline {
 
     failure {
       script {
-        if (env.BRANCH_NAME == 'master') {
-          committer_slack_id = null
-          if (env.MOST_RECENT_COMMITTER_EMAIL) {
-            committer_slack_id = slackUserIdFromEmail(email: env.MOST_RECENT_COMMITTER_EMAIL)
-          }
-
-          if (committer_slack_id) {
-            slackSend channel: 'cx-stream', color: 'bad', message: 'Failed to deploy <' + env.RUN_DISPLAY_URL + '|' + env.JOB_NAME + '> , <@' + committer_slack_id + '> :sob:'
-          } else {
-            slackSend channel: 'cx-stream', color: 'bad', message: 'Failed to deploy <' + env.RUN_DISPLAY_URL + '|' + env.JOB_NAME + '> :sob:'
-          }
-        }
-      }
-
-      script {
         cicd.buildFailure()
+        slackSend channel: 'cx-stream', color: 'bad', message: "Failed to deploy <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> :sob:"
       }
     }
   }
-}
-
-def canDeployTo(tag) {
-  def ok = false
-  try {
-    ok = !cicd.isCausedByTimer() && (env.BRANCH_NAME == 'master' || !pullRequest.draft && (cicd.isBranchRebased(tag, env.GIT_COMMIT) || cicd.deployedBranch() == env.CHANGE_BRANCH))
-  } catch (e) { echo "$e" }
-  return ok
 }

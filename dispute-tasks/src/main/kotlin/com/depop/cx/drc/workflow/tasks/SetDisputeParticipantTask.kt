@@ -1,7 +1,7 @@
 package com.depop.cx.drc.workflow.tasks
 
 import com.depop.cx.drc.workflow.client.DrcClient
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.BpmnError
 import org.camunda.bpm.engine.delegate.DelegateExecution
 

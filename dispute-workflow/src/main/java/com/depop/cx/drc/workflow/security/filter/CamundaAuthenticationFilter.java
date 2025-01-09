@@ -1,5 +1,9 @@
 package com.depop.cx.drc.workflow.security.filter;
 
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.rest.util.EngineUtil;
 import org.springframework.security.core.Authentication;
@@ -7,10 +11,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;

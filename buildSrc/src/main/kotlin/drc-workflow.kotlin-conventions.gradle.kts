@@ -1,7 +1,4 @@
-@file:Suppress("UnstableApiUsage")
-
 import org.gradle.api.tasks.testing.logging.TestLogEvent
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("drc-workflow.common")
@@ -9,7 +6,7 @@ plugins {
     kotlin("jvm")
 }
 
-val javaVersion = JavaVersion.VERSION_11
+val javaVersion = JavaVersion.VERSION_17
 
 java {
     sourceCompatibility = javaVersion
@@ -28,12 +25,12 @@ kotlin {
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = javaVersion.majorVersion
+kotlin {
+    compilerOptions {
+        freeCompilerArgs.addAll("-Xjsr305=strict")
     }
 }
 

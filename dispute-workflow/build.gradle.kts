@@ -7,19 +7,16 @@ plugins {
 dependencies {
 
     // General
-    implementation("com.google.guava:guava:32.0.0-jre")
+    implementation("com.google.guava:guava")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
     // Spring
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-jersey") {
-      exclude("org.apache.tomcat.embed:tomcat-embed-core")
-    }
-    // Snyk https://security.snyk.io/vuln/SNYK-JAVA-ORGAPACHETOMCATEMBED-6092281
-    implementation("org.apache.tomcat.embed:tomcat-embed-core:9.0.90")
-    implementation("org.apache.tomcat.embed:tomcat-embed-websocket:9.0.88")
-    
+    implementation("org.springframework.boot:spring-boot-starter-jersey")
+
+    // Web support
     implementation("org.springframework.boot:spring-boot-starter-web")
+    runtimeOnly("jakarta.servlet:jakarta.servlet-api")
 
     // Session
     implementation("org.springframework.session:spring-session-jdbc")
@@ -30,10 +27,16 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
 
     // Camunda
-    implementation("org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter")
-    implementation("org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter-rest")
-    implementation("org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter-webapp")
-    implementation("org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter-test")
+    runtimeOnly("org.glassfish.jaxb:jaxb-runtime")
+    implementation("org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter-rest"){
+        exclude(group = "com.sun.xml.bind", module = "jaxb-impl")
+    }
+    implementation("org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter-webapp"){
+        exclude(group = "com.sun.xml.bind", module = "jaxb-impl")
+    }
+    implementation("org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter-test"){
+        exclude(group = "com.sun.xml.bind", module = "jaxb-impl")
+    }
     implementation("org.camunda.bpm:camunda-engine-plugin-spin")
     implementation("org.camunda.spin:camunda-spin-core")
     implementation("org.camunda.spin:camunda-spin-dataformat-json-jackson")
@@ -53,7 +56,7 @@ dependencies {
     // Tracing support
     implementation("io.opentracing.contrib:opentracing-spring-tracer-configuration-starter")
     implementation("io.opentracing:opentracing-api")
-    implementation("io.opentracing.contrib:opentracing-spring-cloud-starter") //TODO: Exclude all the dependencies that we are not using.
+    implementation("io.opentracing.contrib:opentracing-spring-cloud-starter")
     implementation("com.datadoghq:dd-trace-api")
     implementation("com.datadoghq:dd-trace-ot")
 

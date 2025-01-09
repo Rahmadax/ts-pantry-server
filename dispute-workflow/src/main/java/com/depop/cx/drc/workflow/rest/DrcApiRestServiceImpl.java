@@ -1,22 +1,23 @@
 package com.depop.cx.drc.workflow.rest;
 
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.UriInfo;
 import org.camunda.bpm.engine.rest.*;
 import org.camunda.bpm.engine.rest.dto.task.AttachmentDto;
 import org.camunda.bpm.engine.rest.history.HistoryRestService;
 import org.camunda.bpm.engine.rest.impl.AbstractProcessEngineRestServiceImpl;
-import org.camunda.bpm.engine.rest.impl.FetchAndLockRestServiceImpl;
+import org.camunda.bpm.engine.rest.impl.VersionRestService;
 import org.camunda.bpm.engine.rest.mapper.MultipartFormData;
 import org.camunda.commons.utils.IoUtil;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Path("")
+@SuppressWarnings("CommentedOutCode")
 public class DrcApiRestServiceImpl extends AbstractProcessEngineRestServiceImpl {
 
     /*
@@ -106,15 +107,12 @@ public class DrcApiRestServiceImpl extends AbstractProcessEngineRestServiceImpl 
         return super.getDeploymentRestService(null);
     }
 
-    @Path("/external-task/fetchAndLock")
-    public FetchAndLockRestService fetchAndLock() {
-        String rootResourcePath = this.getRelativeEngineUri(null).toASCIIString();
-        FetchAndLockRestServiceImpl subResource = new FetchAndLockRestServiceImpl(null, this.getObjectMapper());
-        subResource.setRelativeRootResourceUri(rootResourcePath);
-        return subResource;
+    @Path("/version")
+    public VersionRestService getVersionRestService() {
+        return super.getVersionRestService(null);
     }
 
-    /* THE FOLLOWING REST RESOURCES ARE NOT USED BY THE DRC SO WE CAN SAFELY REMOVE THEM FROM THE API: */
+/* THE FOLLOWING REST RESOURCES ARE NOT USED BY THE DRC SO WE CAN SAFELY REMOVE THEM FROM THE API: */
 
 //    @Path("/execution")
 //    public ExecutionRestService getExecutionService() {
@@ -227,11 +225,6 @@ public class DrcApiRestServiceImpl extends AbstractProcessEngineRestServiceImpl 
 //        return super.getOptimizeRestService(null);
 //    }
 //
-//    @Path("/version")
-//    public VersionRestService getVersionRestService() {
-//        return super.getVersionRestService(null);
-//    }
-//
 //    @Path("/schema/log")
 //    public SchemaLogRestService getSchemaLogRestService() {
 //        return super.getSchemaLogRestService(null);
@@ -254,7 +247,7 @@ public class DrcApiRestServiceImpl extends AbstractProcessEngineRestServiceImpl 
     public AttachmentDto addAttachment(@PathParam("taskId") String taskId, @Context UriInfo uriInfo, TextAttachmentDto attachment) {
 
         var taskService = super.getTaskRestService(null);
-        var task = taskService.getTask(taskId);
+        var task = taskService.getTask(taskId, false);
         var attachments = task.getAttachmentResource();
 
         var formData = new MultipartFormData();
@@ -287,7 +280,7 @@ public class DrcApiRestServiceImpl extends AbstractProcessEngineRestServiceImpl 
     @Produces(MediaType.APPLICATION_JSON)
     public TextAttachmentDto getAttachmentData(@PathParam("taskId") String taskId, @PathParam("attachmentId") String attachmentId) {
         var taskService = super.getTaskRestService(null);
-        var task = taskService.getTask(taskId);
+        var task = taskService.getTask(taskId, false);
 
         var attachments = task.getAttachmentResource();
         var attachment = attachments.getAttachment(attachmentId);
@@ -307,7 +300,7 @@ public class DrcApiRestServiceImpl extends AbstractProcessEngineRestServiceImpl 
     @Produces(MediaType.APPLICATION_JSON)
     public List<AttachmentDto> getAttachments(@PathParam("taskId") String taskId) {
         var taskService = super.getTaskRestService(null);
-        var task = taskService.getTask(taskId);
+        var task = taskService.getTask(taskId, false);
 
         var attachmentsResource = task.getAttachmentResource();
         var attachments = attachmentsResource.getAttachments();
@@ -330,7 +323,7 @@ public class DrcApiRestServiceImpl extends AbstractProcessEngineRestServiceImpl 
     @Produces({"application/json"})
     public void deleteAttachment(@PathParam("taskId") String taskId, @PathParam("attachmentId") String attachmentId) {
         var taskService = super.getTaskRestService(null);
-        var task = taskService.getTask(taskId);
+        var task = taskService.getTask(taskId, false);
         var attachments = task.getAttachmentResource();
         attachments.deleteAttachment(attachmentId);
     }

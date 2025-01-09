@@ -1,6 +1,7 @@
 package com.depop.cx.drc.workflow.metrics.engine;
 
 import io.micrometer.core.instrument.MeterRegistry;
+import jakarta.annotation.PostConstruct;
 import org.camunda.bpm.engine.impl.metrics.reporter.DbMetricsReporter;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaMetricsConfiguration;
@@ -8,8 +9,6 @@ import org.camunda.bpm.spring.boot.starter.configuration.impl.AbstractCamundaCon
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultMetricsConfiguration;
 import org.camunda.bpm.spring.boot.starter.property.MetricsProperty;
 import org.slf4j.LoggerFactory;
-
-import javax.annotation.PostConstruct;
 
 /**
  * Camunda metrics plugin

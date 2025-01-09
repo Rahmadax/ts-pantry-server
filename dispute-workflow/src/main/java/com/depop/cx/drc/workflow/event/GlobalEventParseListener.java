@@ -20,6 +20,7 @@ import org.camunda.bpm.engine.delegate.ExecutionListener;
 import org.camunda.bpm.engine.delegate.TaskListener;
 import org.camunda.bpm.engine.impl.bpmn.behavior.UserTaskActivityBehavior;
 import org.camunda.bpm.engine.impl.bpmn.parser.BpmnParseListener;
+import org.camunda.bpm.engine.impl.core.variable.mapping.IoMapping;
 import org.camunda.bpm.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.camunda.bpm.engine.impl.pvm.process.ActivityImpl;
 import org.camunda.bpm.engine.impl.pvm.process.ScopeImpl;
@@ -34,7 +35,6 @@ import java.util.List;
  * {@link BpmnParseListener} implementation that registers the
  * {@link ExecutionListener} and {@link TaskListener} provided in the
  * constructor with every event, on every element, in every process.
- *
  * It is the responsibility of the {@link ExecutionListener} and {@link TaskListener}
  * to determine if the events are relevant.
  */
@@ -294,6 +294,11 @@ public class GlobalEventParseListener implements BpmnParseListener {
     }
 
     public void parseConditionalStartEventForEventSubprocess(final Element element, final ActivityImpl conditionalActivity, final boolean interrupting) {
+        // Nothing to do.
+    }
+
+    @Override
+    public void parseIoMapping(Element element, ActivityImpl activity, IoMapping ioMapping) {
         // Nothing to do.
     }
 }

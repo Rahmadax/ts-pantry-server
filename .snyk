@@ -13,13 +13,3 @@ ignore:
         reason: No fix, h2 is only used for local deployment
         expires: 2025-01-27T14:29:58.678Z
         created: 2024-09-27T14:29:58.683Z
-  SNYK-JAVA-ORGSPRINGFRAMEWORK-7945490:
-    - '*':
-        reason: No fix for version of spring we are using, coming soon.  We are not configured to allow this exploit.
-        expires: 2025-01-27T14:30:27.028Z
-        created: 2024-09-27T14:30:27.036Z
-  SNYK-JAVA-ORGSPRINGFRAMEWORK-7945491:
-    - '*':
-        reason: No fix for version of spring we are using, coming soon.  We are not configured to allow this exploit.
-        expires: 2025-01-27T14:30:50.755Z
-        created: 2024-09-27T14:30:50.761Z

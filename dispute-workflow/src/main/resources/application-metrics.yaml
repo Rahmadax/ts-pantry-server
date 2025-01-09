@@ -18,15 +18,6 @@ server:
 
 management:
   metrics:
-    web:
-      server:
-        request:
-          autotime:
-            enabled: true
-      client:
-        request:
-          autotime:
-            enabled: true
     enable:
       all: true
 
@@ -76,13 +67,14 @@ spring:
     activate:
       on-profile: stage
 management:
+  statsd:
+    metrics:
+      export:
+          enabled: true
+          host: ${METRICS_HOST}
+          port: ${METRICS_PORT}
+          flavor: datadog
   metrics:
-    export:
-      statsd:
-        enabled: true
-        host: ${METRICS_HOST}
-        port: ${METRICS_PORT}
-        flavor: datadog
     tags:
       service: ${SERVICE_DOMAIN}-${SERVICE_GROUP}-${SERVICE_NAME}-${SERVICE_ROLE}
       version: ${APP_VERSION}
@@ -104,13 +96,14 @@ spring:
     activate:
       on-profile: production
 management:
-  metrics:
-    export:
-      statsd:
+  statsd:
+    metrics:
+      export:
         enabled: true
         host: ${METRICS_HOST}
         port: ${METRICS_PORT}
         flavor: datadog
+  metrics:
     tags:
       service: ${SERVICE_DOMAIN}-${SERVICE_GROUP}-${SERVICE_NAME}-${SERVICE_ROLE}
       version: ${APP_VERSION}

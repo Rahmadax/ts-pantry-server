@@ -41,8 +41,7 @@ public class DepopGrantedAuthority implements GrantedAuthority {
         if (this == obj) {
             return true;
         }
-        if (obj instanceof DepopGrantedAuthority) {
-            final var depopGrantedAuthority = (DepopGrantedAuthority) obj;
+        if (obj instanceof DepopGrantedAuthority depopGrantedAuthority) {
             return this.type.equals(depopGrantedAuthority.type) &&
                     this.role.equals(depopGrantedAuthority.role);
         }

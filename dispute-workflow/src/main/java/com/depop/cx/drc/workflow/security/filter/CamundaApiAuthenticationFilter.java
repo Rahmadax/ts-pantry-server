@@ -1,16 +1,16 @@
 package com.depop.cx.drc.workflow.security.filter;
 
 
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
@@ -40,12 +40,10 @@ public class CamundaApiAuthenticationFilter extends CamundaAuthenticationFilter 
         final var authentication = SecurityContextHolder.getContext().getAuthentication();
         if(authentication != null && authentication.isAuthenticated()) {
             final var principal = authentication.getPrincipal();
-            if (principal instanceof Jwt) {
-                final Jwt jwt = (Jwt) principal;
+            if (principal instanceof Jwt jwt) {
                 final var username = isOpstool(authentication) ? OPSTOOLS_CLAIM : jwt.getSubject();
                 engine.getIdentityService().setAuthentication(username, getUserGroups(authentication));
-            } else if (principal instanceof User){
-                final User user = (User) principal;
+            } else if (principal instanceof User user){
                 engine.getIdentityService().setAuthentication(user.getUsername(), getUserGroups(authentication));
             } else {
                 engine.getIdentityService().clearAuthentication();

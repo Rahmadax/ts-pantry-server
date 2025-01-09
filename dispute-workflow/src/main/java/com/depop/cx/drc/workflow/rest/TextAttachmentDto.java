@@ -15,7 +15,7 @@ public class TextAttachmentDto extends AttachmentDto {
     }
 
     public TextAttachmentDto() {
-
+        //no-op
     }
 
     public static TextAttachmentDto fromAttachment(AttachmentDto attachment) {
@@ -29,7 +29,6 @@ public class TextAttachmentDto extends AttachmentDto {
         taDto.setCreateTime(attachment.getCreateTime());
         taDto.setRemovalTime(attachment.getRemovalTime());
         taDto.setRootProcessInstanceId(attachment.getRootProcessInstanceId());
-
         return taDto;
     }
 

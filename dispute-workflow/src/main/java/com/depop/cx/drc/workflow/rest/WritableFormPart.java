@@ -1,7 +1,6 @@
 package com.depop.cx.drc.workflow.rest;
 
 import org.camunda.bpm.engine.rest.mapper.MultipartFormData;
-import org.camunda.commons.utils.IoUtil;
 
 import java.nio.charset.StandardCharsets;
 
@@ -27,7 +26,9 @@ class WritableFormPart extends MultipartFormData.FormPart {
     }
 
     @Override
-    public String getContentType() {return contentType;}
+    public String getContentType() {
+        return contentType;
+    }
 
     @Override
     public String getTextContent() {
@@ -35,7 +36,9 @@ class WritableFormPart extends MultipartFormData.FormPart {
     }
 
     @Override
-    public byte[] getBinaryContent() {return textContent.getBytes(StandardCharsets.UTF_8);}
+    public byte[] getBinaryContent() {
+        return textContent.getBytes(StandardCharsets.UTF_8);
+    }
 
     @Override
     public String getFileName() {

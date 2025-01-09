@@ -18,10 +18,8 @@ dependencies {
 
 }
 
-configurations {
-    compileOnly {
+configurations.compileOnly {
         extendsFrom(configurations.annotationProcessor.get())
-    }
 }
 
 // Don't include the version in the build archive, so we can reliably find it in Docker/make files etc.

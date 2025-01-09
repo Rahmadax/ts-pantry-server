@@ -2,7 +2,7 @@ package com.depop.cx.drc.workflow.tasks
 
 import com.depop.cx.drc.workflow.client.User
 import com.depop.cx.drc.workflow.client.UserClient
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import java.util.*
 

@@ -33,9 +33,6 @@ spring:
       on-profile: h2
 camunda:
   bpm:
-    admin-user:
-      id: demo
-      password: demo
     database:
       schema-update: true
 

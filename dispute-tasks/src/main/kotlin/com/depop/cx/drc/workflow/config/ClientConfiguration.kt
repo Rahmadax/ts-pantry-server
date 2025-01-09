@@ -4,7 +4,6 @@ package com.depop.cx.drc.workflow.config
 
 import com.depop.cx.drc.workflow.client.*
 import org.springframework.boot.context.properties.ConfigurationProperties
-import org.springframework.boot.context.properties.ConstructorBinding
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -26,7 +25,6 @@ private const val DEPOP_CLIENT_REGISTRATION_ID = "depop"
 private const val DEPOP_GRANT_TYPE = "http://depop.com/oauth/grant-type/client_credentials"
 private const val DEPOP_JWT_HEADER = "x-authorization-jwt"
 
-@ConstructorBinding
 @ConfigurationProperties("depop.drc.client")
 data class ClientProperties(
     val checkoutHost: URI,
