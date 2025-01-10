@@ -4,6 +4,8 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.UriInfo;
+import org.camunda.bpm.engine.HistoryService;
+import org.camunda.bpm.engine.history.HistoricTaskInstance;
 import org.camunda.bpm.engine.rest.*;
 import org.camunda.bpm.engine.rest.dto.task.AttachmentDto;
 import org.camunda.bpm.engine.rest.history.HistoryRestService;
@@ -11,15 +13,20 @@ import org.camunda.bpm.engine.rest.impl.AbstractProcessEngineRestServiceImpl;
 import org.camunda.bpm.engine.rest.impl.VersionRestService;
 import org.camunda.bpm.engine.rest.mapper.MultipartFormData;
 import org.camunda.commons.utils.IoUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Path("")
 @SuppressWarnings("CommentedOutCode")
 public class DrcApiRestServiceImpl extends AbstractProcessEngineRestServiceImpl {
 
+    @Autowired
+    private HistoryService historyService;
     /*
      * The following resources are used by dispute-service:
      *
@@ -112,7 +119,7 @@ public class DrcApiRestServiceImpl extends AbstractProcessEngineRestServiceImpl 
         return super.getVersionRestService(null);
     }
 
-/* THE FOLLOWING REST RESOURCES ARE NOT USED BY THE DRC SO WE CAN SAFELY REMOVE THEM FROM THE API: */
+    /* THE FOLLOWING REST RESOURCES ARE NOT USED BY THE DRC SO WE CAN SAFELY REMOVE THEM FROM THE API: */
 
 //    @Path("/execution")
 //    public ExecutionRestService getExecutionService() {
@@ -326,6 +333,40 @@ public class DrcApiRestServiceImpl extends AbstractProcessEngineRestServiceImpl 
         var task = taskService.getTask(taskId, false);
         var attachments = task.getAttachmentResource();
         attachments.deleteAttachment(attachmentId);
+    }
+
+    @GET
+    @Path("/process-instance/{processId}/tasks/attachments")
+    @Produces({"application/json"})
+    public Map<String, Map<String, String>> getAttachmentsForProcess(@PathParam("processId") String processId) {
+        var taskService = super.getTaskRestService(null);
+        var completedTasks = historyService
+                .createHistoricTaskInstanceQuery()
+                .processInstanceId(processId)
+                .finished()
+                .list();
+
+
+        return completedTasks
+                .stream()
+                .collect(Collectors.toMap(
+                        HistoricTaskInstance::getTaskDefinitionKey,
+                        completedTask -> {
+                            var attachments = taskService.getTask(completedTask.getId(), false).getAttachmentResource();
+                            return attachments
+                                    .getAttachments()
+                                    .stream()
+                                    .collect(Collectors.toMap(
+                                            AttachmentDto::getName,
+                                            attachment -> IoUtil.inputStreamAsString(attachments.getAttachmentData(attachment.getId()))
+                                    ));
+                        }
+                ))
+                .entrySet()
+                .stream()
+                .filter(entry -> !entry.getValue().isEmpty())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
     }
 
     protected URI getRelativeEngineUri(String engineName) {
