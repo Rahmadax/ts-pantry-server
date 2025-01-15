@@ -16,6 +16,7 @@ import org.camunda.commons.utils.IoUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -257,6 +258,34 @@ public class DrcApiRestServiceImpl extends AbstractProcessEngineRestServiceImpl 
         var task = taskService.getTask(taskId, false);
         var attachments = task.getAttachmentResource();
 
+        var formData = createFormData(attachment);
+
+        return attachments.addAttachment(uriInfo, formData);
+    }
+
+    @POST
+    @Path("/task/{taskId}/attachments/create")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<AttachmentDto> addAttachments(@PathParam("taskId") String taskId, @Context UriInfo uriInfo, List<TextAttachmentDto> attachments) {
+
+        var taskService = super.getTaskRestService(null);
+        var task = taskService.getTask(taskId, false);
+        var attachmentResource = task.getAttachmentResource();
+
+        List<AttachmentDto> createdAttachments = new ArrayList<>();
+
+        for (TextAttachmentDto attachment : attachments) {
+            var formData = createFormData(attachment);
+
+            var createdAttachment = attachmentResource.addAttachment(uriInfo, formData);
+            createdAttachments.add(createdAttachment);
+        }
+
+        return createdAttachments;
+    }
+
+    private MultipartFormData createFormData(TextAttachmentDto attachment) {
         var formData = new MultipartFormData();
 
         if (attachment.getName() != null) {
@@ -279,7 +308,7 @@ public class DrcApiRestServiceImpl extends AbstractProcessEngineRestServiceImpl 
             formData.addPart(part);
         }
 
-        return attachments.addAttachment(uriInfo, formData);
+        return formData;
     }
 
     @GET
