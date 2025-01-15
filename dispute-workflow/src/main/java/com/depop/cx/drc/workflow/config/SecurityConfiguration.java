@@ -252,6 +252,7 @@ public class SecurityConfiguration {
                                     antMatcher(HttpMethod.POST, API_URL_BASE + "/process-definition/key/*/start"),
                                     antMatcher(HttpMethod.POST, API_URL_BASE + "/task/*/complete"),
                                     antMatcher(HttpMethod.POST, API_URL_BASE + "/task/*/attachment/create"),
+                                    antMatcher(HttpMethod.POST, API_URL_BASE + "/task/*/attachments/create"),
                                     antMatcher(HttpMethod.POST, API_URL_BASE + "/message"),
                                     antMatcher(HttpMethod.DELETE, API_URL_BASE + "/task/*/attachment/*")
                                     )
