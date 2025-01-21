@@ -1,5 +1,6 @@
 package com.depop.cx.drc.workflow.rest;
 
+import com.nimbusds.openid.connect.sdk.assurance.evidences.attachment.Attachment;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
@@ -367,7 +368,7 @@ public class DrcApiRestServiceImpl extends AbstractProcessEngineRestServiceImpl 
     @GET
     @Path("/process-instance/{processId}/tasks/attachments")
     @Produces({"application/json"})
-    public Map<String, Map<String, String>> getAttachmentsForProcess(@PathParam("processId") String processId) {
+    public Map<String, List<AttachmentDto>> getAttachmentsForProcess(@PathParam("processId") String processId) {
         var taskService = super.getTaskRestService(null);
         var completedTasks = historyService
                 .createHistoricTaskInstanceQuery()
@@ -375,21 +376,13 @@ public class DrcApiRestServiceImpl extends AbstractProcessEngineRestServiceImpl 
                 .finished()
                 .list();
 
-
         return completedTasks
                 .stream()
                 .collect(Collectors.toMap(
                         HistoricTaskInstance::getTaskDefinitionKey,
-                        completedTask -> {
-                            var attachments = taskService.getTask(completedTask.getId(), false).getAttachmentResource();
-                            return attachments
-                                    .getAttachments()
-                                    .stream()
-                                    .collect(Collectors.toMap(
-                                            AttachmentDto::getName,
-                                            attachment -> IoUtil.inputStreamAsString(attachments.getAttachmentData(attachment.getId()))
-                                    ));
-                        }
+                        completedTask -> taskService.getTask(completedTask.getId(), false)
+                                .getAttachmentResource()
+                                .getAttachments()
                 ))
                 .entrySet()
                 .stream()
