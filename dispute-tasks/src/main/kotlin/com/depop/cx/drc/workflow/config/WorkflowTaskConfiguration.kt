@@ -21,6 +21,9 @@ class WorkflowTaskConfiguration {
     ) = GetReceiptDetailsTask(checkoutClient, paymentsClient, shippingClient)
 
     @Bean
+    fun getUserDetailsTask(userClient: UserClient) = GetUserDetailsTask(userClient)
+
+    @Bean
     fun setDisputeParticipantTask(drcClient: DrcClient) = SetDisputeParticipantTask(drcClient)
 
     @Bean
@@ -33,7 +36,7 @@ class WorkflowTaskConfiguration {
     fun updateContextTask() = UpdateContextTask()
 
     @Bean
-    fun bannedUserTask(userClient: UserClient) = BannedUserTask(userClient)
+    fun bannedUserTask(userClient: UserClient) = GetUserDetailsTask(userClient)
 
     @Bean
     fun defaultProcessStartListener() = DefaultProcessStartListener()

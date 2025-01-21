@@ -15,7 +15,8 @@ class UserClient(webClient: WebClient) : Client(webClient) {
 
 data class User(
     @JsonProperty("purchase_internal_id") val id: Long,
-    @JsonProperty("is_active") val isActive: Boolean
+    @JsonProperty("is_active") val isActive: Boolean,
+    @JsonProperty("username") val username: String,
 ) {
     fun isBanned(): Boolean = !isActive
 }
