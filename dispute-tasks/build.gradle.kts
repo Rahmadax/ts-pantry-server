@@ -18,4 +18,6 @@ dependencies {
     implementation("org.camunda.spin:camunda-spin-core")
     implementation("org.xmlunit:xmlunit-core")
 
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 }
