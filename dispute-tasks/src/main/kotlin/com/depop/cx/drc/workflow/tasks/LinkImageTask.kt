@@ -47,8 +47,10 @@ class LinkImagesTask(private val pictureClient: PictureClient) : AbstractTask() 
         // Unlink all pictures
         pictureClient.linkImages(taskId, processDefinitionId, PictureIds(emptyList()))
 
-        // Link the latest 5 pictures
-        pictureClient.linkImages(taskId, processDefinitionId, pictureIds)
+        if (pictureIds.pictureIds.isNotEmpty()) {
+            // Link the latest 5 pictures
+            pictureClient.linkImages(taskId, processDefinitionId, pictureIds)
+        }
     }
 
     data class PictureIds(
