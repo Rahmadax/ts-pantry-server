@@ -343,16 +343,15 @@ public class DrcApiRestServiceImpl extends AbstractProcessEngineRestServiceImpl 
         var attachments = attachmentsResource.getAttachments();
 
         return attachments.stream().map(attachmentDto -> {
-                    var attachmentData = attachmentsResource.getAttachmentData(attachmentDto.getId());
+            var attachmentData = attachmentsResource.getAttachmentData(attachmentDto.getId());
 
-                    var attachmentString = IoUtil.inputStreamAsString(attachmentData);
+            var attachmentString = IoUtil.inputStreamAsString(attachmentData);
 
-                    var textAttachmentDto = TextAttachmentDto.fromAttachment(attachmentDto);
-                    textAttachmentDto.setContent(attachmentString);
+            var textAttachmentDto = TextAttachmentDto.fromAttachment(attachmentDto);
+            textAttachmentDto.setContent(attachmentString);
 
-                    return textAttachmentDto;
-                }
-        ).collect(Collectors.toList());
+            return textAttachmentDto;
+        }).collect(Collectors.toList());
     }
 
     @DELETE
@@ -368,28 +367,40 @@ public class DrcApiRestServiceImpl extends AbstractProcessEngineRestServiceImpl 
     @GET
     @Path("/process-instance/{processId}/tasks/attachments")
     @Produces({"application/json"})
-    public Map<String, List<AttachmentDto>> getAttachmentsForProcess(@PathParam("processId") String processId) {
+    public Map<String, List<TextAttachmentDto>> getAttachmentsForProcess(@PathParam("processId") String processId) {
         var taskService = super.getTaskRestService(null);
-        var completedTasks = historyService
-                .createHistoricTaskInstanceQuery()
+
+        // Fetch completed tasks for the given process instance
+        var completedTasks = historyService.createHistoricTaskInstanceQuery()
                 .processInstanceId(processId)
                 .finished()
                 .list();
 
-        return completedTasks
-                .stream()
-                .collect(Collectors.toMap(
-                        HistoricTaskInstance::getTaskDefinitionKey,
-                        completedTask -> taskService.getTask(completedTask.getId(), false)
-                                .getAttachmentResource()
-                                .getAttachments()
+        return completedTasks.stream()
+                .map(task -> Map.entry(
+                        task.getTaskDefinitionKey(),
+                        getAttachmentsForTask(taskService, task.getId())
                 ))
-                .entrySet()
-                .stream()
-                .filter(entry -> !entry.getValue().isEmpty())
+                .filter(entry -> !entry.getValue().isEmpty()) // Filter out tasks with no attachments
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-
     }
+
+    private List<TextAttachmentDto> getAttachmentsForTask(TaskRestService taskService, String taskId) {
+        var attachmentResource = taskService.getTask(taskId, false).getAttachmentResource();
+
+        return attachmentResource.getAttachments().stream()
+                .map(attachment -> {
+                    var attachmentData = attachmentResource.getAttachmentData(attachment.getId());
+                    var attachmentContent = IoUtil.inputStreamAsString(attachmentData);
+
+                    var textAttachmentDto = TextAttachmentDto.fromAttachment(attachment);
+                    textAttachmentDto.setContent(attachmentContent);
+
+                    return textAttachmentDto;
+                })
+                .collect(Collectors.toList());
+    }
+
 
     protected URI getRelativeEngineUri(String engineName) {
         return URI.create("/");
