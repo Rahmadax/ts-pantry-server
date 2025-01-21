@@ -8,9 +8,10 @@ import java.util.*
 
 private const val DISPUTE_ID_PROPERTY = "dispute_id"
 private const val USER_ID_PROPERTY = "user_id"
+private const val USERNAME = "username"
 private const val USER_BANNED_PROPERTY = "user_banned"
 
-class BannedUserTask(private val userClient: UserClient) : AbstractTask() {
+class GetUserDetailsTask(private val userClient: UserClient) : AbstractTask() {
 
     private val logger = KotlinLogging.logger {}
 
@@ -19,13 +20,13 @@ class BannedUserTask(private val userClient: UserClient) : AbstractTask() {
         val userId = execution.getLongVariableOrNull(USER_ID_PROPERTY)
 
         if (userId != null) {
-            setUserBannedVariable(execution, disputeId, userId)
+            setUserDetailsVariables(execution, disputeId, userId)
         } else {
             logger.error { "Unable to get a property $USER_ID_PROPERTY on dispute $disputeId " }
         }
     }
 
-    private fun setUserBannedVariable(execution: DelegateExecution, disputeId: UUID?, userId: Long) {
+    private fun setUserDetailsVariables(execution: DelegateExecution, disputeId: UUID?, userId: Long) {
         logger.debug { "Getting user info for the user $userId on dispute $disputeId" }
         val user = userClient.getUser(userId).block()
 
@@ -37,6 +38,8 @@ class BannedUserTask(private val userClient: UserClient) : AbstractTask() {
     }
 
     private fun updateContext(execution: DelegateExecution, user: User) {
+        logger.info { "Setting username for the user ${user.id} to ${user.username}" }
+        execution.processInstance.setVariableLocal(USERNAME, user.username)
         logger.info { "Setting banned status for the user ${user.id} to ${user.isBanned()}" }
         execution.processInstance.setVariableLocal(USER_BANNED_PROPERTY, user.isBanned())
     }
