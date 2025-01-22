@@ -48,6 +48,7 @@ class LinkImagesTask(private val pictureClient: PictureClient) : AbstractTask() 
         pictureClient.linkImages(taskId, processDefinitionId, PictureIds(emptyList()))
 
         if (pictureIds.pictureIds.isNotEmpty()) {
+            logger.error { "Linking images to entity ID: $processDefinitionId:$taskId" }
             // Link the latest 5 pictures
             pictureClient.linkImages(taskId, processDefinitionId, pictureIds)
         }
