@@ -20,7 +20,7 @@ class LinkImagesTask(private val pictureClient: PictureClient) : AbstractTask() 
             .singleResult()
 
         if (task == null) {
-            logger.error("Task not found for activity ID: ${execution.currentActivityId}")
+            logger.error { "Task not found for activity ID: ${execution.currentActivityId}" }
         } else {
             val taskId = task.id
             val attachments = taskService.getTaskAttachments(taskId)
@@ -37,25 +37,14 @@ class LinkImagesTask(private val pictureClient: PictureClient) : AbstractTask() 
                     }
                 }
 
-            runBlocking{
-                linkImages(taskId, execution.processDefinitionId, PictureIds(latestPictureIds))
+            runBlocking {
+                pictureClient.linkDisputeTaskImages("${execution.processDefinitionId}:$taskId", PictureIds(latestPictureIds))
             }
-        }
-    }
-
-    private suspend fun linkImages(taskId: String, processDefinitionId: String, pictureIds: PictureIds){
-        // Unlink all pictures
-        pictureClient.linkImages(taskId, processDefinitionId, PictureIds(emptyList()))
-
-        if (pictureIds.pictureIds.isNotEmpty()) {
-            logger.error { "Linking images to entity ID: $processDefinitionId:$taskId" }
-            // Link the latest 5 pictures
-            pictureClient.linkImages(taskId, processDefinitionId, pictureIds)
         }
     }
 
     data class PictureIds(
         @JsonProperty("picture_ids")
-        val pictureIds: List<Any>
+        val pictureIds: List<String>
     )
 }

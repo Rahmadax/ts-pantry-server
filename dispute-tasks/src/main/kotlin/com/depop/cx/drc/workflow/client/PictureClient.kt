@@ -8,14 +8,13 @@ private const val LINK = "/internal/v2/{entity_type}/{entity_id}/pictures/"
 
 class PictureClient(webClient: WebClient) : Client(webClient) {
 
-    suspend fun linkImages(
-        taskId: String,
-        processDefinitionId: String,
+    suspend fun linkDisputeTaskImages(
+        entityId: String,
         pictureIds: LinkImagesTask.PictureIds,
     ): String {
         return putCoroutineRequest(LINK, pictureIds, mapOf(
             "entity_type" to "dispute-task",
-            "entity_id" to "$processDefinitionId:$taskId"
+            "entity_id" to entityId
         ))
     }
 }
