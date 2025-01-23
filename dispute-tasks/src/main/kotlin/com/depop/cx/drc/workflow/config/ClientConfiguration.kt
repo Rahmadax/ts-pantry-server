@@ -34,6 +34,7 @@ data class ClientProperties(
     val shippingApiSecret: String,
     val userHost: URI,
     val commsHost: URI,
+    val pictureHost: URI,
 )
 
 @Configuration
@@ -191,6 +192,23 @@ class ClientConfiguration {
             .build()
 
         return CommsClient(webClient)
+    }
+
+    @Bean
+    fun pictureClient(
+        clientProperties: ClientProperties,
+        webClientBuilder: WebClient.Builder,
+        authorizedClientManager: ReactiveOAuth2AuthorizedClientManager,
+    ): PictureClient {
+        val oauth = ServerOAuth2AuthorizedClientExchangeFilterFunction(authorizedClientManager)
+        oauth.setDefaultClientRegistrationId(DEPOP_CLIENT_REGISTRATION_ID)
+
+        val webClient = webClientBuilder
+            .baseUrl(clientProperties.pictureHost.toString())
+            .filter(oauth) // filter to add depop jwt to the Authorization header
+            .build()
+
+        return PictureClient(webClient)
     }
 
     // Sets the Authorization header using the provided LLJWT
