@@ -4,7 +4,7 @@ import com.depop.cx.drc.workflow.tasks.LinkImagesTask
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Mono
 
-private const val LINK = "/internal/v2/{entity_type}/{entity_id}/pictures/"
+private const val LINK = "/internal/v1/{entity_type}/{entity_id}/pictures/"
 
 class PictureClient(webClient: WebClient) : Client(webClient) {
 
