@@ -6,7 +6,7 @@ accountName: services-staging
 accountTag: stage-svcs
 environment: staging
 serviceTier: critical
-serviceOwner: fulfilment
+serviceOwner: cx
 
 defaults:
   pagerduty:
