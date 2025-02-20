@@ -38,7 +38,7 @@ class LinkImagesTask(private val pictureClient: PictureClient) : AbstractTask() 
                 }
 
             runBlocking {
-                pictureClient.linkDisputeTaskImages("${execution.processDefinitionId}:$taskId", PictureIds(latestPictureIds))
+                pictureClient.linkDisputeTaskImages(taskId, PictureIds(latestPictureIds))
             }
         }
     }
