@@ -7,6 +7,7 @@ import com.depop.cx.drc.workflow.listener.DefaultProcessStartListener
 import com.depop.cx.drc.workflow.tasks.*
 import com.depop.cx.drc.workflow.tasks.comms.SendChatTask
 import com.depop.cx.drc.workflow.tasks.comms.SendEmailTask
+import com.depop.cx.drc.workflow.tasks.comms.SendPushTask
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -46,6 +47,9 @@ class WorkflowTaskConfiguration {
 
     @Bean
     fun sendChatTask(commsClient: CommsClient) = SendChatTask(commsClient)
+
+    @Bean
+    fun sendPushTask(commsClient: CommsClient) = SendPushTask(commsClient)
 
     @Bean
     fun linkImagesTask(pictureClient: PictureClient) = LinkImagesTask(pictureClient)

@@ -49,5 +49,6 @@ data class Delivery(
 
 enum class Channel(@JsonValue val channel: String) {
     EMAIL("email"),
-    CHAT("chat")
+    CHAT("chat"),
+    PUSH("push")
 }
