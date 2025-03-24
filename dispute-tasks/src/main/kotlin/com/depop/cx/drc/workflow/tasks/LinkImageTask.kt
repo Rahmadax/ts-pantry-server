@@ -32,7 +32,9 @@ class LinkImagesTask(private val pictureClient: PictureClient) : AbstractTask() 
                 .mapNotNull { attachment ->
                     taskService.getAttachmentContent(attachment.id)?.let { contentStream ->
                         BufferedReader(InputStreamReader(contentStream)).use { reader ->
-                            reader.readText()
+                            val text = reader.readText()
+                            // Filter out any bad data. Pictures may be dropped here
+                            if (text.toLongOrNull() != null) text else null
                         }
                     }
                 }
