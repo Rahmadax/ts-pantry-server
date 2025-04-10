@@ -3,11 +3,11 @@
 package com.depop.cx.drc.workflow.config
 
 import com.depop.cx.drc.workflow.client.*
-import com.depop.cx.drc.workflow.listener.DefaultProcessStartListener
+import com.depop.cx.drc.workflow.listener.*
 import com.depop.cx.drc.workflow.tasks.*
-import com.depop.cx.drc.workflow.tasks.comms.SendChatTask
-import com.depop.cx.drc.workflow.tasks.comms.SendEmailTask
-import com.depop.cx.drc.workflow.tasks.comms.SendPushTask
+import com.depop.cx.drc.workflow.tasks.comms.SendChatDrcDelegate
+import com.depop.cx.drc.workflow.tasks.comms.SendEmailDrcDelegate
+import com.depop.cx.drc.workflow.tasks.comms.SendPushDrcDelegate
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -19,39 +19,51 @@ class WorkflowTaskConfiguration {
         checkoutClient: CheckoutClient,
         paymentsClient: PaymentsClient,
         shippingClient: ShippingClient
-    ) = GetReceiptDetailsTask(checkoutClient, paymentsClient, shippingClient)
+    ) = GetReceiptDetailsDrcDelegate(checkoutClient, paymentsClient, shippingClient)
 
     @Bean
-    fun getUserDetailsTask(userClient: UserClient) = GetUserDetailsTask(userClient)
+    fun getUserDetailsTask(userClient: UserClient) = GetUserDetailsDrcDelegate(userClient)
 
     @Bean
-    fun setDisputeParticipantTask(drcClient: DrcClient) = SetDisputeParticipantTask(drcClient)
+    fun setDisputeParticipantTask(drcClient: DrcClient) = SetDisputeParticipantDrcDelegate(drcClient)
 
     @Bean
-    fun setDisputeStatusTask(drcClient: DrcClient) = SetDisputeStatusTask(drcClient)
+    fun setDisputeStatusTask(drcClient: DrcClient) = SetDisputeStatusDrcDelegate(drcClient)
 
     @Bean
-    fun setProcessDatesTask() = SetProcessDatesTask()
+    fun setProcessDatesTask() = SetProcessDatesDrcDelegate()
 
     @Bean
-    fun updateContextTask() = UpdateContextTask()
+    fun updateContextTask() = UpdateContextDrcDelegate()
 
     @Bean
-    fun bannedUserTask(userClient: UserClient) = GetUserDetailsTask(userClient)
+    fun bannedUserTask(userClient: UserClient) = GetUserDetailsDrcDelegate(userClient)
 
     @Bean
     fun defaultProcessStartListener() = DefaultProcessStartListener()
 
     @Bean
-    fun sendEmailTask(commsClient: CommsClient) = SendEmailTask(commsClient)
+    fun sendEmailTask(commsClient: CommsClient) = SendEmailDrcDelegate(commsClient)
 
     @Bean
-    fun sendChatTask(commsClient: CommsClient) = SendChatTask(commsClient)
+    fun sendChatTask(commsClient: CommsClient) = SendChatDrcDelegate(commsClient)
 
     @Bean
-    fun sendPushTask(commsClient: CommsClient) = SendPushTask(commsClient)
+    fun sendPushTask(commsClient: CommsClient) = SendPushDrcDelegate(commsClient)
 
     @Bean
-    fun linkImagesTask(pictureClient: PictureClient) = LinkImagesTask(pictureClient)
+    fun linkImagesTask(pictureClient: PictureClient) = LinkImagesDrcDelegate(pictureClient)
+
+    @Bean
+    fun setActiveUserIdTask(drcClient: DrcClient) = SetDisputeActiveUserIdDrcDelegate(drcClient)
+
+    @Bean
+    fun clearActiveUserIdTask(drcClient: DrcClient) = ClearDisputeActiveUserIdDrcDelegate(drcClient)
+
+    @Bean
+    fun setResponseDueDateTask(drcClient: DrcClient) = SetResponseDueDateDrcDelegate(drcClient)
+
+    @Bean
+    fun clearResponseDueDateTask(drcClient: DrcClient) = ClearResponseDueDateDrcDelegate(drcClient)
 
 }

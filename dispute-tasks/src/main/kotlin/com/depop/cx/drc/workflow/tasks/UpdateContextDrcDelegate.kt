@@ -1,11 +1,12 @@
 package com.depop.cx.drc.workflow.tasks
 
+import com.depop.cx.drc.workflow.AbstractDrcDelegate
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.camunda.spin.json.SpinJsonNode
 
 private const val CONTEXT_VARIABLE = "context"
 
-class UpdateContextTask : AbstractTask() {
+class UpdateContextDrcDelegate : AbstractDrcDelegate() {
 
     override fun doExecute(execution: DelegateExecution) {
         val context = execution.processInstance.getVariable(CONTEXT_VARIABLE)

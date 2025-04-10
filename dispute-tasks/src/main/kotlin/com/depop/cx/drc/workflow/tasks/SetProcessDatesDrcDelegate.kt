@@ -1,5 +1,10 @@
 package com.depop.cx.drc.workflow.tasks
 
+import com.depop.cx.drc.workflow.AbstractDrcDelegate
+import com.depop.cx.drc.workflow.TaskErrorCode
+import com.depop.cx.drc.workflow.getUUIDProcessVariableOrNull
+import io.github.oshai.kotlinlogging.KotlinLogging
+import org.camunda.bpm.engine.delegate.BpmnError
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import java.time.Instant
 import java.time.OffsetDateTime
@@ -22,7 +27,7 @@ private const val EMBARGO_DAYS_DEFAULT = 5L
 private const val AUTO_ESCALATION_DAYS_DEFAULT = 2L
 private const val RESPONSE_DAYS_DEFAULT = 2L
 
-class SetProcessDatesTask : AbstractTask() {
+class SetProcessDatesDrcDelegate : AbstractDrcDelegate() {
 
     override fun doExecute(execution: DelegateExecution) {
 

@@ -48,6 +48,17 @@ abstract class Client(protected val webClient: WebClient) {
         .retrieve()
         .bodyToMono(T::class.java)
 
+    protected inline fun <reified V : Any, reified T> patchRequest(
+        uri: String,
+        request: V,
+        variables: Map<String, *>
+    ): Mono<T> = webClient.patch()
+        .uri(uri, variables)
+        .contentType(MediaType.APPLICATION_JSON)
+        .body(Mono.just(request), V::class.java)
+        .retrieve()
+        .bodyToMono(T::class.java)
+
     protected suspend inline fun <reified V : Any, reified T: Any> putCoroutineRequest(
         uri: String,
         request: V,

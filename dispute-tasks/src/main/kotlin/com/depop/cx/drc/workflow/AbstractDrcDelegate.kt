@@ -1,4 +1,4 @@
-package com.depop.cx.drc.workflow.tasks
+package com.depop.cx.drc.workflow
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.BpmnError
@@ -9,7 +9,7 @@ enum class TaskErrorCode(val code: String) {
     FAILURE("failure")
 }
 
-abstract class AbstractTask : JavaDelegate {
+abstract class AbstractDrcDelegate : JavaDelegate {
 
     private val logger = KotlinLogging.logger {}
 

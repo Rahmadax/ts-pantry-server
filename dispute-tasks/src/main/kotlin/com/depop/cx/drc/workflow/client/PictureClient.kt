@@ -1,8 +1,7 @@
 package com.depop.cx.drc.workflow.client
 
-import com.depop.cx.drc.workflow.tasks.LinkImagesTask
+import com.depop.cx.drc.workflow.tasks.LinkImagesDrcDelegate
 import org.springframework.web.reactive.function.client.WebClient
-import reactor.core.publisher.Mono
 
 private const val LINK = "/internal/v1/{entity_type}/{entity_id}/pictures/"
 
@@ -10,7 +9,7 @@ class PictureClient(webClient: WebClient) : Client(webClient) {
 
     suspend fun linkDisputeTaskImages(
         entityId: String,
-        pictureIds: LinkImagesTask.PictureIds,
+        pictureIds: LinkImagesDrcDelegate.PictureIds,
     ): String {
         return putCoroutineRequest(LINK, pictureIds, mapOf(
             "entity_type" to "dispute-task",

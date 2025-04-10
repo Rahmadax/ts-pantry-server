@@ -3,7 +3,7 @@ package com.depop.cx.drc.workflow.tasks.comms
 import com.depop.cx.drc.workflow.client.Channel
 import com.depop.cx.drc.workflow.client.CommsClient
 
-class SendChatTask(commsClient: CommsClient) : AbstractCommsTask(commsClient) {
+class SendChatDrcDelegate(commsClient: CommsClient) : AbstractCommsDrcDelegate(commsClient) {
     override fun getChannel(): Channel {
         return Channel.CHAT
     }

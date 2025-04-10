@@ -1,5 +1,6 @@
-package com.depop.cx.drc.workflow.tasks
+package com.depop.cx.drc.workflow
 
+import org.camunda.bpm.engine.delegate.BpmnError
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.camunda.bpm.engine.variable.type.ValueType
 import org.camunda.bpm.engine.variable.value.LongValue
@@ -34,6 +35,29 @@ fun DelegateExecution.getStringVariableOrNull(variable: String): String? {
 
 fun DelegateExecution.getUUIDVariableOrNull(variable: String): UUID? {
     val value = this.getStringVariableOrNull(variable)
+    if(value != null) {
+        try {
+            return UUID.fromString(value)
+        } catch(e : IllegalArgumentException) {
+            // Do nothing
+        }
+    }
+    return null
+}
+
+fun DelegateExecution.getStringProcessVariableOrNull(variable: String): String? {
+    if (this.hasVariable(variable)) {
+        val value: TypedValue = this.getVariableTyped(variable)
+        if (ValueType.STRING == value.type) {
+            val result = value as StringValue
+            return result.value
+        }
+    }
+    return null
+}
+
+fun DelegateExecution.getUUIDProcessVariableOrNull(variable: String): UUID? {
+    val value = this.getStringProcessVariableOrNull(variable)
     if(value != null) {
         try {
             return UUID.fromString(value)

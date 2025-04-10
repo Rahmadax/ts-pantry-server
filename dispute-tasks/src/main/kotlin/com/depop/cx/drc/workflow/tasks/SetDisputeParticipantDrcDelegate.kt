@@ -1,5 +1,6 @@
 package com.depop.cx.drc.workflow.tasks
 
+import com.depop.cx.drc.workflow.*
 import com.depop.cx.drc.workflow.client.DrcClient
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.BpmnError
@@ -9,7 +10,7 @@ private const val DISPUTE_ID_PROPERTY = "dispute_id"
 private const val PARTICIPANT_ID_PROPERTY = "participant_id"
 private const val PARTICIPANT_ROLE_PROPERTY = "participant_role"
 
-class SetDisputeParticipantTask(private val drcClient : DrcClient) : AbstractTask() {
+class SetDisputeParticipantDrcDelegate(private val drcClient : DrcClient) : AbstractDrcDelegate() {
 
     private val logger = KotlinLogging.logger {}
 
@@ -25,7 +26,8 @@ class SetDisputeParticipantTask(private val drcClient : DrcClient) : AbstractTas
             drcClient.setDisputeParticipant(disputeId, participantId, participantRole).block()
 
         } else {
-            throw BpmnError(TaskErrorCode.FAILURE.code,
+            throw BpmnError(
+                TaskErrorCode.FAILURE.code,
                 "$PARTICIPANT_ID_PROPERTY and $PARTICIPANT_ROLE_PROPERTY must not be null or empty.")
         }
 

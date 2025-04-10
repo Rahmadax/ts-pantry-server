@@ -2,9 +2,9 @@ package com.depop.cx.drc.workflow.tasks.comms
 
 import com.depop.cx.drc.workflow.client.Channel
 import com.depop.cx.drc.workflow.client.CommsClient
-import com.depop.cx.drc.workflow.tasks.AbstractTask
-import com.depop.cx.drc.workflow.tasks.getLongVariableOrNull
-import com.depop.cx.drc.workflow.tasks.getUUIDVariableOrNull
+import com.depop.cx.drc.workflow.AbstractDrcDelegate
+import com.depop.cx.drc.workflow.getLongVariableOrNull
+import com.depop.cx.drc.workflow.getUUIDVariableOrNull
 import org.camunda.bpm.engine.TaskService
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.camunda.commons.utils.IoUtil
@@ -12,9 +12,9 @@ import org.camunda.commons.utils.IoUtil
 private const val RECIPIENT_ID_PROPERTY = "recipient_id"
 private const val TEMPLATE_ID_PROPERTY = "template_id"
 
-abstract class AbstractCommsTask(
+abstract class AbstractCommsDrcDelegate(
     private val commsClient: CommsClient,
-) : AbstractTask() {
+) : AbstractDrcDelegate() {
 
     override fun doExecute(execution: DelegateExecution) {
         val recipientId = execution.getLongVariableOrNull(RECIPIENT_ID_PROPERTY)
