@@ -26,6 +26,7 @@ class DrcClient(webClient: WebClient) : Client(webClient) {
     }
 
     fun updateDispute(disputeId: UUID, state: UpdateDisputeRequest): Mono<Void> {
+        logger.info { "Updating dispute $disputeId with state $state" }
         return patchRequest(PATCH_DISPUTE_URI, state, mapOf("disputeId" to disputeId))
     }
 
