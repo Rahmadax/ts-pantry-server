@@ -1,10 +1,6 @@
 package com.depop.cx.drc.workflow.tasks
 
 import com.depop.cx.drc.workflow.AbstractDrcDelegate
-import com.depop.cx.drc.workflow.TaskErrorCode
-import com.depop.cx.drc.workflow.getUUIDProcessVariableOrNull
-import io.github.oshai.kotlinlogging.KotlinLogging
-import org.camunda.bpm.engine.delegate.BpmnError
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import java.time.Instant
 import java.time.OffsetDateTime

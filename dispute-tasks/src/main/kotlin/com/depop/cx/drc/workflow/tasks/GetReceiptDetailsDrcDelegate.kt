@@ -22,7 +22,6 @@ private const val PARCEL_ID = "parcel_id"
 private const val IS_FULLY_REFUNDED = "is_fully_refunded"
 private const val SHIPPED_TIME = "shipped_at"
 
-
 data class ReceiptDetails(
     val receipt: Receipt,
     val shippingStatus: String,
@@ -123,10 +122,10 @@ class GetReceiptDetailsDrcDelegate(
     }
 
     private fun getTrackingNumber(parcel: ParcelDetails?): String? {
-        val trackingNumber : String?
+        val trackingNumber: String?
         // Parcels with a depop shipping label should always have a tracking number.  Manually shipped parcels
         // may not have one.
-        if(parcel?.providerDetails?.depopParcelTracking != null) {
+        if (parcel?.providerDetails?.depopParcelTracking != null) {
             trackingNumber = parcel.providerDetails.depopParcelTracking.reference ?: "Currently unavailable"
         } else {
             trackingNumber = parcel?.providerDetails?.manualParcelTrackingNumber
@@ -153,6 +152,4 @@ class GetReceiptDetailsDrcDelegate(
         execution.setVariableLocal(IS_FULLY_REFUNDED, details?.receipt?.isFullyRefunded() ?: "")
         execution.setVariableLocal(SHIPPED_TIME, details?.shippedAt?.toOffsetDateTime()?.toString() ?: "")
     }
-
-
 }

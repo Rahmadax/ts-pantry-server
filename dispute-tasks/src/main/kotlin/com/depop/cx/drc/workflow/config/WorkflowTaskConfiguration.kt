@@ -25,6 +25,9 @@ class WorkflowTaskConfiguration {
     fun getUserDetailsTask(userClient: UserClient) = GetUserDetailsDrcDelegate(userClient)
 
     @Bean
+    fun getProductDetailsTask(productClient: ProductClient, checkoutClient: CheckoutClient) = GetProductDetailsDrcDelegate(productClient, checkoutClient)
+
+    @Bean
     fun setDisputeParticipantTask(drcClient: DrcClient) = SetDisputeParticipantDrcDelegate(drcClient)
 
     @Bean
