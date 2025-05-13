@@ -8,6 +8,7 @@ depop:
       user-host: https://django-default-django-api.eks-default.stage-app.dpop.co.uk/
       comms-host: https://martech-default-comms-hub.eks-default.stage-svcs.dpop.co.uk
       picture-host: https://media-default-picture-api.eks-default.stage-app.dpop.co.uk
+      product-host: https://product-default-product-api.eks-default.stage-app.dpop.co.uk
 spring:
   security:
     oauth2:
@@ -63,6 +64,7 @@ depop:
       user-host: ${USER_HOST}
       comms-host: ${COMMS_HOST}
       picture-host: ${PICTURE_HOST}
+      product-host: ${PRODUCT_HOST}
 ---
 
 # production profile
@@ -91,3 +93,4 @@ depop:
       user-host: ${USER_HOST}
       comms-host: ${COMMS_HOST}
       picture-host: ${PICTURE_HOST}
+      product-host: ${PRODUCT_HOST}

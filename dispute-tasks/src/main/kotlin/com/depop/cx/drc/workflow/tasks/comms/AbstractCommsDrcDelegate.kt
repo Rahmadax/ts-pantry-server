@@ -1,8 +1,8 @@
 package com.depop.cx.drc.workflow.tasks.comms
 
+import com.depop.cx.drc.workflow.AbstractDrcDelegate
 import com.depop.cx.drc.workflow.client.Channel
 import com.depop.cx.drc.workflow.client.CommsClient
-import com.depop.cx.drc.workflow.AbstractDrcDelegate
 import com.depop.cx.drc.workflow.getLongVariableOrNull
 import com.depop.cx.drc.workflow.getUUIDVariableOrNull
 import org.camunda.bpm.engine.TaskService
