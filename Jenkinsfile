@@ -1,4 +1,7 @@
 pipeline {
+  triggers {
+    cron(env.BRANCH_NAME.equals('master') ? 'H H(10-15) * * H(1-4)' : '')
+  }
 
   options {
     buildDiscarder(logRotator(numToKeepStr: '5'))
