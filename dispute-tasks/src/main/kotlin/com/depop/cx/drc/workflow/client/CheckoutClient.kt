@@ -24,8 +24,7 @@ data class Receipt(
     @JsonProperty("payment_provider") val paymentProvider: String,
     @JsonProperty("payment_id") val paymentId: Long,
     @JsonProperty("buyer_amount") val buyerAmount: BigDecimal,
-    @JsonProperty("refund_details") val refundDetails: RefundDetails?,
-    @JsonProperty("lines") val lines: List<FullReceiptLineItemResponse>
+    @JsonProperty("refund_details") val refundDetails: RefundDetails?
 ) {
     fun isFullyRefunded(): Boolean {
         return refundDetails?.buyerRefundAmount?.compareTo(buyerAmount) == 0
@@ -34,9 +33,4 @@ data class Receipt(
 
 data class RefundDetails(
     @JsonProperty("buyer_refund_amount") val buyerRefundAmount: BigDecimal?
-)
-
-data class FullReceiptLineItemResponse(
-    @JsonProperty("id") val id: Long,
-    @JsonProperty("product_id") val productId: Long,
 )

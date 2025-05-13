@@ -21,7 +21,6 @@ private const val IS_TRACKED_PROPERTY = "is_tracked"
 private const val PARCEL_ID = "parcel_id"
 private const val IS_FULLY_REFUNDED = "is_fully_refunded"
 private const val SHIPPED_TIME = "shipped_at"
-private const val PRODUCT_ID = "product_id"
 
 
 data class ReceiptDetails(
@@ -124,10 +123,10 @@ class GetReceiptDetailsDrcDelegate(
     }
 
     private fun getTrackingNumber(parcel: ParcelDetails?): String? {
-        val trackingNumber: String?
+        val trackingNumber : String?
         // Parcels with a depop shipping label should always have a tracking number.  Manually shipped parcels
         // may not have one.
-        if (parcel?.providerDetails?.depopParcelTracking != null) {
+        if(parcel?.providerDetails?.depopParcelTracking != null) {
             trackingNumber = parcel.providerDetails.depopParcelTracking.reference ?: "Currently unavailable"
         } else {
             trackingNumber = parcel?.providerDetails?.manualParcelTrackingNumber
@@ -153,29 +152,7 @@ class GetReceiptDetailsDrcDelegate(
         execution.setVariableLocal(PARCEL_ID, details?.parcelId ?: "")
         execution.setVariableLocal(IS_FULLY_REFUNDED, details?.receipt?.isFullyRefunded() ?: "")
         execution.setVariableLocal(SHIPPED_TIME, details?.shippedAt?.toOffsetDateTime()?.toString() ?: "")
-        execution.setVariable(PRODUCT_ID, getFirstProductIdOrNull(details, execution.id) ?: "")
     }
 
-    private fun getFirstProductIdOrNull(details: ReceiptDetails?, executionId: String): Long? {
-        return details?.receipt?.let { receipt ->
-            if (receipt.lines.size > 1) {
-                logger.error { "Receipt ${receipt.id} has multiple product lines (${receipt.lines.size}). Cannot process for $executionId" }
-                throw BpmnError(
-                    TaskErrorCode.FAILURE.code,
-                    "Receipt ${receipt.id} has multiple product lines (${receipt.lines.size}). Cannot process for $executionId"
-                )
-            }
 
-            val firstLine = receipt.lines.firstOrNull()
-            if (firstLine == null) {
-                logger.error { "Receipt ${receipt.id} has no product lines for $executionId" }
-                throw BpmnError(
-                    TaskErrorCode.FAILURE.code,
-                    "Receipt ${receipt.id} has no product lines for $executionId"
-                )
-            }
-
-            firstLine.productId
-        }
-    }
 }

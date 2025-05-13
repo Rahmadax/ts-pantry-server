@@ -47,7 +47,6 @@ serviceConfig:
   USER_HOST: https://django-default-django-api.eks-default.prod-app.dpop.co.uk
   COMMS_HOST: http://comms-hub.martech-default
   PICTURE_HOST: https://media-default-picture-api.eks-default.prod-app.dpop.co.uk
-  PRODUCT_HOST: https://product-default-product-api.eks-default.prod-app.dpop.co.uk
 chart:
   name: generic-service
   version: ^2

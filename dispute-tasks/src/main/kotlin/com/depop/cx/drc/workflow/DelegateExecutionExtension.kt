@@ -11,9 +11,7 @@ import java.util.*
 fun DelegateExecution.getLongVariableOrNull(variable: String): Long? {
     if (this.hasVariableLocal(variable)) {
         val value: TypedValue = this.getVariableTyped(variable)
-        if(ValueType.LONG.equals(value.type)) {
-            return value.value as Long
-        } else if (ValueType.LONG.canConvertFromTypedValue(value)) {
+        if (ValueType.LONG.canConvertFromTypedValue(value)) {
             val result = ValueType.LONG.convertFromTypedValue(value) as LongValue
             return result.value
         } else if (ValueType.STRING == value.type) {
