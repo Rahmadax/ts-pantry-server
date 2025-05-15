@@ -8,6 +8,10 @@ import com.depop.cx.drc.workflow.tasks.*
 import com.depop.cx.drc.workflow.tasks.comms.SendChatDrcDelegate
 import com.depop.cx.drc.workflow.tasks.comms.SendEmailDrcDelegate
 import com.depop.cx.drc.workflow.tasks.comms.SendPushDrcDelegate
+import com.depop.cx.drc.workflow.tasks.timer.ActivateTimerDelegate
+import com.depop.cx.drc.workflow.tasks.timer.RecalculateTimerDelegate
+import com.depop.cx.drc.workflow.tasks.timer.SuspendTimerDelegate
+import com.depop.cx.drc.workflow.tasks.timer.UpdateResponseDueDateDelegate
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -20,6 +24,18 @@ class WorkflowTaskConfiguration {
         paymentsClient: PaymentsClient,
         shippingClient: ShippingClient
     ) = GetReceiptDetailsDrcDelegate(checkoutClient, paymentsClient, shippingClient)
+
+    @Bean
+    fun activateTimerTask() = ActivateTimerDelegate()
+
+    @Bean
+    fun suspendTimerTask() = SuspendTimerDelegate()
+
+    @Bean
+    fun recalculateTimerTask() = RecalculateTimerDelegate()
+
+    @Bean
+    fun updateResponseDueDateTask() = UpdateResponseDueDateDelegate()
 
     @Bean
     fun getUserDetailsTask(userClient: UserClient) = GetUserDetailsDrcDelegate(userClient)
