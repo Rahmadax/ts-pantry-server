@@ -36,6 +36,7 @@ data class ClientProperties(
     val commsHost: URI,
     val pictureHost: URI,
     val productHost: URI,
+    val blockingHost: URI,
 )
 
 @Configuration
@@ -222,6 +223,18 @@ class ClientConfiguration {
             .build()
 
         return ProductClient(webClient)
+    }
+
+    @Bean
+    fun blockingClient(
+        clientProperties: ClientProperties,
+        webClientBuilder: WebClient.Builder,
+    ): BlockingClient {
+        val webClient = webClientBuilder
+            .baseUrl(clientProperties.blockingHost.toString())
+            .build()
+
+        return BlockingClient(webClient)
     }
 
     // Sets the Authorization header using the provided LLJWT

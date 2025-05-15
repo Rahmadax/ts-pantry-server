@@ -9,6 +9,7 @@ depop:
       comms-host: https://martech-default-comms-hub.eks-default.stage-svcs.dpop.co.uk
       picture-host: https://media-default-picture-api.eks-default.stage-app.dpop.co.uk
       product-host: https://product-default-product-api.eks-default.stage-app.dpop.co.uk
+      blocking-host: https://blocking-default-blocking-internal.eks-default.stage-app.dpop.co.uk
 spring:
   security:
     oauth2:
@@ -65,6 +66,7 @@ depop:
       comms-host: ${COMMS_HOST}
       picture-host: ${PICTURE_HOST}
       product-host: ${PRODUCT_HOST}
+      blocking-host: ${BLOCKING_HOST}
 ---
 
 # production profile
@@ -94,3 +96,4 @@ depop:
       comms-host: ${COMMS_HOST}
       picture-host: ${PICTURE_HOST}
       product-host: ${PRODUCT_HOST}
+      blocking-host: ${BLOCKING_HOST}

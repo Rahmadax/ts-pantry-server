@@ -41,6 +41,9 @@ class WorkflowTaskConfiguration {
     fun getUserDetailsTask(userClient: UserClient) = GetUserDetailsDrcDelegate(userClient)
 
     @Bean
+    fun getUserBlockedTask(blockingClient: BlockingClient) = GetUserBlockedDelegate(blockingClient)
+
+    @Bean
     fun getProductDetailsTask(productClient: ProductClient, checkoutClient: CheckoutClient) = GetProductDetailsDrcDelegate(productClient, checkoutClient)
 
     @Bean
