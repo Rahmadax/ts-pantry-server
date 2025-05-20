@@ -33,7 +33,9 @@ data class Receipt(
 }
 
 data class RefundDetails(
-    @JsonProperty("buyer_refund_amount") val buyerRefundAmount: BigDecimal?
+    @JsonProperty("buyer_refund_amount") val buyerRefundAmount: BigDecimal,
+    @JsonProperty("seller_refund_amount") val sellerRefundAmount: BigDecimal,
+    @JsonProperty("refund_currency") val refundCurrency: String,
 )
 
 data class FullReceiptLineItemResponse(

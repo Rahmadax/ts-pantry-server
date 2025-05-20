@@ -1,6 +1,5 @@
 package com.depop.cx.drc.workflow
 
-import org.camunda.bpm.engine.delegate.BpmnError
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.camunda.bpm.engine.variable.type.ValueType
 import org.camunda.bpm.engine.variable.value.LongValue
