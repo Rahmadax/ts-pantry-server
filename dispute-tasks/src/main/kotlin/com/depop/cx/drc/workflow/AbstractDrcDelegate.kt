@@ -9,7 +9,7 @@ enum class TaskErrorCode(val code: String) {
     FAILURE("failure")
 }
 
-const val UNHANDLED_EXCEPTION = "unhandled_exception"
+const val EXECUTE_INTERNAL = "executeInternal"
 
 abstract class AbstractDrcDelegate : JavaDelegate {
 
@@ -26,7 +26,7 @@ abstract class AbstractDrcDelegate : JavaDelegate {
 
     private fun handleException(exception: Throwable, delegateExecution: DelegateExecution?) {
         logger.error(exception) { "Failed to execute task ${delegateExecution?.id ?: "<unknown>"}" }
-        delegateExecution?.createIncident(UNHANDLED_EXCEPTION, "", exception.message)
+        delegateExecution?.createIncident(EXECUTE_INTERNAL, "UNHANDLED_EXCEPTION", exception.message)
     }
 
     protected fun validate(key: String, value: Any?) {
