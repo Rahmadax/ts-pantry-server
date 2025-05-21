@@ -2,12 +2,15 @@ package com.depop.cx.drc.workflow.tasks.timer
 
 import com.depop.cx.drc.workflow.AbstractDrcDelegate
 import com.depop.cx.drc.workflow.getStringVariableOrNull
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.camunda.bpm.engine.impl.persistence.entity.TimerEntity
 
 private const val TIMER_ID_PARAM = "timer_id"
 
 abstract class AbstractTimerDelegate : AbstractDrcDelegate() {
+
+    private val logger = KotlinLogging.logger {}
 
     override fun doExecute(execution: DelegateExecution) {
         val timerId = execution.getStringVariableOrNull(TIMER_ID_PARAM)
@@ -24,6 +27,8 @@ abstract class AbstractTimerDelegate : AbstractDrcDelegate() {
             .filterIsInstance<TimerEntity>()
             .filter { timerId.equals(it.jobHandlerConfiguration.toCanonicalString()) }
 
+        logger.info { "banana ${timers.size} timers found"}
+        
         when (timers.size) {
             1 -> doTimerExecute(execution, timers.single())
             else -> IllegalStateException("${timers.size} timers found with id $timerId")
