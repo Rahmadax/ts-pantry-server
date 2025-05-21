@@ -19,19 +19,24 @@ abstract class AbstractTimerDelegate : AbstractDrcDelegate() {
         }
 
         val managementService = execution.processEngineServices.managementService
-        val timers = managementService
-            .createJobQuery()
-            .processInstanceId(execution.processInstanceId)
-            .timers()
-            .list()
-            .filterIsInstance<TimerEntity>()
-            .filter { timerId.equals(it.jobHandlerConfiguration.toCanonicalString()) }
 
-        logger.info { "banana ${timers.size} timers found. canonical string is ${timers.single().jobHandlerConfiguration.toCanonicalString()}"}
+        val rawTimers = managementService.createJobQuery().processInstanceId(execution.processInstanceId).timers().list().filterIsInstance<TimerEntity>()
+        rawTimers.forEach {
+            val configStr = it.jobHandlerConfiguration?.toCanonicalString()
+            logger.info { "banana Raw timer: id=${it.id}, activityId=$configStr" }
+        }
 
-        when (timers.size) {
-            1 -> doTimerExecute(execution, timers.single())
-            else -> IllegalStateException("${timers.size} timers found with id $timerId")
+        val filteredTimers = rawTimers.filter {
+            val configStr = it.jobHandlerConfiguration?.toCanonicalString()
+            logger.info { "banana Comparing '$timerId' to '$configStr'" }
+            timerId == configStr
+        }
+
+        logger.info { "banana ${filteredTimers.size} timers found" }
+
+        when (filteredTimers.size) {
+            1 -> doTimerExecute(execution, filteredTimers.single())
+            else -> throw IllegalStateException("${filteredTimers.size} timers found with id $timerId")
         }
     }
 
