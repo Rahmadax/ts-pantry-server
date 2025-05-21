@@ -2,6 +2,7 @@ package com.depop.cx.drc.workflow.tasks.timer
 
 import com.depop.cx.drc.workflow.AbstractDrcDelegate
 import com.depop.cx.drc.workflow.getStringVariableOrNull
+import org.camunda.bpm.engine.delegate.BpmnError
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.camunda.bpm.engine.impl.persistence.entity.TimerEntity
 
@@ -12,7 +13,7 @@ abstract class AbstractTimerDelegate : AbstractDrcDelegate() {
     override fun doExecute(execution: DelegateExecution) {
         val timerId = execution.getStringVariableOrNull(TIMER_ID_PARAM)
         if (timerId == null) {
-            throw IllegalArgumentException("variable $TIMER_ID_PARAM is not set")
+            throw BpmnError("variable $TIMER_ID_PARAM is not set")
         }
 
         val managementService = execution.processEngineServices.managementService
