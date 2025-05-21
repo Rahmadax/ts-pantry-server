@@ -27,8 +27,8 @@ abstract class AbstractTimerDelegate : AbstractDrcDelegate() {
             .filterIsInstance<TimerEntity>()
             .filter { timerId.equals(it.jobHandlerConfiguration.toCanonicalString()) }
 
-        logger.info { "banana ${timers.size} timers found"}
-        
+        logger.info { "banana ${timers.size} timers found. canonical string is ${timers.single().jobHandlerConfiguration.toCanonicalString()}"}
+
         when (timers.size) {
             1 -> doTimerExecute(execution, timers.single())
             else -> IllegalStateException("${timers.size} timers found with id $timerId")
