@@ -13,17 +13,16 @@ abstract class AbstractDrcDelegate : JavaDelegate {
 
     private val logger = KotlinLogging.logger {}
 
-
     override fun execute(execution: DelegateExecution?) {
         try {
             execution?.apply { doExecute(this) }
-        } catch (exception: Throwable) {
+        } catch (exception: Exception) {
             handleException(exception, execution)
             throw exception
         }
     }
 
-    private fun handleException(exception: Throwable, delegateExecution: DelegateExecution?) {
+    private fun handleException(exception: Exception, delegateExecution: DelegateExecution?) {
         logger.error(exception) { "Failed to execute task ${delegateExecution?.id ?: "<unknown>"}" }
     }
 

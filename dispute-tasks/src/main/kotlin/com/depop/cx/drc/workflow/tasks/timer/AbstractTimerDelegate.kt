@@ -22,8 +22,7 @@ abstract class AbstractTimerDelegate : AbstractDrcDelegate() {
                 .filterIsInstance<TimerEntity>()
 
         val filteredTimers = rawTimers.filter {
-            val configStr = it.jobHandlerConfiguration?.toCanonicalString()
-            timerId == configStr
+            timerId.equals(it.jobHandlerConfiguration.toCanonicalString())
         }
 
         when (filteredTimers.size) {
