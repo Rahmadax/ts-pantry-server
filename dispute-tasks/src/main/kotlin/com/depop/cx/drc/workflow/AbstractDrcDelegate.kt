@@ -25,7 +25,7 @@ abstract class AbstractDrcDelegate : JavaDelegate {
 
     private fun handleException(exception: Throwable, delegateExecution: DelegateExecution?) {
         logger.error(exception) { "Failed to execute task ${delegateExecution?.id ?: "<unknown>"}" }
-        delegateExecution?.createIncident("failedJob", exception.message)
+        delegateExecution?.createIncident("foobar", exception.message)
     }
 
     protected fun validate(key: String, value: Any?) {
