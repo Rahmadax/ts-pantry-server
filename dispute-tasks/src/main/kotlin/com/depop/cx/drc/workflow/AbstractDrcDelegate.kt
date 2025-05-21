@@ -9,6 +9,8 @@ enum class TaskErrorCode(val code: String) {
     FAILURE("failure")
 }
 
+const val UNHANDLED_EXCEPTION = "unhandled_exception"
+
 abstract class AbstractDrcDelegate : JavaDelegate {
 
     private val logger = KotlinLogging.logger {}
@@ -16,14 +18,15 @@ abstract class AbstractDrcDelegate : JavaDelegate {
     override fun execute(execution: DelegateExecution?) {
         try {
             execution?.apply { doExecute(this) }
-        } catch (exception: Exception) {
+        } catch (exception: Throwable) {
             handleException(exception, execution)
             throw exception
         }
     }
 
-    private fun handleException(exception: Exception, delegateExecution: DelegateExecution?) {
+    private fun handleException(exception: Throwable, delegateExecution: DelegateExecution?) {
         logger.error(exception) { "Failed to execute task ${delegateExecution?.id ?: "<unknown>"}" }
+        delegateExecution?.createIncident(UNHANDLED_EXCEPTION, null, exception.message)
     }
 
     protected fun validate(key: String, value: Any?) {
