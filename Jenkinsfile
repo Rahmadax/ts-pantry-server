@@ -31,7 +31,7 @@ pipeline {
           steps {
             measure {
               script {
-                slackSend channel: 'cx-stream', color: 'good', message: "Building <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}>"
+                slackSend channel: 'cx-changelog', color: 'good', message: "Building <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}>"
                 sh "make ci"
                 sh "make docker_build docker_push"
               }
@@ -52,7 +52,7 @@ pipeline {
               script {
                 if (cicd.isCausedByTimer()) {
                   def msg = cicd.snykScanSummary('slack')
-                  slackSend channel: 'cx-stream', color: 'bad', message: "CVE found on  <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> :alert:\n\n${msg}"
+                  slackSend channel: 'cx-changelog', color: 'bad', message: "CVE found on  <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> :alert:\n\n${msg}"
                 }
               }
             }
@@ -82,7 +82,7 @@ pipeline {
       steps {
         measure {
           script {
-            slackSend channel: 'cx-stream', color: 'warning', message: "Deploying <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> to staging :shipit_parrot:"
+            slackSend channel: 'cx-changelog', color: 'warning', message: "Deploying <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> to staging :shipit_parrot:"
             cicd.deploy('stage')
           }
         }
@@ -96,9 +96,9 @@ pipeline {
       steps {
         measure {
           script {
-            slackSend channel: 'cx-stream', color: 'warning', message: "Deploying <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> to production :shipit_parrot:"
+            slackSend channel: 'cx-changelog', color: 'warning', message: "Deploying <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> to production :shipit_parrot:"
             cicd.deploy(envName: 'prod', runDreddTests: false, SNYK_MONITOR: true, LOCAL_DOCKERFILE: "Dockerfile.prebuilt")
-            slackSend channel: 'cx-stream', color: 'good', message: "Deployed <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> to production :dancinghamster:"
+            slackSend channel: 'cx-changelog', color: 'good', message: "Deployed <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> to production :dancinghamster:"
           }
         }
       }
@@ -116,7 +116,7 @@ pipeline {
     failure {
       script {
         cicd.buildFailure()
-        slackSend channel: 'cx-stream', color: 'bad', message: "Failed to deploy <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> :sob:"
+        slackSend channel: 'cx-changelog', color: 'bad', message: "Failed to deploy <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}> :sob:"
       }
     }
   }
