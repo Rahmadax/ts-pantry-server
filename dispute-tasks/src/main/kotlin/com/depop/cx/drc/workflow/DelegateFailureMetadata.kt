@@ -16,9 +16,10 @@ data class DelegateFailureMetadata(
             exception: Throwable,
             delegateClass: Class<*>
         ): DelegateFailureMetadata {
+            val processDefinitionId = execution?.processDefinitionId
             return DelegateFailureMetadata(
-                processDefinitionId = execution?.processDefinitionId,
-                processDefinitionVersion = execution?.let { extractProcessDefinitionVersion(it.processDefinitionId) },
+                processDefinitionId = processDefinitionId,
+                processDefinitionVersion = extractProcessDefinitionVersion(processDefinitionId),
                 activityName = execution?.currentActivityName?.let { sanitiseActivityName(it) },
                 activityId = execution?.currentActivityId,
                 delegateClassName = delegateClass.simpleName,
@@ -26,12 +27,15 @@ data class DelegateFailureMetadata(
             )
         }
 
+        private val WHITESPACE_REGEX = "\\s+".toRegex()
+        private val NON_ALPHANUMERIC_REGEX = "[^a-z0-9_]".toRegex()
+
         fun sanitiseActivityName(activityName: String): String? {
             return activityName
                 .lowercase()
                 .trim()
-                .replace("\\s+".toRegex(), "_") // spaces to underscore
-                .replace("[^a-z0-9_]".toRegex(), "") // strip symbols other than _
+                .replace(WHITESPACE_REGEX   , "_") // spaces to underscore
+                .replace(NON_ALPHANUMERIC_REGEX, "") // strip symbols other than _
                 .takeIf { it.isNotBlank() } // if we're left with nothing, return null
         }
 
