@@ -1,6 +1,5 @@
 package com.depop.cx.drc.workflow
 
-import com.depop.cx.drc.workflow.metrics.TaskMetrics
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
@@ -23,8 +22,8 @@ class DelegateFailureMetadataTest {
         `when`(mockExecution.currentActivityName).thenReturn("Foo Service Task")
 
         val exception = IllegalStateException("Banana")
-        val delegate = TestDelegate(mock<TaskMetrics>())
-        
+        val delegate = TestDelegate()
+
         val metadata = DelegateFailureMetadata.from(mockExecution, exception, delegate::class.java)
 
         assertEquals(processDefinitionId, metadata.processDefinitionId)
@@ -71,7 +70,25 @@ class DelegateFailureMetadataTest {
         assertEquals("task_name", result)
     }
 
-    class TestDelegate(taskMetrics: TaskMetrics) : AbstractMetricDrcDelegate(taskMetrics) {
+    @Test
+    fun `extractProcessDefinitionVersion on empty string`() {
+        val result = DelegateFailureMetadata.extractProcessDefinitionVersion("")
+        assertNull(result)
+    }
+
+    @Test
+    fun `extractProcessDefinitionVersion on blank`() {
+        val result = DelegateFailureMetadata.extractProcessDefinitionVersion("foo:")
+        assertNull(result)
+    }
+
+    @Test
+    fun `extractProcessDefinitionVersion on non-integer`() {
+        val result = DelegateFailureMetadata.extractProcessDefinitionVersion("foo:bar")
+        assertNull(result)
+    }
+
+    class TestDelegate() : AbstractDrcDelegate() {
         override fun doExecute(execution: DelegateExecution) {
             TODO("Not yet implemented")
         }

@@ -3,7 +3,6 @@
 package com.depop.cx.drc.workflow.config
 
 import com.depop.cx.drc.workflow.client.*
-import com.depop.cx.drc.workflow.foo.FooDelegate
 import com.depop.cx.drc.workflow.listener.*
 import com.depop.cx.drc.workflow.metrics.TaskMetrics
 import com.depop.cx.drc.workflow.tasks.*
@@ -22,6 +21,13 @@ import org.springframework.context.annotation.Profile
 
 @Configuration
 class WorkflowTaskConfiguration {
+
+    @Bean
+    fun taskMetrics(meterRegistry: MeterRegistry) = TaskMetrics(meterRegistry)
+
+    @Bean
+    @Profile("local")
+    fun loggingMeterRegistry() = LoggingMeterRegistry()
 
     @Bean
     fun getReceiptDetailsTask(
@@ -44,12 +50,6 @@ class WorkflowTaskConfiguration {
 
     @Bean
     fun getUserDetailsTask(userClient: UserClient) = GetUserDetailsDrcDelegate(userClient)
-
-    @Bean
-    fun taskMetrics(meterRegistry: MeterRegistry) = TaskMetrics(meterRegistry)
-
-    @Bean
-    fun getFooDelegate(taskMetrics: TaskMetrics) = FooDelegate(taskMetrics)
 
     @Bean
     fun getUserBlockedTask(blockingClient: BlockingClient) = GetUserBlockedDelegate(blockingClient)

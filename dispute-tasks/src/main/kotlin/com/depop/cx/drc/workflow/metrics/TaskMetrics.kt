@@ -22,13 +22,15 @@ const val UNKNOWN_TAG_VALUE = "unknown"
 class TaskMetrics(private val meterRegistry: MeterRegistry) {
 
     fun getDelegateFailureCounter(failureMetadata: DelegateFailureMetadata): Counter {
-        return meterRegistry.counter(TaskMetricNames.DELEGATE_FAILURE, listOf(
-            Tag.of(TaskMetricTags.PROCESS_DEFINITION_ID, failureMetadata.processDefinitionId ?: UNKNOWN_TAG_VALUE),
-            Tag.of(TaskMetricTags.ACTIVITY_ID, failureMetadata.activityId ?: UNKNOWN_TAG_VALUE),
-            Tag.of(TaskMetricTags.ACTIVITY_NAME, failureMetadata.activityName ?: UNKNOWN_TAG_VALUE),
-            Tag.of(TaskMetricTags.DELEGATE_CLASS_NAME, failureMetadata.delegateClassName),
-            Tag.of(TaskMetricTags.EXCEPTION_CLASS_NAME, failureMetadata.exceptionClassName)
-        ))
+        return meterRegistry.counter(
+            TaskMetricNames.DELEGATE_FAILURE, listOf(
+                Tag.of(TaskMetricTags.PROCESS_DEFINITION_ID, failureMetadata.processDefinitionId ?: UNKNOWN_TAG_VALUE),
+                Tag.of(TaskMetricTags.ACTIVITY_ID, failureMetadata.activityId ?: UNKNOWN_TAG_VALUE),
+                Tag.of(TaskMetricTags.ACTIVITY_NAME, failureMetadata.activityName ?: UNKNOWN_TAG_VALUE),
+                Tag.of(TaskMetricTags.DELEGATE_CLASS_NAME, failureMetadata.delegateClassName),
+                Tag.of(TaskMetricTags.EXCEPTION_CLASS_NAME, failureMetadata.exceptionClassName)
+            )
+        )
     }
 
 }

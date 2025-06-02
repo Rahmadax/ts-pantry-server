@@ -35,14 +35,15 @@ data class DelegateFailureMetadata(
                 .takeIf { it.isNotBlank() } // if we're left with nothing, return null
         }
 
-        fun extractProcessDefinitionVersion(processDefinitionId: String): String? {
+        fun extractProcessDefinitionVersion(processDefinitionId: String?): String? {
             /*
             An example of a process definition ID is `Process_0oxrtl6:1:9eb9c9f0-3f98-11f0-88e8-62dcf9e7fde`
             Where :1: is the process definition version.
             This may be specific to Camunda 7.
             But it's useful information, and the alternative way of getting this involves hitting the Camunda DB.
              */
-            return processDefinitionId.split(":").getOrNull(1)
+            val versionPart = processDefinitionId?.split(":")?.getOrNull(1)
+            return versionPart?.takeIf { it.toIntOrNull() != null }
         }
     }
 }
