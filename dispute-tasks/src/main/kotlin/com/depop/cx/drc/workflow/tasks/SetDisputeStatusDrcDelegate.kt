@@ -5,6 +5,7 @@ import com.depop.cx.drc.workflow.TaskErrorCode
 import com.depop.cx.drc.workflow.client.DrcClient
 import com.depop.cx.drc.workflow.getStringVariableOrNull
 import com.depop.cx.drc.workflow.getUUIDVariableOrNull
+import com.depop.cx.drc.workflow.metrics.TaskMetrics
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.BpmnError
 import org.camunda.bpm.engine.delegate.DelegateExecution
@@ -12,7 +13,7 @@ import org.camunda.bpm.engine.delegate.DelegateExecution
 private const val DISPUTE_ID_PROPERTY = "dispute_id"
 private const val DISPUTE_STATUS_PROPERTY = "dispute_status"
 
-class SetDisputeStatusDrcDelegate(private val drcClient: DrcClient) : AbstractDrcDelegate() {
+class SetDisputeStatusDrcDelegate(private val drcClient: DrcClient, private val taskMetrics: TaskMetrics) : AbstractDrcDelegate(taskMetrics) {
 
     private val logger = KotlinLogging.logger {}
 

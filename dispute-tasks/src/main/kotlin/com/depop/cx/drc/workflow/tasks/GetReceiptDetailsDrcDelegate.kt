@@ -4,6 +4,7 @@ import com.depop.cx.drc.workflow.AbstractDrcDelegate
 import com.depop.cx.drc.workflow.TaskErrorCode
 import com.depop.cx.drc.workflow.client.*
 import com.depop.cx.drc.workflow.getLongVariableOrNull
+import com.depop.cx.drc.workflow.metrics.TaskMetrics
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.BpmnError
 import org.camunda.bpm.engine.delegate.DelegateExecution
@@ -40,8 +41,9 @@ data class PrimaryParcelDetails(
 class GetReceiptDetailsDrcDelegate(
     private val checkoutClient: CheckoutClient,
     private val paymentsClient: PaymentsClient,
-    private val shippingClient: ShippingClient
-) : AbstractDrcDelegate() {
+    private val shippingClient: ShippingClient,
+    private val taskMetrics: TaskMetrics
+) : AbstractDrcDelegate(taskMetrics) {
 
     private val logger = KotlinLogging.logger {}
 

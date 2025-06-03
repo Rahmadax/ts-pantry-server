@@ -2,6 +2,7 @@ package com.depop.cx.drc.workflow.tasks
 
 import com.depop.cx.drc.workflow.AbstractDrcDelegate
 import com.depop.cx.drc.workflow.client.PictureClient
+import com.depop.cx.drc.workflow.metrics.TaskMetrics
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.runBlocking
@@ -9,7 +10,7 @@ import org.camunda.bpm.engine.delegate.DelegateExecution
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
-class LinkImagesDrcDelegate(private val pictureClient: PictureClient) : AbstractDrcDelegate() {
+class LinkImagesDrcDelegate(private val pictureClient: PictureClient, private val taskMetrics: TaskMetrics) : AbstractDrcDelegate(taskMetrics) {
     private val logger = KotlinLogging.logger {}
 
     override fun doExecute(execution: DelegateExecution) {

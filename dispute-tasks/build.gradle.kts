@@ -20,4 +20,8 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+
+    // Metrics support
+    implementation("io.micrometer:micrometer-core")
+    implementation("io.micrometer:micrometer-registry-statsd")
 }
