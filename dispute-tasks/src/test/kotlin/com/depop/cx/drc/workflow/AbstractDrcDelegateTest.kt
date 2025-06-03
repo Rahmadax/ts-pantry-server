@@ -16,6 +16,8 @@ class AbstractDrcDelegateTest {
         val taskMetrics = TaskMetrics(registry)
 
         val processDefinitionId = "Process_abc:1:def"
+        val processDefinitionKey = "Process_abc"
+        val processDefinitionVersion = "1"
         val activityId = "Activity_xyz"
 
         val execution = mock<DelegateExecution>()
@@ -35,8 +37,12 @@ class AbstractDrcDelegateTest {
             registry
                 .get("camunda.delegate.failure")
                 .tag(
-                    "process_definition_id",
-                    processDefinitionId
+                    "process_definition_key",
+                    processDefinitionKey
+                )
+                .tag(
+                    "process_definition_version",
+                    processDefinitionVersion
                 )
                 .tag(
                     "activity_id",
@@ -82,7 +88,11 @@ class AbstractDrcDelegateTest {
             registry
                 .get("camunda.delegate.failure")
                 .tag(
-                    "process_definition_id",
+                    "process_definition_key",
+                    "unknown"
+                )
+                .tag(
+                    "process_definition_version",
                     "unknown"
                 )
                 .tag(

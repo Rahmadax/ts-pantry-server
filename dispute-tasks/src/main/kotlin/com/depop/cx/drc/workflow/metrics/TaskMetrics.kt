@@ -10,7 +10,8 @@ object TaskMetricNames {
 }
 
 object TaskMetricTags {
-    const val PROCESS_DEFINITION_ID = "process_definition_id"
+    const val PROCESS_DEFINITION_KEY = "process_definition_key"
+    const val PROCESS_DEFINITION_VERSION = "process_definition_version"
     const val ACTIVITY_ID = "activity_id"
     const val ACTIVITY_NAME = "activity_name"
     const val DELEGATE_CLASS_NAME = "delegate_class_name"
@@ -24,7 +25,8 @@ class TaskMetrics(private val meterRegistry: MeterRegistry) {
     fun getDelegateFailureCounter(failureMetadata: DelegateFailureMetadata): Counter {
         return meterRegistry.counter(
             TaskMetricNames.DELEGATE_FAILURE, listOf(
-                Tag.of(TaskMetricTags.PROCESS_DEFINITION_ID, failureMetadata.processDefinitionId ?: UNKNOWN_TAG_VALUE),
+                Tag.of(TaskMetricTags.PROCESS_DEFINITION_KEY, failureMetadata.processDefinitionKey ?: UNKNOWN_TAG_VALUE),
+                Tag.of(TaskMetricTags.PROCESS_DEFINITION_VERSION, failureMetadata.processDefinitionVersion ?: UNKNOWN_TAG_VALUE),
                 Tag.of(TaskMetricTags.ACTIVITY_ID, failureMetadata.activityId ?: UNKNOWN_TAG_VALUE),
                 Tag.of(TaskMetricTags.ACTIVITY_NAME, failureMetadata.activityName ?: UNKNOWN_TAG_VALUE),
                 Tag.of(TaskMetricTags.DELEGATE_CLASS_NAME, failureMetadata.delegateClassName),

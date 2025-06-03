@@ -1,38 +1,10 @@
 package com.depop.cx.drc.workflow
 
-import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.`when`
-
 
 class DelegateFailureMetadataTest {
-
-    @Test
-    fun `from should build the expected DelegateFailureMetadata`() {
-        val mockExecution = mock<DelegateExecution>()
-
-        val processDefinitionId = "Process_0oxrtl6:1:9eb9c9f0-3f98-11f0-88e8-62dcf9e7fde"
-        val activityId = "Activity_0oolzme"
-
-        `when`(mockExecution.processDefinitionId).thenReturn(processDefinitionId)
-        `when`(mockExecution.currentActivityId).thenReturn(activityId)
-        `when`(mockExecution.currentActivityName).thenReturn("Foo Service Task")
-
-        val exception = IllegalStateException("Banana")
-        val delegate = TestDelegate()
-
-        val metadata = DelegateFailureMetadata.from(mockExecution, exception, delegate::class.java)
-
-        assertEquals(processDefinitionId, metadata.processDefinitionId)
-        assertEquals("1", metadata.processDefinitionVersion)
-        assertEquals(activityId, metadata.activityId)
-        assertEquals("foo_service_task", metadata.activityName)
-        assertEquals("TestDelegate", metadata.delegateClassName)
-        assertEquals("IllegalStateException", metadata.exceptionClassName)
-    }
 
     @Test
     fun `sanitiseActivityName lowercases and replaces spaces`() {
@@ -71,6 +43,12 @@ class DelegateFailureMetadataTest {
     }
 
     @Test
+    fun `extractProcessDefinitionKey on empty string`() {
+        val result = DelegateFailureMetadata.extractProcessDefinitionKey("")
+        assertEquals("", result)
+    }
+
+    @Test
     fun `extractProcessDefinitionVersion on empty string`() {
         val result = DelegateFailureMetadata.extractProcessDefinitionVersion("")
         assertNull(result)
@@ -88,9 +66,4 @@ class DelegateFailureMetadataTest {
         assertNull(result)
     }
 
-    class TestDelegate() : AbstractDrcDelegate() {
-        override fun doExecute(execution: DelegateExecution) {
-            TODO("Not yet implemented")
-        }
-    }
 }
