@@ -45,7 +45,15 @@ class DelegateFailureMetadataTest {
     @Test
     fun `extractProcessDefinitionKey on empty string`() {
         val result = DelegateFailureMetadata.extractProcessDefinitionKey("")
-        assertEquals("", result)
+        assertNull(result)
+    }
+
+    @Test
+    fun`extractProcessDefinitionKey on uuid`() {
+        // camunda has been known to change the process definition id to just be a UUID, if it gets too long!
+        // we should avoid cardinality explosion by not extracting a process key if it has done that
+        val result = DelegateFailureMetadata.extractProcessDefinitionKey("a253e423-b103-48bc-9f22-c98cb7d714f2")
+        assertNull(result)
     }
 
     @Test

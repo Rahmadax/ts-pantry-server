@@ -46,7 +46,10 @@ data class DelegateFailureMetadata(
         But it's useful information, and the alternative way of getting this involves hitting the Camunda DB.
          */
         fun extractProcessDefinitionKey(processDefinitionId: String?): String? {
-           return processDefinitionId?.split(":")?.getOrNull(0)
+            if (processDefinitionId.isNullOrBlank() || !processDefinitionId.contains(":")) {
+                return null
+            }
+            return processDefinitionId.split(":").getOrNull(0)
         }
 
         fun extractProcessDefinitionVersion(processDefinitionId: String?): String? {
