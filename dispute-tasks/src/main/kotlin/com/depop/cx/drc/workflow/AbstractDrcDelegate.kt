@@ -5,7 +5,6 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.BpmnError
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.camunda.bpm.engine.delegate.JavaDelegate
-import org.springframework.beans.factory.annotation.Autowired
 
 enum class TaskErrorCode(val code: String) {
     FAILURE("failure")
@@ -16,12 +15,17 @@ abstract class AbstractDrcDelegate(private val taskMetrics: TaskMetrics) : JavaD
     private val logger = KotlinLogging.logger {}
 
     override fun execute(execution: DelegateExecution?) {
+        val delegateMetadata = DelegateMetadata.from(execution, this::class.java)
         try {
-            execution?.apply { doExecute(this) }
+            val timer = taskMetrics.getDelegateExecutionTimer(delegateMetadata)
+            execution?.let {
+                timer.record(Runnable {
+                    doExecute(it)
+                })
+            }
         } catch (exception: Throwable) {
-            val failureMetadata = DelegateFailureMetadata.from(execution, exception, this::class.java)
-            logException(exception, execution, failureMetadata)
-            recordMetric(failureMetadata)
+            logException(exception, execution, delegateMetadata)
+            recordMetric(exception, delegateMetadata)
             throw exception
         }
     }
@@ -29,13 +33,13 @@ abstract class AbstractDrcDelegate(private val taskMetrics: TaskMetrics) : JavaD
     private fun logException(
         exception: Throwable,
         delegateExecution: DelegateExecution?,
-        failureMetadata: DelegateFailureMetadata
+        delegateMetadata: DelegateMetadata
     ) {
-        logger.error(exception) { "Failed to execute task ${delegateExecution?.id ?: "<unknown>"}: $failureMetadata" }
+        logger.error(exception) { "Failed to execute task ${delegateExecution?.id ?: "<unknown>"}: $delegateMetadata" }
     }
 
-    private fun recordMetric(failureMetadata: DelegateFailureMetadata) {
-        taskMetrics.getDelegateFailureCounter(failureMetadata).increment()
+    private fun recordMetric(exception: Throwable, delegateMetadata: DelegateMetadata) {
+        taskMetrics.getDelegateFailureCounter(delegateMetadata, exception::class.java).increment()
     }
 
     protected fun validate(key: String, value: Any?) {

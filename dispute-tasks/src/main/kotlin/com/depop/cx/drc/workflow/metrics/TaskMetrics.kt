@@ -1,12 +1,14 @@
 package com.depop.cx.drc.workflow.metrics
 
-import com.depop.cx.drc.workflow.DelegateFailureMetadata
+import com.depop.cx.drc.workflow.DelegateMetadata
 import io.micrometer.core.instrument.Counter
 import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.core.instrument.Tag
+import io.micrometer.core.instrument.Timer
 
 object TaskMetricNames {
     const val DELEGATE_FAILURE = "camunda.delegate.failure"
+    const val DELEGATE_EXECUTION = "camunda.delegate.execution"
 }
 
 object TaskMetricTags {
@@ -22,15 +24,39 @@ const val UNKNOWN_TAG_VALUE = "unknown"
 
 class TaskMetrics(private val meterRegistry: MeterRegistry) {
 
-    fun getDelegateFailureCounter(failureMetadata: DelegateFailureMetadata): Counter {
+    fun getDelegateFailureCounter(delegateMetadata: DelegateMetadata, exceptionClass: Class<*>): Counter {
         return meterRegistry.counter(
             TaskMetricNames.DELEGATE_FAILURE, listOf(
-                Tag.of(TaskMetricTags.PROCESS_DEFINITION_KEY, failureMetadata.processDefinitionKey ?: UNKNOWN_TAG_VALUE),
-                Tag.of(TaskMetricTags.PROCESS_DEFINITION_VERSION, failureMetadata.processDefinitionVersion ?: UNKNOWN_TAG_VALUE),
-                Tag.of(TaskMetricTags.ACTIVITY_ID, failureMetadata.activityId ?: UNKNOWN_TAG_VALUE),
-                Tag.of(TaskMetricTags.ACTIVITY_NAME, failureMetadata.activityName ?: UNKNOWN_TAG_VALUE),
-                Tag.of(TaskMetricTags.DELEGATE_CLASS_NAME, failureMetadata.delegateClassName),
-                Tag.of(TaskMetricTags.EXCEPTION_CLASS_NAME, failureMetadata.exceptionClassName)
+                Tag.of(
+                    TaskMetricTags.PROCESS_DEFINITION_KEY,
+                    delegateMetadata.processDefinitionKey ?: UNKNOWN_TAG_VALUE
+                ),
+                Tag.of(
+                    TaskMetricTags.PROCESS_DEFINITION_VERSION,
+                    delegateMetadata.processDefinitionVersion ?: UNKNOWN_TAG_VALUE
+                ),
+                Tag.of(TaskMetricTags.ACTIVITY_ID, delegateMetadata.activityId ?: UNKNOWN_TAG_VALUE),
+                Tag.of(TaskMetricTags.ACTIVITY_NAME, delegateMetadata.activityName ?: UNKNOWN_TAG_VALUE),
+                Tag.of(TaskMetricTags.DELEGATE_CLASS_NAME, delegateMetadata.delegateClassName),
+                Tag.of(TaskMetricTags.EXCEPTION_CLASS_NAME, exceptionClass.simpleName)
+            )
+        )
+    }
+
+    fun getDelegateExecutionTimer(delegateMetadata: DelegateMetadata): Timer {
+        return meterRegistry.timer(
+            TaskMetricNames.DELEGATE_EXECUTION, listOf(
+                Tag.of(
+                    TaskMetricTags.PROCESS_DEFINITION_KEY,
+                    delegateMetadata.processDefinitionKey ?: UNKNOWN_TAG_VALUE
+                ),
+                Tag.of(
+                    TaskMetricTags.PROCESS_DEFINITION_VERSION,
+                    delegateMetadata.processDefinitionVersion ?: UNKNOWN_TAG_VALUE
+                ),
+                Tag.of(TaskMetricTags.ACTIVITY_ID, delegateMetadata.activityId ?: UNKNOWN_TAG_VALUE),
+                Tag.of(TaskMetricTags.ACTIVITY_NAME, delegateMetadata.activityName ?: UNKNOWN_TAG_VALUE),
+                Tag.of(TaskMetricTags.DELEGATE_CLASS_NAME, delegateMetadata.delegateClassName)
             )
         )
     }
