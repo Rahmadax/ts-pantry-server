@@ -116,11 +116,7 @@ class AbstractDrcDelegateTest {
         assertEquals(1.0, counter.count())
     }
 
-    class TestDelegate(private val injectedMetrics: TaskMetrics) : AbstractDrcDelegate() {
-
-        init {
-            this.taskMetrics = injectedMetrics
-        }
+    class TestDelegate(private val taskMetrics: TaskMetrics) : AbstractDrcDelegate(taskMetrics) {
 
         override fun doExecute(execution: DelegateExecution) {
             throw IllegalStateException("Banana")

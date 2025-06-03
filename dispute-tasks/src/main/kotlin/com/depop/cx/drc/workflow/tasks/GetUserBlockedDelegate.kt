@@ -4,6 +4,7 @@ import com.depop.cx.drc.workflow.AbstractDrcDelegate
 import com.depop.cx.drc.workflow.TaskErrorCode
 import com.depop.cx.drc.workflow.client.BlockingClient
 import com.depop.cx.drc.workflow.getLongVariableOrNull
+import com.depop.cx.drc.workflow.metrics.TaskMetrics
 import kotlinx.coroutines.runBlocking
 import org.camunda.bpm.engine.delegate.BpmnError
 import org.camunda.bpm.engine.delegate.DelegateExecution
@@ -12,7 +13,7 @@ private const val BUYER_ID_PROPERTY = "buyer"
 private const val SELLER_ID_PROPERTY = "seller"
 private const val IS_USER_BLOCKED_PROPERTY = "is_user_blocked"
 
-class GetUserBlockedDelegate(private val client: BlockingClient) : AbstractDrcDelegate() {
+class GetUserBlockedDelegate(private val client: BlockingClient, private val taskMetrics: TaskMetrics) : AbstractDrcDelegate(taskMetrics) {
 
     override fun doExecute(execution: DelegateExecution) {
 

@@ -7,6 +7,7 @@ import com.depop.cx.drc.workflow.client.ProductClient
 import com.depop.cx.drc.workflow.client.Receipt
 import com.depop.cx.drc.workflow.getLongVariableOrNull
 import com.depop.cx.drc.workflow.getUUIDVariableOrNull
+import com.depop.cx.drc.workflow.metrics.TaskMetrics
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.BpmnError
 import org.camunda.bpm.engine.delegate.DelegateExecution
@@ -19,8 +20,9 @@ private const val DISPUTE_ID_PROPERTY = "dispute_id"
 
 class GetProductDetailsDrcDelegate(
     private val productClient: ProductClient,
-    private val checkoutClient: CheckoutClient
-) : AbstractDrcDelegate() {
+    private val checkoutClient: CheckoutClient,
+    private val taskMetrics: TaskMetrics
+) : AbstractDrcDelegate(taskMetrics) {
 
     private val logger = KotlinLogging.logger {}
 

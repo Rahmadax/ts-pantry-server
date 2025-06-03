@@ -2,6 +2,7 @@ package com.depop.cx.drc.workflow.tasks
 
 import com.depop.cx.drc.workflow.*
 import com.depop.cx.drc.workflow.client.DrcClient
+import com.depop.cx.drc.workflow.metrics.TaskMetrics
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.BpmnError
 import org.camunda.bpm.engine.delegate.DelegateExecution
@@ -10,7 +11,7 @@ private const val DISPUTE_ID_PROPERTY = "dispute_id"
 private const val PARTICIPANT_ID_PROPERTY = "participant_id"
 private const val PARTICIPANT_ROLE_PROPERTY = "participant_role"
 
-class SetDisputeParticipantDrcDelegate(private val drcClient : DrcClient) : AbstractDrcDelegate() {
+class SetDisputeParticipantDrcDelegate(private val drcClient : DrcClient, private val taskMetrics: TaskMetrics) : AbstractDrcDelegate(taskMetrics) {
 
     private val logger = KotlinLogging.logger {}
 

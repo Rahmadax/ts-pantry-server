@@ -4,6 +4,7 @@ import com.depop.cx.drc.workflow.AbstractDrcDelegate
 import com.depop.cx.drc.workflow.client.CheckoutClient
 import com.depop.cx.drc.workflow.client.RefundDetails
 import com.depop.cx.drc.workflow.getLongVariableOrNull
+import com.depop.cx.drc.workflow.metrics.TaskMetrics
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import java.util.*
@@ -14,8 +15,9 @@ private const val SELLER_REFUND_AMOUNT = "seller_refund_amount"
 private const val REFUND_CURRENCY = "refund_currency"
 
 class GetRefundDetailsDrcDelegate(
-    private val checkoutClient: CheckoutClient
-) : AbstractDrcDelegate() {
+    private val checkoutClient: CheckoutClient,
+    private val taskMetrics: TaskMetrics
+) : AbstractDrcDelegate(taskMetrics) {
 
     private val logger = KotlinLogging.logger {}
 

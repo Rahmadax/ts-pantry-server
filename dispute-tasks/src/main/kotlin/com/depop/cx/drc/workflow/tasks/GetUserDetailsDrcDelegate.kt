@@ -5,6 +5,7 @@ import com.depop.cx.drc.workflow.client.User
 import com.depop.cx.drc.workflow.client.UserClient
 import com.depop.cx.drc.workflow.getLongVariableOrNull
 import com.depop.cx.drc.workflow.getUUIDVariableOrNull
+import com.depop.cx.drc.workflow.metrics.TaskMetrics
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import java.util.*
@@ -14,7 +15,7 @@ private const val USER_ID_PROPERTY = "user_id"
 private const val USERNAME = "username"
 private const val USER_BANNED_PROPERTY = "user_banned"
 
-class GetUserDetailsDrcDelegate(private val userClient: UserClient) : AbstractDrcDelegate() {
+class GetUserDetailsDrcDelegate(private val userClient: UserClient, private val taskMetrics: TaskMetrics) : AbstractDrcDelegate(taskMetrics) {
 
     private val logger = KotlinLogging.logger {}
 

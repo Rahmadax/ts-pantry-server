@@ -11,10 +11,8 @@ enum class TaskErrorCode(val code: String) {
     FAILURE("failure")
 }
 
-abstract class AbstractDrcDelegate() : JavaDelegate {
+abstract class AbstractDrcDelegate(private val taskMetrics: TaskMetrics) : JavaDelegate {
 
-    @Autowired
-    protected lateinit var taskMetrics: TaskMetrics
     private val logger = KotlinLogging.logger {}
 
     override fun execute(execution: DelegateExecution?) {

@@ -5,6 +5,7 @@ import com.depop.cx.drc.workflow.TaskErrorCode
 import com.depop.cx.drc.workflow.client.DrcClient
 import com.depop.cx.drc.workflow.client.UpdateResponseDueAtDisputeRequest
 import com.depop.cx.drc.workflow.getUUIDProcessVariableOrNull
+import com.depop.cx.drc.workflow.metrics.TaskMetrics
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.BpmnError
 import org.camunda.bpm.engine.delegate.DelegateExecution
@@ -18,8 +19,9 @@ private const val DISPUTE_ID_PROPERTY = "dispute_id"
 private const val DISPUTE_RESPONSE_DUE_DATE = "response_due_date"
 
 class SetResponseDueDateDrcDelegate(
-    private val drcClient: DrcClient
-) : AbstractDrcDelegate() {
+    private val drcClient: DrcClient,
+    private val taskMetrics: TaskMetrics,
+) : AbstractDrcDelegate(taskMetrics) {
 
     lateinit var response_due_date: Expression
 
