@@ -250,6 +250,7 @@ public class SecurityConfiguration {
                                     antMatcher(HttpMethod.GET, API_URL_BASE + "/version"),
                                     antMatcher(HttpMethod.GET, API_URL_BASE + "/history/task"),
                                     antMatcher(HttpMethod.POST, API_URL_BASE + "/process-definition/key/*/start"),
+                                    antMatcher(HttpMethod.POST, API_URL_BASE + "/process-definition/*/start"),
                                     antMatcher(HttpMethod.POST, API_URL_BASE + "/task/*/complete"),
                                     antMatcher(HttpMethod.POST, API_URL_BASE + "/task/*/attachment/create"),
                                     antMatcher(HttpMethod.POST, API_URL_BASE + "/task/*/attachments/create"),
