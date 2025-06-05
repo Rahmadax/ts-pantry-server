@@ -2,28 +2,25 @@ package com.depop.cx.drc.workflow
 
 import org.camunda.bpm.engine.delegate.DelegateExecution
 
-data class DelegateFailureMetadata(
+data class DelegateMetadata(
     val processDefinitionKey: String?,
     val processDefinitionVersion: String?,
     val activityId: String?,
     val activityName: String?,
-    val delegateClassName: String,
-    val exceptionClassName: String
+    val delegateClassName: String
 ) {
     companion object {
         fun from(
             execution: DelegateExecution?,
-            exception: Throwable,
             delegateClass: Class<*>
-        ): DelegateFailureMetadata {
+        ): DelegateMetadata {
             val processDefinitionId = execution?.processDefinitionId
-            return DelegateFailureMetadata(
+            return DelegateMetadata(
                 processDefinitionKey = extractProcessDefinitionKey(processDefinitionId),
                 processDefinitionVersion = extractProcessDefinitionVersion(processDefinitionId),
                 activityName = execution?.currentActivityName?.let { sanitiseActivityName(it) },
                 activityId = execution?.currentActivityId,
-                delegateClassName = delegateClass.simpleName,
-                exceptionClassName = exception::class.java.simpleName
+                delegateClassName = delegateClass.simpleName
             )
         }
 
