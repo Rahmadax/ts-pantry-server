@@ -41,11 +41,17 @@ management:
       version: "deadbee"
       env: "local-local"
       env_type: "local"
+      env-type: "local"
       env_name: "local"
+      env-name: "local"
       service-domain: "user"
+      service_domain: "user"
       service-group: "default"
+      service_group: "default"
       service-name: "dispute"
+      service_name: "dispute"
       service-role: "workflow"
+      service_role: "workflow"
       pod_name: "local"
       kube_namespace: "local"
 
@@ -80,11 +86,17 @@ management:
       version: ${APP_VERSION}
       env: ${ENV_TYPE}-${ENV_NAME}
       env_type: ${ENV_TYPE}
+      env-type: ${ENV_TYPE}
       env_name: ${ENV_NAME}
+      env-name: ${ENV_NAME}
       service-domain: ${SERVICE_DOMAIN}
+      service_domain: ${SERVICE_DOMAIN}
       service-group: ${SERVICE_GROUP}
+      service_group: ${SERVICE_GROUP}
       service-name: ${SERVICE_NAME}
+      service_name: ${SERVICE_NAME}
       service-role: ${SERVICE_ROLE}
+      service_role: ${SERVICE_ROLE}
       pod_name: ${POD_NAME}
       kube_namespace: ${POD_NAMESPACE}
 
@@ -109,10 +121,16 @@ management:
       version: ${APP_VERSION}
       env: ${ENV_TYPE}-${ENV_NAME}
       env_type: ${ENV_TYPE}
+      env-type: ${ENV_TYPE}
       env_name: ${ENV_NAME}
+      env-name: ${ENV_NAME}
       service-domain: ${SERVICE_DOMAIN}
+      service_domain: ${SERVICE_DOMAIN}
       service-group: ${SERVICE_GROUP}
+      service_group: ${SERVICE_GROUP}
       service-name: ${SERVICE_NAME}
+      service_name: ${SERVICE_NAME}
       service-role: ${SERVICE_ROLE}
+      service_role: ${SERVICE_ROLE}
       pod_name: ${POD_NAME}
       kube_namespace: ${POD_NAMESPACE}
