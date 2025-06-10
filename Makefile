@@ -1,6 +1,6 @@
 docker_repository ?= 594471699039.dkr.ecr.us-east-1.amazonaws.com/user-default/dispute-workflow
 git_commit_sha ?= $(shell git rev-parse HEAD |cut -c1-7)
-build_image ?= 594471699039.dkr.ecr.us-east-1.amazonaws.com/mirror/amazoncorretto:17
+build_image ?= 594471699039.dkr.ecr.us-east-1.amazonaws.com/docker-hub/library/amazoncorretto:17
 entrypoint ?= ''
 interactive ?=
 build_command ?= TERM=dumb ./gradlew build -PbuildProfile=ci --no-daemon

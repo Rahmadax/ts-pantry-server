@@ -2,7 +2,7 @@ version: "3.5"
 
 services:
   local:
-    image: 594471699039.dkr.ecr.us-east-1.amazonaws.com/mirror/postgres:15.3
+    image: 594471699039.dkr.ecr.us-east-1.amazonaws.com/docker-hub/library/postgres:15.3
     environment:
       - POSTGRES_USER=depopdba
       - POSTGRES_PASSWORD=depopdba

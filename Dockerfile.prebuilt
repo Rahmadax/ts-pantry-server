@@ -1,5 +1,5 @@
 # Copy the pre-built jar file into a prebuilt base image:
-FROM 594471699039.dkr.ecr.us-east-1.amazonaws.com/mirror/amazoncorretto:17
+FROM 594471699039.dkr.ecr.us-east-1.amazonaws.com/docker-hub/library/amazoncorretto:17
 ARG SOURCE_JAR
 COPY ${SOURCE_JAR} ./executable.jar
 
