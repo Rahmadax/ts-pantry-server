@@ -17,6 +17,7 @@ customMonitors:
     query: avg(last_5m):max:camunda.delegate.execution.95percentile{$DEFAULT_FILTERS} by {delegate_class_name} > 2000
     pagerduty:
       enabled: false
+    requireFullWindow: false
   - name: Delegate errors count is too high
     query: sum(last_5m):sum:camunda.delegate.failure{$DEFAULT_FILTERS} by {exception_class_name}.as_count().rollup(sum, 60) > 10
     pagerduty:
