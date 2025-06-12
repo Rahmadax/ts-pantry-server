@@ -14,7 +14,7 @@ defaults:
 
 customMonitors:
   - name: Delegate execution latency is too high
-    query: avg(last_5m):max:camunda.delegate.execution.95percentile{$DEFAULT_FILTERS} by {delegate_class_name} > 1000
+    query: avg(last_5m):max:camunda.delegate.execution.95percentile{$DEFAULT_FILTERS} by {delegate_class_name} > 2000
     pagerduty:
       enabled: false
   - name: Delegate errors count is too high
