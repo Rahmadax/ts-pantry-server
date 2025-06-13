@@ -29,7 +29,7 @@ sqlt_version: 1.62
 sqlt_image: tools/sqlt
 
 postgresql_version: 15.3
-postgresql_image: mirror/postgres
+postgresql_image: docker-hub/library/postgres
 
 application: disputeworkflow
 database_name: disputeworkflow
