@@ -4,6 +4,7 @@ build_image ?= 594471699039.dkr.ecr.us-east-1.amazonaws.com/docker-hub/library/a
 entrypoint ?= ''
 interactive ?=
 build_command ?= TERM=dumb ./gradlew build -PbuildProfile=ci --no-daemon
+artifactory_publish_command ?= TERM=dumb ./scripts/artifactory_publish.sh
 
 ci:
 	docker run --rm $(interactive) --entrypoint=$(entrypoint) -v $$PWD/:/work -w /work $(build_image) sh -c "$(build_command)"
@@ -16,6 +17,9 @@ docker_build:
 
 docker_push:
 	docker push $(docker_repository):$(git_commit_sha)
+
+artifactory_publish:
+	docker run --rm $(interactive) -e JFROG_API_USERNAME=depop-machine -e JFROG_API_KEY -e BRANCH_NAME -e GIT_COMMIT_SHA=$(git_commit_sha) --entrypoint=$(entrypoint) -v $$PWD/:/work -w /work $(build_image) sh -c "$(artifactory_publish_command)"
 
 snyk_test:
 	TERM=dumb ./gradlew snyk-test -PbuildProfile=ci --no-daemon

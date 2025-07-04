@@ -33,6 +33,9 @@ pipeline {
               script {
                 slackSend channel: 'cx-changelog', color: 'good', message: "Building <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}>"
                 sh "make ci"
+                cicd.withSecret('kv-jenkins/global/credentials', 'jfrog_api_key', 'JFROG_API_KEY') {
+                    sh "make artifactory_publish"
+                }
                 sh "make docker_build docker_push"
               }
             }

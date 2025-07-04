@@ -1,5 +1,33 @@
 plugins {
     id("drc-workflow.spring-boot-lib-conventions")
+    `maven-publish`
+}
+
+group = "com.depop.cx"
+version = System.getenv("PUBLISH_VERSION") ?: "local"
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            from(components["java"])
+
+            groupId = project.group as String
+            artifactId = "dispute-tasks"
+            version = project.version as String
+        }
+    }
+
+    repositories {
+        maven {
+            name = "Artifactory"
+            url = uri(System.getenv("ARTIFACTORY_URL") ?: "https://depop.jfrog.io/artifactory/depop-snapshot-local/")
+
+            credentials {
+                username = System.getenv("JFROG_API_USERNAME")
+                password = System.getenv("JFROG_API_KEY")
+            }
+        }
+    }
 }
 
 // Core dependencies
