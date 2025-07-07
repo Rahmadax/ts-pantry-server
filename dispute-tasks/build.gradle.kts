@@ -1,6 +1,7 @@
 plugins {
     id("drc-workflow.spring-boot-lib-conventions")
     `maven-publish`
+    id("com.gradleup.shadow") version "8.3.8"
 }
 
 group = "com.depop.cx"
@@ -9,7 +10,7 @@ version = System.getenv("PUBLISH_VERSION") ?: "local"
 publishing {
     publications {
         create<MavenPublication>("maven") {
-            from(components["java"])
+            from(components["shadow"])
 
             groupId = project.group as String
             artifactId = "dispute-tasks"
