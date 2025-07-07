@@ -1,9 +1,5 @@
 #!groovy
 
-def hasDisputeTasksChanged() {
-  return cicd.diffFiles('master...', true).any { it.startsWith('dispute-tasks/') }
-}
-
 pipeline {
   triggers {
     cron(env.BRANCH_NAME.equals('master') ? 'H H(10-15) * * H(1-4)' : '')
@@ -39,10 +35,8 @@ pipeline {
               script {
                 slackSend channel: 'cx-changelog', color: 'good', message: "Building <${env.RUN_DISPLAY_URL}|${env.JOB_NAME}>"
                 sh "make ci"
-                if (hasDisputeTasksChanged()) {
-                    cicd.withSecret('kv-jenkins/global/credentials', 'jfrog_api_key', 'JFROG_API_KEY') {
-                        sh "make artifactory_publish"
-                    }
+                cicd.withSecret('kv-jenkins/global/credentials', 'jfrog_api_key', 'JFROG_API_KEY') {
+                    sh "make artifactory_publish"
                 }
                 sh "make docker_build docker_push"
               }
