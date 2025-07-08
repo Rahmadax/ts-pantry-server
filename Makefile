@@ -19,7 +19,7 @@ docker_push:
 	docker push $(docker_repository):$(git_commit_sha)
 
 artifactory_publish:
-	docker run --rm $(interactive) -e JFROG_API_USERNAME=depop-machine -e JFROG_API_KEY -e BRANCH_NAME -e GIT_COMMIT_SHA=$(git_commit_sha) --entrypoint=$(entrypoint) -v $$PWD/:/work -w /work $(build_image) sh -c "$(artifactory_publish_command)"
+	docker run --rm $(interactive) -e JFROG_API_USERNAME=depop-machine -e JFROG_API_KEY -e BRANCH_NAME --entrypoint=$(entrypoint) -v $$PWD/:/work -w /work $(build_image) sh -c "$(artifactory_publish_command)"
 
 snyk_test:
 	TERM=dumb ./gradlew snyk-test -PbuildProfile=ci --no-daemon

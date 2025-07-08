@@ -5,7 +5,18 @@ plugins {
 }
 
 group = "com.depop.cx"
-version = System.getenv("PUBLISH_VERSION") ?: "local"
+
+/*
+`dispute-definitions` is the only consumer of this publication
+it uses the artifact in workflow tests
+
+`PUBLISH_VERSION` will be set (by `scripts/artifactory_publish.sh`) for PR snapshot publications only
+
+master publications will use the default value below
+feel free to bump it as appropriate. `dispute-definitions` should always depend on the latest version
+so ensure you bump that too if needed!
+ */
+version = System.getenv("PUBLISH_VERSION") ?: "1.0.0"
 
 publishing {
     publications {
