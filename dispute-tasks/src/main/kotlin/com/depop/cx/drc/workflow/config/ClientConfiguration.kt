@@ -8,6 +8,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpHeaders
+import org.springframework.http.client.reactive.ReactorClientHttpConnector
 import org.springframework.security.oauth2.client.*
 import org.springframework.security.oauth2.client.endpoint.WebClientReactiveClientCredentialsTokenResponseClient
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository
@@ -19,6 +20,8 @@ import org.springframework.web.reactive.function.client.ClientRequest
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Mono
+import reactor.netty.http.client.HttpClient
+import reactor.netty.resources.ConnectionProvider
 import java.net.URI
 
 private const val DEPOP_CLIENT_REGISTRATION_ID = "depop"
@@ -84,6 +87,12 @@ class ClientConfiguration {
         return authorizedClientManager
     }
 
+    private fun WebClient.Builder.withFreshConnections(): WebClient.Builder {
+        return this.clientConnector(ReactorClientHttpConnector(
+            HttpClient.create(ConnectionProvider.newConnection())
+        ))
+    }
+
     @Bean
     fun drcClient(
         clientProperties: ClientProperties,
@@ -96,6 +105,7 @@ class ClientConfiguration {
 
         val webClient = webClientBuilder
             .baseUrl(clientProperties.drcHost.toString())
+            .withFreshConnections()
             .filter(oauth) // filter to add depop jwt to the Authorization header.
             .filter(setDepopCustomAuthHeader(true)) // filter to copy the auth header to x-authorisation-jwt
             .build()
@@ -115,6 +125,7 @@ class ClientConfiguration {
 
         val webClient = webClientBuilder
             .baseUrl(clientProperties.checkoutHost.toString())
+            .withFreshConnections()
             .filter(oauth) // filter to add depop jwt to the Authorization header.
             .filter(setDepopCustomAuthHeader()) // filter to copy the auth header to x-authorisation-jwt
             .build()
@@ -134,6 +145,7 @@ class ClientConfiguration {
 
         val webClient = webClientBuilder
             .baseUrl(clientProperties.paymentsHost.toString())
+            .withFreshConnections()
             .filter(oauth) // filter to add depop jwt to the Authorization header.
             .filter(setDepopCustomAuthHeader()) // filter to copy the auth header to x-authorisation-jwt
             .build()
@@ -153,6 +165,7 @@ class ClientConfiguration {
 
         val webClient = webClientBuilder
             .baseUrl(clientProperties.shippingHost.toString())
+            .withFreshConnections()
             .filter(setDepopLLTokenAuthHeader(clientProperties.shippingApiSecret)) // Shipping api uses shared tokens
             .build()
 
@@ -171,6 +184,7 @@ class ClientConfiguration {
 
         val webClient = webClientBuilder
             .baseUrl(clientProperties.userHost.toString())
+            .withFreshConnections()
             .filter(oauth) // filter to add depop jwt to the Authorization header.
             .build()
 
@@ -189,6 +203,7 @@ class ClientConfiguration {
 
         val webClient = webClientBuilder
             .baseUrl(clientProperties.commsHost.toString())
+            .withFreshConnections()
             .filter(oauth) // filter to add depop jwt to the Authorization header.
             .filter(setDepopCustomAuthHeader(true)) // filter to copy the auth header to x-authorisation-jwt
             .build()
@@ -207,6 +222,7 @@ class ClientConfiguration {
 
         val webClient = webClientBuilder
             .baseUrl(clientProperties.pictureHost.toString())
+            .withFreshConnections()
             .filter(oauth) // filter to add depop jwt to the Authorization header
             .build()
 
@@ -220,6 +236,7 @@ class ClientConfiguration {
     ): ProductClient {
         val webClient = webClientBuilder
             .baseUrl(clientProperties.productHost.toString())
+            .withFreshConnections()
             .build()
 
         return ProductClient(webClient)
@@ -232,6 +249,7 @@ class ClientConfiguration {
     ): BlockingClient {
         val webClient = webClientBuilder
             .baseUrl(clientProperties.blockingHost.toString())
+            .withFreshConnections()
             .build()
 
         return BlockingClient(webClient)
