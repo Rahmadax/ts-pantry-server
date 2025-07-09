@@ -38,6 +38,17 @@ pipeline {
                 cicd.withSecret('kv-jenkins/global/credentials', 'jfrog_api_key', 'JFROG_API_KEY') {
                     sh "make artifactory_publish"
                 }
+
+                // run workflow tests
+                def params = [
+                  [$class: 'BooleanParameterValue', name: 'TEST_ONLY', value: true]
+                ]
+                if (env.BRANCH_NAME != 'master') {
+                  // test with the snapshot we just published if we're on a branch
+                  params << string(name: 'DISPUTE_TASKS_VERSION', value: "${env.BRANCH_NAME}-SNAPSHOT")
+                }
+                build job: 'depop/dispute-definitions/master', parameters: params, wait: true
+
                 sh "make docker_build docker_push"
               }
             }
