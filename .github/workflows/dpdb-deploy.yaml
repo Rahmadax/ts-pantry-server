@@ -1,0 +1,34 @@
+# ===============================================================
+# THIS FILE IS MANAGED BY PLATFORM, EDITS WILL BE OVERWRITTEN
+# CHANGES MUST BE MADE TO THE CENTRAL TEMPLATE HELD IN
+# https://github.com/depop/repository-management
+# ===============================================================
+
+name: Run DPDB deploy
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [ labeled ]
+    branches:
+      - "master"
+    paths:
+      - 'db/**'
+
+jobs:
+  dpdb-deploy-staging:
+    if: |
+      contains(toJson(github.event.pull_request.labels.*.name), 'dpdb-migration-test-success') &&
+      github.event.label.name == 'dpdb-deploy-staging'
+    name: DPDB Deploy to staging
+    uses: depop/depop-workflows/.github/workflows/dpdb-deploy.yml@master
+    with:
+      target: "staging"
+
+  dpdb-deploy-production:
+    if: |
+      contains(toJson(github.event.pull_request.labels.*.name), 'dpdb-migration-test-success') &&
+      github.event.label.name == 'dpdb-deploy-production'
+    name: DPDB Deploy to production
+    uses: depop/depop-workflows/.github/workflows/dpdb-deploy.yml@master
+    with:
+      target: "production"

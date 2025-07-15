@@ -1,0 +1,37 @@
+# ===============================================================
+# THIS FILE IS MANAGED BY PLATFORM, EDITS WILL BE OVERWRITTEN
+# CHANGES MUST BE MADE TO THE CENTRAL TEMPLATE HELD IN
+# https://github.com/depop/repository-management
+# ===============================================================
+
+name: Check for DPDB workflows
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+    branches:
+      - master
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  enforce-all-checks:
+    container: 594471699039.dkr.ecr.us-east-1.amazonaws.com/docker-hub/library/ubuntu:24.04
+    runs-on: standard-kubernetes-runners
+    permissions:
+      checks: read
+    steps:
+      - name: Wait for DPDB GitHub status checks
+        uses: depop/depop-actions/wait-for-checks@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          include_pattern: .*DPDB.*
+          passing_statuses: success,neutral,skipped
+          interval: 5s
+          delay: 5s
