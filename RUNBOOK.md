@@ -26,7 +26,7 @@ Workflow engine service for providing dispute workflow to users of dispute resol
 | Dashboard | [Production Default Metrics](https://app.datadoghq.com/dashboard/7xc-7p6-37s/production-user-default-dispute-workflow-default-metrics-stdv1) & [Staging Default Metrics](https://app.datadoghq.com/dashboard/nks-cr5-cx8/staging-user-default-dispute-workflow-default-metrics-stdv1)  |
 | Logs      | [Production](https://app.datadoghq.com/logs?query=service%3Auser-default-dispute-workflow%20env_type%3Aproduction) & [Staging](https://app.datadoghq.com/logs?query=service%3Auser-default-dispute-workflow%20env_type%3Astaging)                                                                         |
 | Traces    | [Production APM](https://app.datadoghq.com/apm/traces?live=true&query=env%3Aproduction-production%20service%3Auser-default-dispute-workflow) & [Staging APM](https://app.datadoghq.com/apm/traces?live=true&query=env%3Astaging-staging%20service%3Auser-default-dispute-workflow)                        |
-| PagerDuty | TODO                                                                                                                                                                                                                                                                                            |
+| IncidentIO | https://app.incident.io/depop/dashboard
 | SLOs      | TODO                                                                                                                                                                                                                                                                                            |
 
 ### Dependencies
