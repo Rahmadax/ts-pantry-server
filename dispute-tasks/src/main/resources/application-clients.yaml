@@ -10,6 +10,7 @@ depop:
       picture-host: https://media-default-picture-api.eks-default.stage-app.dpop.co.uk
       product-host: https://product-default-product-api.eks-default.stage-app.dpop.co.uk
       blocking-host: https://blocking-default-blocking-internal.eks-default.stage-app.dpop.co.uk
+      address-host: https://fulfilment-default-address-internal.eks-default.stage-app.dpop.co.uk
 spring:
   security:
     oauth2:
@@ -67,6 +68,7 @@ depop:
       picture-host: ${PICTURE_HOST}
       product-host: ${PRODUCT_HOST}
       blocking-host: ${BLOCKING_HOST}
+      address-host: ${ADDRESS_HOST}
 ---
 
 # production profile
@@ -97,3 +99,4 @@ depop:
       picture-host: ${PICTURE_HOST}
       product-host: ${PRODUCT_HOST}
       blocking-host: ${BLOCKING_HOST}
+      address-host: ${ADDRESS_HOST}

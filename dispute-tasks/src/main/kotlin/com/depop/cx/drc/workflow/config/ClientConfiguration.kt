@@ -40,6 +40,7 @@ data class ClientProperties(
     val pictureHost: URI,
     val productHost: URI,
     val blockingHost: URI,
+    val addressHost: URI
 )
 
 @Configuration
@@ -253,6 +254,24 @@ class ClientConfiguration {
             .build()
 
         return BlockingClient(webClient)
+    }
+
+    @Bean
+    fun addressClient(
+        clientProperties: ClientProperties,
+        webClientBuilder: WebClient.Builder,
+        authorizedClientManager: ReactiveOAuth2AuthorizedClientManager,
+    ): AddressClient {
+        val oauth = ServerOAuth2AuthorizedClientExchangeFilterFunction(authorizedClientManager)
+        oauth.setDefaultClientRegistrationId(DEPOP_CLIENT_REGISTRATION_ID)
+
+        val webClient = webClientBuilder
+            .baseUrl(clientProperties.addressHost.toString())
+            .withFreshConnections()
+            .filter(oauth) // filter to add depop jwt to the Authorization header
+            .build()
+
+        return AddressClient(webClient)
     }
 
     // Sets the Authorization header using the provided LLJWT

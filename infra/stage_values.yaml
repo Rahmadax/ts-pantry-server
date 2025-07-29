@@ -50,6 +50,7 @@ serviceConfig:
   PICTURE_HOST: https://media-default-picture-api.eks-default.stage-app.dpop.co.uk
   PRODUCT_HOST: https://product-default-product-api.eks-default.stage-app.dpop.co.uk
   BLOCKING_HOST: https://blocking-default-blocking-internal.eks-default.stage-app.dpop.co.uk
+  ADDRESS_HOST: https://fulfilment-default-address-internal.eks-default.stage-app.dpop.co.uk
 autoscaling:
   cpu: 65
   memory: 75
