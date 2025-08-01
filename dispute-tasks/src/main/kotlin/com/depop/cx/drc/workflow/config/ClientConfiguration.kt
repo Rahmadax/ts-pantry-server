@@ -269,6 +269,7 @@ class ClientConfiguration {
             .baseUrl(clientProperties.addressHost.toString())
             .withFreshConnections()
             .filter(oauth) // filter to add depop jwt to the Authorization header
+            .filter(setDepopCustomAuthHeader()) // filter to copy the auth header to x-authorisation-jwt
             .build()
 
         return AddressClient(webClient)

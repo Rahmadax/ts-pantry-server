@@ -65,6 +65,9 @@ class WorkflowTaskConfiguration {
     fun setDisputeParticipantTask(drcClient: DrcClient, taskMetrics: TaskMetrics) = SetDisputeParticipantDrcDelegate(drcClient, taskMetrics)
 
     @Bean
+    fun getSellerAddressDetailsTask(addressClient: AddressClient, taskMetrics: TaskMetrics) = GetSellerAddressDrcDelegate(addressClient, taskMetrics)
+
+    @Bean
     fun setDisputeStatusTask(drcClient: DrcClient, taskMetrics: TaskMetrics) = SetDisputeStatusDrcDelegate(drcClient, taskMetrics)
 
     @Bean

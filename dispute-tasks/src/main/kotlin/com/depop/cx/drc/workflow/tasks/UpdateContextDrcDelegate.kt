@@ -17,6 +17,7 @@ class UpdateContextDrcDelegate(private val taskMetrics: TaskMetrics) : AbstractD
                     is Boolean -> context.prop(it.key, it.value as Boolean)
                     is Number -> context.prop(it.key, it.value as Number)
                     is String -> context.prop(it.key, it.value as String)
+                    is SpinJsonNode -> context.prop(it.key, it.value as SpinJsonNode)
                     is Long -> context.prop(it.key, it.value as Long)
                     is Int -> context.prop(it.key, it.value as Int)
                     is Float -> context.prop(it.key, it.value as Float)
