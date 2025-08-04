@@ -16,10 +16,10 @@ loadbalancer:
 
 resources:
   limits:
-    memory: 5Gi
+    memory: 12Gi
   requests:
-    memory: 3Gi
-    cpu: 150m
+    memory: 12Gi
+    cpu: 3000m
 
 secrets:
   ENV_DB_PASSWORD: production/services/user/default/dispute/workflow/_default/postgres_app_password

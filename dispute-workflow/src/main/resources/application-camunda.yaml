@@ -21,6 +21,9 @@ camunda:
         history-cleanup-job-log-time-to-live: P7D
     job-execution:
       enabled: true
+      core-pool-size: 10
+      max-pool-size: 20
+      queue-capacity: 30
     metrics:
       enabled: false
 
@@ -91,3 +94,4 @@ camunda:
         history-cleanup-degree-of-parallelism: 1
         history-cleanup-batch-size: 25
         task-metrics-time-to-live: P7D
+

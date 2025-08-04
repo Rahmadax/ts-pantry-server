@@ -17,10 +17,10 @@ loadbalancer:
 
 resources:
   limits:
-    memory: 4Gi
+    memory: 12Gi
   requests:
-    memory: 4Gi
-    cpu: 2000m
+    memory: 12Gi
+    cpu: 3000m
 
 secrets:
   ENV_DB_PASSWORD: staging/services/user/default/dispute/workflow/_default/postgres_app_password
@@ -34,7 +34,7 @@ secrets:
 serviceConfig:
   JAVA_OPTS: -Dpolyglot.engine.WarnInterpreterOnly=false
   SPRING_PROFILES_ACTIVE: stage_deployment
-  ENV_DB_URL: jdbc:postgresql://service-user-default-dispute-workflow.cnrpoumyfd1x.us-east-1.rds.amazonaws.com/disputeworkflow
+  ENV_DB_URL: jdbc:postgresql://service-user-default-dispute-workflow.cnrpoumyfd1x.us-east-1.rds.amazonaws.com/disputeworkflow?options=-c%20statement_timeout=90000
   ENV_DB_USER: disputeworkflow_app
   ENV_OKTA_CLIENT_ISSUER_URI: https://depop.okta.com
   ENV_OKTA_CLIENT_REDIRECT_URI: https://disputes-stage.depop.systems

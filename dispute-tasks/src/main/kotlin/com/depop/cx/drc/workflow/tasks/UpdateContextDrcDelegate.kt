@@ -7,7 +7,7 @@ import org.camunda.spin.json.SpinJsonNode
 
 private const val CONTEXT_VARIABLE = "context"
 
-class UpdateContextDrcDelegate(private val taskMetrics: TaskMetrics) : AbstractDrcDelegate(taskMetrics) {
+class UpdateContextDrcDelegate(taskMetrics: TaskMetrics) : AbstractDrcDelegate(taskMetrics) {
 
     override fun doExecute(execution: DelegateExecution) {
         val context = execution.processInstance.getVariable(CONTEXT_VARIABLE)
@@ -21,8 +21,8 @@ class UpdateContextDrcDelegate(private val taskMetrics: TaskMetrics) : AbstractD
                     is Long -> context.prop(it.key, it.value as Long)
                     is Int -> context.prop(it.key, it.value as Int)
                     is Float -> context.prop(it.key, it.value as Float)
-                    else -> if (context.hasProp(it.key)) {
-                        context.remove(it.key)
+                    else -> if (it.value == null && context.hasProp(it.key)) {
+                        context.deleteProp(it.key)
                     }
                 }
             }

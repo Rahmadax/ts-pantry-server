@@ -10,6 +10,16 @@ spring:
     url: "jdbc:postgresql://localhost:5432/disputeworkflow"
     username: depopdba
     password: depopdba
+    hikari:
+      maximum-pool-size: 30
+      minimum-idle: 5
+      idle-timeout: 600000
+      leak-detection-threshold: 30000
+      connection-timeout: 30000
+      validation-timeout: 60000
+      max-lifetime: 300000
+      connection-init-sql: "SELECT 1"
+      connection-test-query: "SELECT 1"
 
 ---
 
