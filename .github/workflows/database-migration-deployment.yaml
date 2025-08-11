@@ -1,0 +1,31 @@
+# ===============================================================
+# THIS FILE IS MANAGED BY PLATFORM, EDITS WILL BE OVERWRITTEN
+# CHANGES MUST BE MADE TO THE CENTRAL TEMPLATE HELD IN
+# https://github.com/depop/repository-management
+# ===============================================================
+
+name: DPDB
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - "master"
+  push:
+    branches:
+      - master
+
+jobs:
+  dpdb-migration-tests:
+    name: Migration Tests
+    uses: depop/dpdb/.github/workflows/migration-test.yml@master
+
+  dpdb-deploy:
+    if: needs.dpdb-migration-tests.outputs.env-map != '[]'
+    needs: dpdb-migration-tests
+    name: Deploy ${{ matrix.env }}
+    strategy:
+      matrix:
+        env: ${{ fromJson(needs.dpdb-migration-tests.outputs.env-map) }}
+    uses: depop/dpdb/.github/workflows/deploy.yml@master
+    with:
+      target: ${{ matrix.env }}
