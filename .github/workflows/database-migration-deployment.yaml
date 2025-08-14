@@ -10,13 +10,15 @@ on:
   pull_request:
     branches:
       - master
-      - main    
+      - main
     paths:
       - db/**
   push:
     branches:
       - master
       - main
+    paths:
+      - db/**
 
 jobs:
   dpdb-migration-tests:
@@ -24,7 +26,6 @@ jobs:
     uses: depop/dpdb/.github/workflows/migration-test.yml@master
 
   dpdb-deploy:
-    if: needs.dpdb-migration-tests.outputs.env-map != '[]'
     needs: dpdb-migration-tests
     name: Deploy ${{ matrix.env }}
     strategy:
