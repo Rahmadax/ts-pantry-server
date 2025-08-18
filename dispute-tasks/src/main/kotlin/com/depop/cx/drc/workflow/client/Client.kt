@@ -1,6 +1,5 @@
 package com.depop.cx.drc.workflow.client
 
-import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.MediaType
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.awaitBody
@@ -16,7 +15,7 @@ abstract class Client(protected val webClient: WebClient) {
         .uri(uri, variables)
         .accept(MediaType.APPLICATION_JSON)
         .retrieve()
-        .bodyToMono(object : ParameterizedTypeReference<T>() {})
+        .bodyToMono(T::class.java)
 
     protected suspend inline fun <reified T: Any> getCoroutineRequest(
         uri: String,
