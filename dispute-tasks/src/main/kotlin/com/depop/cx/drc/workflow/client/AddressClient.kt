@@ -6,8 +6,13 @@ import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Mono
 
 private const val GET_ADDRESS = "/internal/v1/addresses/{address_id}"
+private const val GET_USER_ADDRESSES = "/internal/v1/addresses/user/{user_id}"
 
 class AddressClient(webClient: WebClient) : Client(webClient) {
+
+    fun getUserAddresses(userId: Long): Mono<List<Address>> {
+        return getRequest(GET_USER_ADDRESSES, mapOf("user_id" to userId))
+    }
 
     fun getAddress(addressId: Long): Mono<Address> {
         return getRequest(GET_ADDRESS, mapOf("address_id" to addressId))
