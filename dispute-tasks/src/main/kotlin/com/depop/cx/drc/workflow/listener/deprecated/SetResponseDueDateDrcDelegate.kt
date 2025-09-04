@@ -18,6 +18,11 @@ import java.time.format.DateTimeFormatter
 private const val DISPUTE_ID_PROPERTY = "dispute_id"
 private const val DISPUTE_RESPONSE_DUE_DATE = "response_due_date"
 
+/*
+Keep as prototype scope
+Move to deprecated pacakge
+Remove all usage of it. UpdateResposneDueDateDelegate everywhere.
+ */
 class SetResponseDueDateDrcDelegate(
     private val drcClient: DrcClient,
     private val taskMetrics: TaskMetrics,

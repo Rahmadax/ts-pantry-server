@@ -51,7 +51,7 @@ class WorkflowTaskConfiguration {
     fun recalculateTimerTask(taskMetrics: TaskMetrics) = RecalculateTimerDelegate(taskMetrics)
 
     @Bean
-    fun updateResponseDueDateTask(taskMetrics: TaskMetrics) = UpdateResponseDueDateDelegate(taskMetrics)
+    fun updateResponseDueDateTask(drcClient: DrcClient, taskMetrics: TaskMetrics) = UpdateResponseDueDateDelegate(drcClient, taskMetrics)
 
     @Bean
     fun getUserDetailsTask(userClient: UserClient, taskMetrics: TaskMetrics) = GetUserDetailsDrcDelegate(userClient, taskMetrics)
