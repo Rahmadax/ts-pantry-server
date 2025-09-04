@@ -15,9 +15,11 @@ import com.depop.cx.drc.workflow.tasks.timer.SuspendTimerDelegate
 import com.depop.cx.drc.workflow.tasks.timer.UpdateResponseDueDateDelegate
 import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.core.instrument.logging.LoggingMeterRegistry
+import org.springframework.beans.factory.config.ConfigurableBeanFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
+import org.springframework.context.annotation.Scope
 
 @Configuration
 class WorkflowTaskConfiguration {
@@ -95,12 +97,14 @@ class WorkflowTaskConfiguration {
     fun linkImagesTask(pictureClient: PictureClient, taskMetrics: TaskMetrics) = LinkImagesDrcDelegate(pictureClient, taskMetrics)
 
     @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     fun setActiveUserIdTask(drcClient: DrcClient, taskMetrics: TaskMetrics) = SetDisputeActiveUserIdDrcDelegate(drcClient, taskMetrics)
 
     @Bean
     fun clearActiveUserIdTask(drcClient: DrcClient, taskMetrics: TaskMetrics) = ClearDisputeActiveUserIdDrcDelegate(drcClient, taskMetrics)
 
     @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     fun setResponseDueDateTask(drcClient: DrcClient, taskMetrics: TaskMetrics) = SetResponseDueDateDrcDelegate(drcClient, taskMetrics)
 
     @Bean
