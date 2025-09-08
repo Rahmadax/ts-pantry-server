@@ -4,6 +4,8 @@ package com.depop.cx.drc.workflow.config
 
 import com.depop.cx.drc.workflow.client.*
 import com.depop.cx.drc.workflow.listener.*
+import com.depop.cx.drc.workflow.listener.deprecated.SetDisputeActiveUserIdDrcDelegate
+import com.depop.cx.drc.workflow.listener.deprecated.SetResponseDueDateDrcDelegate
 import com.depop.cx.drc.workflow.metrics.TaskMetrics
 import com.depop.cx.drc.workflow.tasks.*
 import com.depop.cx.drc.workflow.tasks.comms.SendChatDrcDelegate
@@ -97,17 +99,26 @@ class WorkflowTaskConfiguration {
     fun linkImagesTask(pictureClient: PictureClient, taskMetrics: TaskMetrics) = LinkImagesDrcDelegate(pictureClient, taskMetrics)
 
     @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    fun setActiveUserIdTask(drcClient: DrcClient, taskMetrics: TaskMetrics) = SetDisputeActiveUserIdDrcDelegate(drcClient, taskMetrics)
+    fun clearResponseDueDateTask(drcClient: DrcClient, taskMetrics: TaskMetrics) = ClearResponseDueDateDrcDelegate(drcClient, taskMetrics)
 
     @Bean
     fun clearActiveUserIdTask(drcClient: DrcClient, taskMetrics: TaskMetrics) = ClearDisputeActiveUserIdDrcDelegate(drcClient, taskMetrics)
 
     @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    fun setResponseDueDateTask(drcClient: DrcClient, taskMetrics: TaskMetrics) = SetResponseDueDateDrcDelegate(drcClient, taskMetrics)
+    fun setBuyerAsActiveUserTask(drcClient: DrcClient, taskMetrics: TaskMetrics) = SetBuyerAsActiveUserDrcListener(drcClient, taskMetrics)
 
     @Bean
-    fun clearResponseDueDateTask(drcClient: DrcClient, taskMetrics: TaskMetrics) = ClearResponseDueDateDrcDelegate(drcClient, taskMetrics)
+    fun setSellerAsActiveUserTask(drcClient: DrcClient, taskMetrics: TaskMetrics) = SetSellerAsActiveUserDrcListener(drcClient, taskMetrics)
 
+    @Deprecated("This task is unsafe to use. Use SetBuyerAsActiveUserDrcListener or SetSellerAsActiveUserDrcListener instead.")
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    fun setActiveUserIdTask(drcClient: DrcClient, taskMetrics: TaskMetrics) =
+        SetDisputeActiveUserIdDrcDelegate(drcClient, taskMetrics)
+
+    @Deprecated("This task is unsafe to use. Use UpdateResponseDueDateDelegate timer task instead.")
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    fun setResponseDueDateTask(drcClient: DrcClient, taskMetrics: TaskMetrics) =
+        SetResponseDueDateDrcDelegate(drcClient, taskMetrics)
 }
