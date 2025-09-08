@@ -6,6 +6,7 @@ import com.depop.cx.drc.workflow.client.DrcClient
 import com.depop.cx.drc.workflow.client.UpdateResponseDueAtDisputeRequest
 import com.depop.cx.drc.workflow.getUUIDProcessVariableOrNull
 import com.depop.cx.drc.workflow.metrics.TaskMetrics
+import com.depop.cx.drc.workflow.tasks.UpdateContextDrcDelegate
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.BpmnError
 import org.camunda.bpm.engine.delegate.DelegateExecution
@@ -39,5 +40,7 @@ class ClearResponseDueDateDrcDelegate(
         ).block()
 
         execution.removeVariable(DISPUTE_RESPONSE_DUE_DATE)
+
+        UpdateContextDrcDelegate.updateContext(execution, mapOf(DISPUTE_RESPONSE_DUE_DATE to null))
     }
 }

@@ -3,7 +3,6 @@ package com.depop.cx.drc.workflow.tasks.timer
 import com.depop.cx.drc.workflow.TaskErrorCode
 import com.depop.cx.drc.workflow.client.DrcClient
 import com.depop.cx.drc.workflow.client.UpdateResponseDueAtDisputeRequest
-import com.depop.cx.drc.workflow.getStringProcessVariableOrNull
 import com.depop.cx.drc.workflow.getStringVariableOrNull
 import com.depop.cx.drc.workflow.getUUIDProcessVariableOrNull
 import com.depop.cx.drc.workflow.metrics.TaskMetrics

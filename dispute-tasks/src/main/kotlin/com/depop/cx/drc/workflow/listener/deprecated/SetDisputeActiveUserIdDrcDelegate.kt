@@ -14,11 +14,6 @@ import org.camunda.bpm.engine.delegate.Expression
 private const val DISPUTE_ID_PROPERTY = "dispute_id"
 private const val DISPUTE_ACTIVE_USER = "active_user"
 
-/*
-Keep as prototype scope
-Move to deprecated pacakge
-Break into a SetSellerAsActiveUserDrcDelegate and SetBuyerAsActiveUserDrcDelegate - use this from now on
- */
 class SetDisputeActiveUserIdDrcDelegate(
     private val drcClient: DrcClient,
     private val taskMetrics: TaskMetrics,
