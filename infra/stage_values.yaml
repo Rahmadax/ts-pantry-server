@@ -20,7 +20,7 @@ resources:
     memory: 12Gi
   requests:
     memory: 12Gi
-    cpu: 3000m
+    cpu: 250m
 
 secrets:
   ENV_DB_PASSWORD: staging/services/user/default/dispute/workflow/_default/postgres_app_password
