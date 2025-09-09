@@ -19,7 +19,7 @@ resources:
     memory: 12Gi
   requests:
     memory: 12Gi
-    cpu: 3000m
+    cpu: 750m
 
 secrets:
   ENV_DB_PASSWORD: production/services/user/default/dispute/workflow/_default/postgres_app_password
