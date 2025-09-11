@@ -40,7 +40,5 @@ class ClearResponseDueDateDrcDelegate(
         ).block()
 
         execution.removeVariable(DISPUTE_RESPONSE_DUE_DATE)
-
-        UpdateContextDrcDelegate.updateContext(execution, mapOf(DISPUTE_RESPONSE_DUE_DATE to null))
     }
 }
