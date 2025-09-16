@@ -18,6 +18,12 @@ so ensure you bump that too if needed!
  */
 version = System.getenv("PUBLISH_VERSION") ?: "1.0.0"
 
+val testJar by tasks.registering(Jar::class) {
+    from(sourceSets.test.get().output)
+    archiveClassifier.set("test")
+    dependsOn(tasks.named("testClasses"))
+}
+
 publishing {
     publications {
         create<MavenPublication>("maven") {
@@ -26,6 +32,8 @@ publishing {
             groupId = project.group as String
             artifactId = "dispute-tasks"
             version = project.version as String
+
+            artifact(testJar) { classifier = "test" }
         }
     }
 

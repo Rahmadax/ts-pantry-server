@@ -43,6 +43,17 @@ data class ClientProperties(
     val addressHost: URI
 )
 
+/*
+NOTE: if you're adding a new type of client that will be refrenced in `WorkflowTaskConfiguration` you probably also want to
+configure a mock and default stubs in `MockClientConfiguration`
+
+otherwise the workflow tests that run in CI will fail on your branch, because they use the `WorkflowTaskConfiguration` and
+`MockClientConfiguration` configurations
+
+see
+https://github.com/depop/dispute-definitions/blob/master/TESTING.md
+for more information
+ */
 @Configuration
 @EnableConfigurationProperties(ClientProperties::class)
 class ClientConfiguration {
