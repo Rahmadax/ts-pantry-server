@@ -8,7 +8,7 @@ depop:
       user-host: https://django-default-django-api.eks-default.stage-app.dpop.co.uk/
       comms-host: https://martech-default-comms-hub.eks-default.stage-svcs.dpop.co.uk
       picture-host: https://media-default-picture-api.eks-default.stage-app.dpop.co.uk
-      product-host: https://product-default-product-api.eks-default.stage-app.dpop.co.uk
+      product-host: https://django-default-django-api.eks-default.stage-app.dpop.co.uk
       blocking-host: https://blocking-default-blocking-internal.eks-default.stage-app.dpop.co.uk
       address-host: https://fulfilment-default-address-internal.eks-default.stage-app.dpop.co.uk
 spring:

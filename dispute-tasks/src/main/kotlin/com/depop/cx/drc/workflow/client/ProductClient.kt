@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Mono
 
-private const val GET_PRODUCT_DETAILS = "/api/v2/products/{id}/?all=true"
+private const val GET_PRODUCT_DETAILS = "/internal/v1/products/by-id/{id}/?all=true"
 
 class ProductClient(webClient: WebClient) : Client(webClient) {
 
