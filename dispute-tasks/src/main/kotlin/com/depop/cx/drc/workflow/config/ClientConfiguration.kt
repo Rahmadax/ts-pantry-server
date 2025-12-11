@@ -40,7 +40,8 @@ data class ClientProperties(
     val pictureHost: URI,
     val productHost: URI,
     val blockingHost: URI,
-    val addressHost: URI
+    val addressHost: URI,
+    val returnsHost: URI
 )
 
 /*
@@ -284,6 +285,25 @@ class ClientConfiguration {
             .build()
 
         return AddressClient(webClient)
+    }
+
+    @Bean
+    fun returnsClient(
+        clientProperties: ClientProperties,
+        webClientBuilder: WebClient.Builder,
+        authorizedClientManager: ReactiveOAuth2AuthorizedClientManager
+    ): ReturnsClient {
+        val oauth = ServerOAuth2AuthorizedClientExchangeFilterFunction(authorizedClientManager)
+        oauth.setDefaultClientRegistrationId(DEPOP_CLIENT_REGISTRATION_ID)
+
+        val webClient = webClientBuilder
+            .baseUrl(clientProperties.returnsHost.toString())
+            .withFreshConnections()
+            .filter(oauth) // filter to add depop jwt to the Authorization header.
+            .filter(setDepopCustomAuthHeader(true)) // filter to copy the auth header to x-authorisation-jwt
+            .build()
+
+        return ReturnsClient(webClient)
     }
 
     // Sets the Authorization header using the provided LLJWT
