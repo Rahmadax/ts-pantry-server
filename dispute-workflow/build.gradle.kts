@@ -16,6 +16,7 @@ dependencies {
 
     // Web support
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
     runtimeOnly("jakarta.servlet:jakarta.servlet-api")
 
     // Session
