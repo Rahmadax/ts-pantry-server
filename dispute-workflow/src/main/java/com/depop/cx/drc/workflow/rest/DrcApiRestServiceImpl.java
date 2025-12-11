@@ -1,5 +1,10 @@
 package com.depop.cx.drc.workflow.rest;
 
+import com.depop.cx.drc.workflow.client.ReturnsClient;
+import com.depop.cx.drc.workflow.client.ReturnableItemsResponse;
+import com.depop.cx.drc.workflow.client.CreateReturnRequest;
+import com.depop.cx.drc.workflow.client.CreateReturnResponse;
+import com.depop.cx.drc.workflow.client.CancelReturnResponse;
 import com.nimbusds.openid.connect.sdk.assurance.evidences.attachment.Attachment;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
@@ -29,6 +34,9 @@ public class DrcApiRestServiceImpl extends AbstractProcessEngineRestServiceImpl 
 
     @Autowired
     private HistoryService historyService;
+
+    @Autowired
+    private ReturnsClient returnsClient;
     /*
      * The following resources are used by dispute-service:
      *
@@ -404,6 +412,37 @@ public class DrcApiRestServiceImpl extends AbstractProcessEngineRestServiceImpl 
 
     protected URI getRelativeEngineUri(String engineName) {
         return URI.create("/");
+    }
+
+    // ========== Test Endpoints for ReturnsClient ==========
+
+    @GET
+    @Path("/test/returns/returnable-items")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ReturnableItemsResponse testGetReturnableItems(
+            @QueryParam("purchaseId") Long purchaseId,
+            @QueryParam("buyerAddressId") Long buyerAddressId,
+            @QueryParam("sellerAddressId") Long sellerAddressId) {
+        return returnsClient.getReturnableItems(purchaseId, buyerAddressId, sellerAddressId).block();
+    }
+
+    @POST
+    @Path("/test/returns/create")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public CreateReturnResponse testCreateReturn(
+            @QueryParam("purchaseId") Long purchaseId,
+            CreateReturnRequest request) {
+        return returnsClient.createReturn(purchaseId, request).block();
+    }
+
+    @POST
+    @Path("/test/returns/cancel")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public CancelReturnResponse testCancelReturn(
+            @QueryParam("returnId") String returnId) {
+        return returnsClient.cancelReturn(returnId).block();
     }
 
 }
