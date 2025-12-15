@@ -11,7 +11,7 @@ depop:
       product-host: https://django-default-django-api.eks-default.stage-app.dpop.co.uk
       blocking-host: https://blocking-default-blocking-internal.eks-default.stage-app.dpop.co.uk
       address-host: https://fulfilment-default-address-internal.eks-default.stage-app.dpop.co.uk
-      returns-host: https://user-default-returns-internal.eks-default.stage-app.dpop.co.uk/
+      returns-host: https://user-default-returns-internal.eks-default.stage-app.dpop.co.uk
 spring:
   security:
     oauth2:
